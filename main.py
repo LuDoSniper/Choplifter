@@ -18,7 +18,7 @@ frames = 60
 running = True
 
 while running:
-    
+    print(player.velocity)
     # Affichage
     
     screen.fill(NOIR)
@@ -36,20 +36,17 @@ while running:
     # Gestion des events perpetuels
     pressed = pygame.key.get_pressed()
     
-    # Flèche de gauche
-    if pressed[pygame.K_LEFT] != 0:
-        player.changer_velocity(-1)
-    
-    # Flèche de droite
-    if pressed[pygame.K_RIGHT] != 0:
-        player.changer_velocity(1)
+    # Mouvement de l'helico
+    dir = pressed[pygame.K_RIGHT] - pressed[pygame.K_LEFT]
+    player.changer_velocity(dir)
     
     # Mouvement du player
-    if player.velocity != 0:
+    if dir == 0:
         player.inertie()
-        player.deplacer()
         if -0.2 < player.velocity < 0 or 0 < player.velocity < 0.2:
             player.velocity = 0
+    player.deplacer()
+        
         
     pygame.display.flip()
     clock.tick(frames)
