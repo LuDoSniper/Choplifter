@@ -1,4 +1,5 @@
 import pygame
+import math
 
 class Helicopter():
     def __init__(self, screen):
@@ -17,6 +18,12 @@ class Helicopter():
     
     def afficher(self, screen):
         # Gérer le sens
+        self.gerer_sens()
+        
+        # Affichage
+        screen.blit(self.image, self.rect)
+    
+    def gerer_sens(self):
         if self.velocity != 0: # Vérifier que l'helico est bien en mouvement
             # Tourner à gauche si tourné à droite
             if self.velocity < 0 and not self.flipped:
@@ -26,11 +33,8 @@ class Helicopter():
             elif self.velocity > 0 and self.flipped:
                 self.flipped = False
                 self.flip()
-        
-        # Affichage
-        screen.blit(self.image, self.rect)
     
-    def changer_velocity(self, dir):
+    def accelerer(self, dir):
         self.velocity += dir * self.acceleration
         
         # Brider la vitesse

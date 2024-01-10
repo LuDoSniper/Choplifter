@@ -18,7 +18,7 @@ frames = 60
 running = True
 
 while running:
-    print(player.velocity)
+
     # Affichage
     
     screen.fill(NOIR)
@@ -32,13 +32,13 @@ while running:
         # Quit
         if event.type == pygame.QUIT:
             running = False
-        
+
     # Gestion des events perpetuels
     pressed = pygame.key.get_pressed()
     
     # Mouvement de l'helico
     dir = pressed[pygame.K_RIGHT] - pressed[pygame.K_LEFT]
-    player.changer_velocity(dir)
+    player.accelerer(dir)
     
     # Mouvement du player
     if dir == 0:
