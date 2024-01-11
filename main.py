@@ -1,5 +1,7 @@
 import pygame
+import math
 from objets.helicopter import Helicopter
+from objets.map import Map
 
 pygame.init()
 
@@ -11,6 +13,7 @@ pygame.display.set_caption("Choplifter")
 
 # Initialisation des objects de démarrage
 player = Helicopter(screen)
+map = Map(screen)
 clock = pygame.time.Clock()
 
 # Initialisation des variables de jeu
@@ -23,6 +26,7 @@ while running:
     
     screen.fill(NOIR)
     
+    map.afficher(screen)
     player.afficher(screen)
     
     # Gestion des events instantanés
@@ -38,14 +42,20 @@ while running:
     
     # Mouvement de l'helico
     dir = pressed[pygame.K_RIGHT] - pressed[pygame.K_LEFT]
+    if math.copysign(1, player.velocity) != dir:
+        player.moving = False
     player.accelerer(dir)
     
-    # Mouvement du player
     if dir == 0:
         player.inertie()
         if -0.2 < player.velocity < 0 or 0 < player.velocity < 0.2:
             player.velocity = 0
+            player.moving = False
     player.deplacer(screen)
+    
+    # Mouvement de la map
+    if player.moving:
+        map.bouger(player.velocity)
         
         
     pygame.display.flip()

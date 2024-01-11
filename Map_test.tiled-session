@@ -1,0 +1,22 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+    },
+    "last.imagePath": "C:/Users/lucie/OneDrive/Bureau/Hesias/B1/Major_Project/Choplifter/assets/tilesets",
+    "map.height": 4,
+    "map.lastUsedFormat": "tmx",
+    "map.renderOrder": null,
+    "map.width": 20,
+    "openFiles": [
+    ],
+    "project": "Map_test.tiled-project",
+    "recentFiles": [
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}
