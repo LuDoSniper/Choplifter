@@ -45,7 +45,7 @@ while running:
         player.inertie()
         if -0.2 < player.velocity < 0 or 0 < player.velocity < 0.2:
             player.velocity = 0
-    player.deplacer()
+    player.deplacer(screen)
         
         
     pygame.display.flip()

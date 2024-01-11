@@ -7,6 +7,7 @@ class Helicopter():
         self.velocity = 0
         self.resistance = 0.9
         self.acceleration = 0.5
+        self.distance_max = 30
         self.flipped = False
         self.image = pygame.image.load("assets/imgs/Helicopter_tmp.png")
         self.image = pygame.transform.scale(self.image, (50, 20))
@@ -43,8 +44,14 @@ class Helicopter():
         elif self.velocity < -self.maxspeed:
             self.velocity = -self.maxspeed
     
-    def deplacer(self):
-        self.rect.x += self.velocity
+    def deplacer(self, screen):
+        centre = screen.get_width() / 2 - self.rect.width / 2
+        new_pos = self.rect.x + self.velocity
+        
+        # Brider le deplacement
+        if abs(new_pos - centre) > self.distance_max:
+            new_pos = centre + (self.distance_max * math.copysign(1, new_pos - centre))
+        self.rect.x = new_pos
     
     def flip(self):
         self.image = pygame.transform.flip(self.image, True, False)
