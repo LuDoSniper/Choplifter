@@ -3,10 +3,22 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "assets/tilesets/map_test.tmx",
     "expandedProjectPaths": [
     ],
     "fileStates": {
+        "assets/tilesets/map_test.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 336,
+                "y": 66
+            }
+        },
+        "assets/tilesets/map_test_tileset.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 8
+        }
     },
     "last.imagePath": "C:/Users/lucie/OneDrive/Bureau/Hesias/B1/Major_Project/Choplifter/assets/tilesets",
     "map.height": 4,
@@ -14,9 +26,13 @@
     "map.renderOrder": null,
     "map.width": 20,
     "openFiles": [
+        "assets/tilesets/map_test.tmx",
+        "assets/tilesets/map_test_tileset.tsx"
     ],
     "project": "Map_test.tiled-project",
     "recentFiles": [
+        "assets/tilesets/map_test_tileset.tsx",
+        "assets/tilesets/map_test.tmx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }
