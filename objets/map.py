@@ -24,9 +24,9 @@ class Map():
                     pos = ((x * 32) + self.origine_x, (y * 32) + self.origine_y)
                     Tile(pos, image, self.tiles, (x, y))
     
-    def bouger(self, player):
+    def bouger(self, velocity):
 
-        self.rect.x -= player.velocity
+        self.rect.x -= velocity
         
         for tile in self.tiles:
             tile.rect.x = self.rect.x + (tile.x * 32)

@@ -55,7 +55,7 @@ while running:
     
     # Mouvement de la map
     if player.moving:
-        map.bouger(player)
+        map.bouger(player.velocity)
         
         
     pygame.display.flip()
