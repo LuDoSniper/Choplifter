@@ -1,4 +1,5 @@
 import pygame
+import math
 from pytmx.util_pygame import load_pygame
 from objets.tile import Tile
 
@@ -24,9 +25,14 @@ class Map():
                     pos = ((x * 32) + self.origine_x, (y * 32) + self.origine_y)
                     Tile(pos, image, self.tiles, (x, y))
     
-    def bouger(self, velocity):
-
-        self.rect.x -= velocity
+    def bouger(self, velocity, width):
+        if self.rect.x - velocity < 0 and (self.rect.x + self.rect.width) - velocity > width:
+            self.rect.x -= velocity
+        else:
+            if math.copysign(1, velocity) < 0:
+                self.rect.x = 0
+            else:
+                self.rect.x = -(self.rect.width -  width)
         
         for tile in self.tiles:
             tile.rect.x = self.rect.x + (tile.x * 32)
