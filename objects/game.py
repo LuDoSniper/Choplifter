@@ -1,4 +1,5 @@
 import pygame
+import objects.map as map
 
 class Game:
     def __init__(self) -> None:
@@ -11,12 +12,17 @@ class Game:
         self.__screen = screen
     
     def handle(self):
+        mamap = map.Map()
+        
         running = True
         while running:
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+            
+            pygame.display.flip()
+            mamap.afficher(self.get_screen())
         
         self.quit()
     
