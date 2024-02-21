@@ -7,6 +7,10 @@ class Game:
         self.__screen = pygame.display.set_mode((500, 500))
         pygame.display.set_caption("Choplifter")
         
+        # Clock pour les itérations max
+        # Pas besoin de geter / seter
+        self.__clock = pygame.time.Clock()
+        
         # La map pourrais changer de game en game
         self.__map = map.Map()
         
@@ -34,13 +38,29 @@ class Game:
         running = True
         while running:
             
+            # Affichage
+            self.get_map().afficher(self.get_screen())
+            self.get_player().afficher(self.get_screen())
+            
+            # Events uniques
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
             
+            # Touches pressées
+            pressed = pygame.key.get_pressed()
+            
+            # Mouvements du player
+            self.get_player().set_dir(pressed[pygame.K_RIGHT] - pressed[pygame.K_LEFT])
+            self.get_player().move()
+            print(self.get_player().get_velocity())
+            
+            # Syncronisation des mouvements
+            self.get_map().sync_vel(self.get_player().get_velocity())
+            
+            # Rafraichissement de la fenêtre
             pygame.display.flip()
-            self.get_map().afficher(self.get_screen())
-            self.get_player().afficher(self.get_screen())
+            self.__clock.tick(60)
         
         self.quit()
     

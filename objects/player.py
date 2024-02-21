@@ -5,10 +5,11 @@ class Player:
     def __init__(self):
         self.__heli = heli.Heli()
         
-        self.__resistance = 0
-        self.__acceleration = 0
-        self.__max_speed = 0
+        self.__resistance = 0.9
+        self.__acceleration = 0.5
+        self.__max_speed = 3
         self.__velocity = 0
+        self.__dir = 0
     
     # Geter / Seter
     def get_heli(self) -> heli.Heli:
@@ -36,6 +37,23 @@ class Player:
     def set_velocity(self, velocity: float) -> None:
         self.__velocity = velocity
     
+    def get_dir(self) -> int:
+        return self.__dir
+    def set_dir(self, dir: int):
+        self.__dir = dir
+    
     # Méthodes
     def afficher(self, screen: pygame.Surface) -> None:
         screen.blit(self.get_heli().get_image(), self.get_heli().get_rect())
+    
+    def move(self) -> None:
+        self.set_velocity(self.get_velocity() + (self.get_acceleration() * self.get_dir()))
+        
+        # Application de la resistance
+        self.set_velocity(self.get_velocity() * self.get_resistance())
+        if abs(self.get_velocity()) < 0.2:
+            self.set_velocity(0)
+        
+        # Brider la velocité
+        if abs(self.get_velocity()) > self.get_max_speed():
+            self.set_velocity(self.get_max_speed() * self.get_dir())
