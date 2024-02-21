@@ -15,15 +15,34 @@ class Tile(pygame.sprite.Sprite):
         return self.__local_pos
 
 class Map:
-    def __init__(self) -> None:
+    def __init__(self, width: int, height: int, tile_size: int) -> None:
+        self.__width = width
+        self.__height = height
+        self.__tile_size = tile_size
+        
         self.__tmx_data = load_pygame("assets/tilesets/map_test.tmx")
         self.__tiles = []
         self.__group = pygame.sprite.Group()
         
         self.__load_tiles()
-        self.__rect = pygame.Rect((0, 0), (20 * 32, 4 * 32))
+        self.__rect = pygame.Rect((0, 0), (self.__width * self.__tile_size, self.__height * self.__tile_size))
     
     # Geter / Seter
+    def get_width(self) -> int:
+        return self.__width
+    def set_width(self, width: int) -> None:
+        self.__width = width
+    
+    def get_height(self) -> int:
+        return self.__height
+    def set_height(self, height: int) -> None:
+        self.__height = height
+    
+    def get_tile_size(self) -> int:
+        return self.__tile_size
+    def set_tile_size(self, tile_size: int) -> None:
+        self.__tile_size = tile_size
+    
     def get_tmx_data(self) -> TiledMap:
         return self.__tmx_data
     def set_tmx_data(self, data: TiledMap) -> None:
@@ -42,7 +61,7 @@ class Map:
     # Méthodes
     def __load_tiles(self) -> None:
         for tile in self.get_tmx_data().get_layer_by_name("Background").tiles():
-            self.__tiles.append(Tile(tile[2], (tile[0] * 32, tile[1] * 32), (tile[:2]), self.get_group()))
+            self.__tiles.append(Tile(tile[2], (tile[0] * self.get_tile_size(), tile[1] * self.get_tile_size()), (tile[:2]), self.get_group()))
     
     def afficher(self, screen: pygame.Surface) -> None:
         self.get_group().draw(screen)
@@ -50,6 +69,15 @@ class Map:
     def sync_vel(self, velocity: float) -> None:
         self.__rect.x += velocity
         
+        # Brider le mouvement vers la droite
+        if self.__rect.x > 0:
+            self.__rect.x = 0
+        
+        # Brider le mouvement vers la gauche
+        # limite = 
+        # if self.__rect.x < limite:
+        #     self.__rect.x = limite
+        
         # Modifier les tuiles
         for tuile in self.get_tiles():
-            tuile.rect.x = self.__rect.x + tuile.get_local_pos()[0] * 32
+            tuile.rect.x = self.__rect.x + tuile.get_local_pos()[0] * self.get_tile_size()

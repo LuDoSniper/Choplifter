@@ -12,7 +12,7 @@ class Game:
         self.__clock = pygame.time.Clock()
         
         # La map pourrais changer de game en game
-        self.__map = map.Map()
+        self.__map = map.Map(20, 4, 32)
         
         # Il faudra rajouter un autre player pour le mode multi
         self.__player = player.Player()
