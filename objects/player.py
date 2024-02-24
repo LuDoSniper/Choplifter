@@ -2,8 +2,8 @@ import pygame
 import objects.heli as heli
 
 class Player:
-    def __init__(self):
-        self.__heli = heli.Heli()
+    def __init__(self, screen: pygame.Surface):
+        self.__heli = heli.Heli(screen)
         
         self.__resistance = 0.9
         self.__acceleration = 0.5

@@ -15,7 +15,7 @@ class Tile(pygame.sprite.Sprite):
         return self.__local_pos
 
 class Map:
-    def __init__(self, width: int, height: int, tile_size: int) -> None:
+    def __init__(self, width: int, height: int, tile_size: int, screen: pygame.Surface) -> None:
         self.__width = width
         self.__height = height
         self.__tile_size = tile_size
@@ -26,6 +26,9 @@ class Map:
         
         self.__load_tiles()
         self.__rect = pygame.Rect((0, 0), (self.__width * self.__tile_size, self.__height * self.__tile_size))
+
+        # Pour acceder aux dimensions de l'écran plus facilement
+        self.__screen = screen
     
     # Geter / Seter
     def get_width(self) -> int:
@@ -58,6 +61,16 @@ class Map:
     def set_group(self, group: pygame.sprite.Group) -> None:
         self.__group = group
     
+    def get_rect(self) -> pygame.Rect:
+        return self.__rect
+    def set_rect(self, rect: pygame.Rect) -> None:
+        self.__rect = rect
+    
+    def get_screen(self) -> pygame.Surface:
+        return self.__screen
+    def set_screen(self, screen: pygame.Surface) -> None:
+        self.__screen = screen
+    
     # Méthodes
     def __load_tiles(self) -> None:
         for tile in self.get_tmx_data().get_layer_by_name("Background").tiles():
@@ -74,9 +87,9 @@ class Map:
             self.__rect.x = 0
         
         # Brider le mouvement vers la gauche
-        # limite = 
-        # if self.__rect.x < limite:
-        #     self.__rect.x = limite
+        limite = self.get_screen().get_width() + -self.get_rect().width
+        if self.__rect.x < limite:
+            self.__rect.x = limite
         
         # Modifier les tuiles
         for tuile in self.get_tiles():

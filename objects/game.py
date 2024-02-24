@@ -12,10 +12,10 @@ class Game:
         self.__clock = pygame.time.Clock()
         
         # La map pourrais changer de game en game
-        self.__map = map.Map(20, 4, 32)
+        self.__map = map.Map(20, 4, 32, self.__screen)
         
         # Il faudra rajouter un autre player pour le mode multi
-        self.__player = player.Player()
+        self.__player = player.Player(self.__screen)
     
     # Geter / Seter
     def get_screen(self) -> pygame.Surface:
@@ -53,10 +53,10 @@ class Game:
             # Mouvements du player
             self.get_player().set_dir(pressed[pygame.K_RIGHT] - pressed[pygame.K_LEFT])
             self.get_player().move()
-            print(self.get_player().get_velocity())
             
             # Syncronisation des mouvements
             self.get_map().sync_vel(self.get_player().get_velocity())
+            self.get_player().get_heli().sync_vel(self.get_player().get_velocity(), self.get_player().get_dir())
             
             # Rafraichissement de la fenêtre
             pygame.display.flip()
