@@ -10,6 +10,14 @@ class Heli:
         self.__rect = self.__image.get_rect()
         self.__rect.x = screen.get_width() / 2 - self.__rect.width / 2
         
+        # Dire si la map doit bouger ou non
+        self.__limited = False
+        
+        # Suivre l'orientation de l'image
+        # False -> gauche
+        # True  -> droite
+        self.__sens = False
+        
         # Pour récuperer la aille d'ecran plus facilement
         self.__screen = screen
     
@@ -24,18 +32,46 @@ class Heli:
     def set_rect(self, rect: pygame.Rect) -> None:
         self.__rect = rect
     
+    def get_limited(self) -> bool:
+        return self.__limited
+    def set_limited(self, limited: bool) -> None:
+        self.__limited = limited
+    
+    def get_sens(self) -> bool:
+        return self.__sens
+    def set_sens(self, sens: bool) -> None:
+        self.__sens = sens
+    
     def get_screen(self) -> pygame.Surface:
         return self.__screen
     def set_screen(self, screen: pygame.Surface) -> None:
         self.__screen = screen
     
     # Méthodes
-    def sync_vel(self, velocity: float, dir: int) -> None:
+    def sync_vel(self, velocity: float, left_border: bool, right_border: bool) -> None:
         self.__rect.x += velocity
         
-        limit_left = (self.get_screen().get_width() / 2 - self.get_rect().width / 2) - self.LIMIT
-        limit_right = (self.get_screen().get_width() / 2 - self.get_rect().width / 2) + self.LIMIT
+        # Bride le mouvement de l'helico
+        if left_border:
+            limit_left = 0
+        else:
+            limit_left = (self.get_screen().get_width() / 2 - self.get_rect().width / 2) - self.LIMIT
+        if right_border:
+            limit_right = self.get_screen().get_width() - self.get_rect().width
+        else:
+            limit_right = (self.get_screen().get_width() / 2 - self.get_rect().width / 2) + self.LIMIT
+        
         if self.__rect.x < limit_left:
             self.__rect.x = limit_left
+            self.set_limited(True)
         elif self.__rect.x > limit_right:
             self.__rect.x = limit_right
+            self.set_limited(True)
+        else:
+            self.set_limited(False)
+    
+    # Fait tourner l'image de l'helico
+    def sync_side(self, dir: int) -> None:
+        if dir < 0 and not self.get_sens() or dir > 0 and self.get_sens():
+            self.set_image(pygame.transform.flip(self.get_image(), True, False))
+            self.set_sens(not(self.get_sens()))

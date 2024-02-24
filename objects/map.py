@@ -27,6 +27,10 @@ class Map:
         self.__load_tiles()
         self.__rect = pygame.Rect((0, 0), (self.__width * self.__tile_size, self.__height * self.__tile_size))
 
+        # Indique si la map touche le bord droit, gauche ou aucun
+        self.__left_border = False
+        self.__right_border = False
+
         # Pour acceder aux dimensions de l'écran plus facilement
         self.__screen = screen
     
@@ -66,6 +70,16 @@ class Map:
     def set_rect(self, rect: pygame.Rect) -> None:
         self.__rect = rect
     
+    def get_left_border(self) -> bool:
+        return self.__left_border
+    def set_left_border(self, left_border: bool) -> None:
+        self.__left_border = left_border
+    
+    def get_right_border(self) -> bool:
+        return self.__right_border
+    def set_right_border(self, right_border: bool) -> None:
+        self.__right_border = right_border
+    
     def get_screen(self) -> pygame.Surface:
         return self.__screen
     def set_screen(self, screen: pygame.Surface) -> None:
@@ -80,16 +94,22 @@ class Map:
         self.get_group().draw(screen)
     
     def sync_vel(self, velocity: float) -> None:
-        self.__rect.x += velocity
+        self.__rect.x -= velocity
         
         # Brider le mouvement vers la droite
-        if self.__rect.x > 0:
+        if self.__rect.x >= 0:
             self.__rect.x = 0
+            self.set_left_border(True)
+        else:
+            self.set_left_border(False)
         
         # Brider le mouvement vers la gauche
         limite = self.get_screen().get_width() + -self.get_rect().width
-        if self.__rect.x < limite:
+        if self.__rect.x <= limite:
             self.__rect.x = limite
+            self.set_right_border(True)
+        else:
+            self.set_right_border(False)
         
         # Modifier les tuiles
         for tuile in self.get_tiles():

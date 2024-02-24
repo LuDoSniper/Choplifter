@@ -42,6 +42,8 @@ class Game:
             self.get_map().afficher(self.get_screen())
             self.get_player().afficher(self.get_screen())
             
+            self.get_player().get_heli().sync_side(self.get_player().get_dir())
+            
             # Events uniques
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -55,8 +57,9 @@ class Game:
             self.get_player().move()
             
             # Syncronisation des mouvements
-            self.get_map().sync_vel(self.get_player().get_velocity())
-            self.get_player().get_heli().sync_vel(self.get_player().get_velocity(), self.get_player().get_dir())
+            if self.get_player().get_heli().get_limited():
+                self.get_map().sync_vel(self.get_player().get_velocity())
+            self.get_player().get_heli().sync_vel(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
             
             # Rafraichissement de la fenêtre
             pygame.display.flip()
