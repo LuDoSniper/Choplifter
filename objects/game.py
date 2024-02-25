@@ -1,6 +1,7 @@
 import pygame
 import objects.map as map
 import objects.player as player
+import objects.enemis as enemis
 
 class Game:
     def __init__(self) -> None:
@@ -15,7 +16,11 @@ class Game:
         self.__map = map.Map(20, 4, 32, self.__screen)
         
         # Il faudra rajouter un autre player pour le mode multi
-        self.__player = player.Player(self.__screen)
+        self.__player = player.Player(self.__screen, ((20 / 2) * 32, 0))
+
+        # Class contenant tout les enemis
+        self.__enemis = enemis.Enemis()
+        self.get_enemis().add_tank()
     
     # Geter / Seter
     def get_screen(self) -> pygame.Surface:
@@ -33,6 +38,11 @@ class Game:
     def set_player(self, player: player.Player) -> None:
         self.__player = player
     
+    def get_enemis(self) -> enemis.Enemis:
+        return self.__enemis
+    def set_enemis(self, enemis: enemis.Enemis) -> None:
+        self.__enemis = enemis
+    
     # Méthodes
     def handle(self):
         running = True
@@ -41,6 +51,7 @@ class Game:
             # Affichage
             self.get_map().afficher(self.get_screen())
             self.get_player().afficher(self.get_screen())
+            self.get_enemis().afficher(self.get_screen())
             
             self.get_player().get_heli().sync_side(self.get_player().get_dir())
             
@@ -59,7 +70,14 @@ class Game:
             # Syncronisation des mouvements
             if self.get_player().get_heli().get_limited():
                 self.get_map().sync_vel(self.get_player().get_velocity())
+                self.get_enemis().sync_vel_tanks(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
             self.get_player().get_heli().sync_vel(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
+            
+            # Mouvements des tanks
+            self.get_enemis().handle_tanks(self.get_player().get_pos()[0])
+            
+            print("player : ", self.get_player().get_pos()[0])
+            print("tank : ", self.get_enemis().get_tanks()[0].rect.x)
             
             # Rafraichissement de la fenêtre
             pygame.display.flip()

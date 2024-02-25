@@ -2,7 +2,7 @@ import pygame
 import objects.heli as heli
 
 class Player:
-    def __init__(self, screen: pygame.Surface):
+    def __init__(self, screen: pygame.Surface, pos: tuple = (0, 0)) -> None:
         self.__heli = heli.Heli(screen)
         
         self.__resistance = 0.9
@@ -10,6 +10,8 @@ class Player:
         self.__max_speed = 3
         self.__velocity = 0
         self.__dir = 0
+        
+        self.__pos = pos
     
     # Geter / Seter
     def get_heli(self) -> heli.Heli:
@@ -42,6 +44,11 @@ class Player:
     def set_dir(self, dir: int):
         self.__dir = dir
     
+    def get_pos(self) -> tuple:
+        return self.__pos
+    def set_pos(self, pos: tuple) -> None:
+        self.__pos = pos
+    
     # Méthodes
     def afficher(self, screen: pygame.Surface) -> None:
         screen.blit(self.get_heli().get_image(), self.get_heli().get_rect())
@@ -57,3 +64,6 @@ class Player:
         # Brider la velocité
         if abs(self.get_velocity()) > self.get_max_speed():
             self.set_velocity(self.get_max_speed() * self.get_dir())
+        
+        # Application de velocity sur pos
+        self.set_pos((self.get_pos()[0] + self.get_velocity(), self.get_pos()[1]))
