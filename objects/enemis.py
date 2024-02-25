@@ -25,8 +25,8 @@ class Enemis:
 
     # Methodes
     # Tanks
-    def add_tank(self) -> None:
-        self.__tanks.append(tank.Tank(self.get_group()))
+    def add_tank(self, screen: pygame.Surface, map_size: int) -> None:
+        self.__tanks.append(tank.Tank(self.get_group(), screen, map_size))
     
     def handle_tanks(self, heli_pos: int) -> None:
         for tank in self.get_tanks():

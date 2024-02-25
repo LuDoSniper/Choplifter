@@ -20,7 +20,7 @@ class Game:
 
         # Class contenant tout les enemis
         self.__enemis = enemis.Enemis()
-        self.get_enemis().add_tank()
+        self.get_enemis().add_tank(self.get_screen(), 20 * 32)
     
     # Geter / Seter
     def get_screen(self) -> pygame.Surface:
@@ -77,7 +77,7 @@ class Game:
             self.get_enemis().handle_tanks(self.get_player().get_pos()[0])
             
             print("player : ", self.get_player().get_pos()[0])
-            #print("tank : ", self.get_enemis().get_tanks()[0].rect.x)
+            print("tank : ", self.get_enemis().get_tanks()[0].get_pos()[0])
             
             # Rafraichissement de la fenêtre
             pygame.display.flip()
