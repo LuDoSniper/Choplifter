@@ -31,6 +31,7 @@ class Enemis:
     def handle_tanks(self, heli_pos: int) -> None:
         for tank in self.get_tanks():
             tank.scan(heli_pos)
+            tank.sync_side()
     
     def sync_vel_tanks(self, velocity: float, left: bool, right: bool) -> None:
         for tank in self.get_tanks():

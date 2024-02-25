@@ -24,6 +24,8 @@ class Tank(pygame.sprite.Sprite):
         
         self.__map_size = map_size
         self.__pos = pos
+        
+        self.__side = True # False gauche - True droite
     
     # Geter / Seter
     def get_group(self) -> pygame.sprite.Group:
@@ -71,6 +73,11 @@ class Tank(pygame.sprite.Sprite):
     def set_pos(self, pos: tuple) -> None:
         self.__pos = pos
     
+    def get_side(self) -> bool:
+        return self.__side
+    def set_side(self, side: bool) -> None:
+        self.__side = side
+    
     # Méthodes
     def scan(self, heli_pos: int) -> None:
         # Agis si l'helico se trouve à portée (Se base uniquement sur l'abscisse)
@@ -115,7 +122,11 @@ class Tank(pygame.sprite.Sprite):
         #     self.set_pos((self.get_pos()[0] + self.get_velocity(), self.get_pos()[1]))
         self.set_pos((self.get_pos()[0] + self.get_velocity(), self.get_pos()[1]))
 
-    
+    def sync_side(self):
+        if self.get_dir() == 1 and not self.get_side() or self.get_dir() == -1 and self.get_side():
+            self.image = pygame.transform.flip(self.image, True, False)
+            self.set_side(not(self.get_side()))
+
     def sync_vel(self, velocity: float, left: bool, right: bool) -> None:
         # Bouge de la même manière que la map
         if not left and not right:
