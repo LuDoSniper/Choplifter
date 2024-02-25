@@ -2,8 +2,11 @@ import pygame
 import objects.heli as heli
 
 class Player:
-    def __init__(self, screen: pygame.Surface, pos: tuple = (0, 0)) -> None:
+    def __init__(self, screen: pygame.Surface, pos: tuple, map_size: int) -> None:
         self.__heli = heli.Heli(screen)
+        
+        # Accès plus simple a screen
+        self.__screen = screen
         
         self.__resistance = 0.9
         self.__acceleration = 0.5
@@ -12,12 +15,18 @@ class Player:
         self.__dir = 0
         
         self.__pos = pos
+        self.__map_size = map_size
     
     # Geter / Seter
     def get_heli(self) -> heli.Heli:
         return self.__heli
     def set_heli(self, heli: heli.Heli) -> None:
         self.__heli = heli
+    
+    def get_screen(self) -> pygame.Surface:
+        return self.__screen
+    def set_screen(self, screen: pygame.Surface) -> None:
+        self.__screen = screen
     
     def get_resistance(self) -> float:
         return self.__resistance
@@ -49,6 +58,11 @@ class Player:
     def set_pos(self, pos: tuple) -> None:
         self.__pos = pos
     
+    def get_map_size(self) -> int:
+        return self.__map_size
+    def set_map_size(self, map_size: int) -> None:
+        self.__map_size = map_size
+    
     # Méthodes
     def afficher(self, screen: pygame.Surface) -> None:
         screen.blit(self.get_heli().get_image(), self.get_heli().get_rect())
@@ -65,5 +79,12 @@ class Player:
         if abs(self.get_velocity()) > self.get_max_speed():
             self.set_velocity(self.get_max_speed() * self.get_dir())
         
-        # Application de velocity sur pos
-        self.set_pos((self.get_pos()[0] + self.get_velocity(), self.get_pos()[1]))
+        # Mise à jour de pos
+        pos_y = 0
+        pos_x = self.get_pos()[0] + self.get_velocity()
+        if self.get_heli().get_rect().x <= 0:
+            pos_x = 0
+        elif self.get_heli().get_rect().x + self.get_heli().get_rect().width >= self.get_screen().get_width():
+            pos_x = self.get_map_size() - self.get_heli().get_rect().width
+        
+        self.set_pos((pos_x, pos_y))

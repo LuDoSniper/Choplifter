@@ -15,7 +15,7 @@ class Tank(pygame.sprite.Sprite):
         
         self.__resistance = 0.9
         self.__acceleration = 0.5
-        self.__max_speed = 2.5
+        self.__max_speed = 2
         self.__velocity = 0
         self.__dir = 0 # -1 gauche 0 rien 1 droite
     

@@ -16,7 +16,7 @@ class Game:
         self.__map = map.Map(20, 4, 32, self.__screen)
         
         # Il faudra rajouter un autre player pour le mode multi
-        self.__player = player.Player(self.__screen, ((20 / 2) * 32, 0))
+        self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), 20 * 32)
 
         # Class contenant tout les enemis
         self.__enemis = enemis.Enemis()
@@ -77,7 +77,7 @@ class Game:
             self.get_enemis().handle_tanks(self.get_player().get_pos()[0])
             
             print("player : ", self.get_player().get_pos()[0])
-            print("tank : ", self.get_enemis().get_tanks()[0].rect.x)
+            #print("tank : ", self.get_enemis().get_tanks()[0].rect.x)
             
             # Rafraichissement de la fenêtre
             pygame.display.flip()
