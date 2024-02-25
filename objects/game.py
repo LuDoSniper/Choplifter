@@ -51,6 +51,7 @@ class Game:
             # Affichage
             self.get_map().afficher(self.get_screen())
             self.get_player().afficher(self.get_screen())
+            self.get_player().afficher_bombs(self.get_screen())
             self.get_enemis().afficher(self.get_screen())
             
             self.get_player().get_heli().sync_side(self.get_player().get_dir())
@@ -59,8 +60,15 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                
+                # Touche pressée
+                if event.type == pygame.KEYDOWN:
+                    
+                    # Lancement d'une bombe
+                    if event.key == pygame.K_SPACE:
+                        self.get_player().bomber()
             
-            # Touches pressées
+            # Etat des touches
             pressed = pygame.key.get_pressed()
             
             # Mouvements du player
@@ -71,13 +79,15 @@ class Game:
             if self.get_player().get_heli().get_limited():
                 self.get_map().sync_vel(self.get_player().get_velocity())
                 self.get_enemis().sync_vel_tanks(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
+                self.get_player().sync_vel_bombs(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
             self.get_player().get_heli().sync_vel(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
+            
+            # Gestion des bombes
+            if self.get_player().get_bombs_list() != []:
+                self.get_player().bombs_handle()
             
             # Mouvements des tanks
             self.get_enemis().handle_tanks(self.get_player().get_pos()[0])
-            
-            print("player : ", self.get_player().get_pos()[0])
-            print("tank : ", self.get_enemis().get_tanks()[0].get_pos()[0])
             
             # Rafraichissement de la fenêtre
             pygame.display.flip()

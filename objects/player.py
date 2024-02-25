@@ -1,5 +1,6 @@
 import pygame
 import objects.heli as heli
+import objects.bomb as bomb
 
 class Player:
     def __init__(self, screen: pygame.Surface, pos: tuple, map_size: int) -> None:
@@ -16,6 +17,10 @@ class Player:
         
         self.__pos = pos
         self.__map_size = map_size
+        
+        # Gestion des bombes
+        self.__bombs_list = []
+        self.__bombs_group = pygame.sprite.Group()
     
     # Geter / Seter
     def get_heli(self) -> heli.Heli:
@@ -63,6 +68,16 @@ class Player:
     def set_map_size(self, map_size: int) -> None:
         self.__map_size = map_size
     
+    def get_bombs_list(self) -> list:
+        return self.__bombs_list
+    def set_bombs_list(self, list: list) -> None:
+        self.__bombs_list = list
+    
+    def get_bombs_group(self) -> pygame.sprite.Group:
+        return self.__bombs_group
+    def set_bombs_group(self, group: pygame.sprite.Group) -> None:
+        self.__bombs_group = group
+    
     # Méthodes
     def afficher(self, screen: pygame.Surface) -> None:
         screen.blit(self.get_heli().get_image(), self.get_heli().get_rect())
@@ -88,3 +103,20 @@ class Player:
             pos_x = self.get_map_size() - self.get_heli().get_rect().width
         
         self.set_pos((pos_x, pos_y))
+    
+    def bomber(self) -> None:
+        self.__bombs_list.append(bomb.Bomb(self.get_bombs_group(), self.get_pos(), (self.get_heli().get_rect().x, self.get_heli().get_rect().y), self.get_screen()))
+    
+    def bombs_handle(self) -> None:
+        for bomb in self.get_bombs_list():
+            bomb.fall()
+            if bomb.get_exploded():
+                self.get_bombs_group().remove(bomb)
+                self.__bombs_list.pop(self.__bombs_list.index(bomb))
+    
+    def sync_vel_bombs(self, velocity: float, left: bool, right: bool) -> None:
+        for bomb in self.get_bombs_list():
+            bomb.sync_vel(velocity, left, right)
+    
+    def afficher_bombs(self, screen: pygame.Surface) -> None:
+        self.get_bombs_group().draw(screen)
