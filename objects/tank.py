@@ -26,6 +26,8 @@ class Tank(pygame.sprite.Sprite):
         self.__pos = pos
         
         self.__side = True # False gauche - True droite
+        
+        self.__exploded = False
     
     # Geter / Seter
     def get_group(self) -> pygame.sprite.Group:
@@ -77,6 +79,11 @@ class Tank(pygame.sprite.Sprite):
         return self.__side
     def set_side(self, side: bool) -> None:
         self.__side = side
+    
+    def get_exploded(self) -> bool:
+        return self.__exploded
+    def set_exploded(self, exploded: bool) -> None:
+        self.__exploded = exploded
     
     # Méthodes
     def scan(self, heli_pos: int) -> None:

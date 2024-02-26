@@ -84,7 +84,7 @@ class Game:
             
             # Gestion des bombes
             if self.get_player().get_bombs_list() != []:
-                self.get_player().bombs_handle()
+                self.get_player().bombs_handle(self.get_enemis().get_tanks())
             
             # Mouvements des tanks
             self.get_enemis().handle_tanks(self.get_player().get_pos()[0])

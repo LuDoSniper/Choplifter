@@ -32,6 +32,11 @@ class Enemis:
         for tank in self.get_tanks():
             tank.scan(heli_pos)
             tank.sync_side()
+            
+            # Gestion des morts
+            if tank.get_exploded():
+                self.__group.remove(tank)
+                self.__tanks.pop(self.__tanks.index(tank))
     
     def sync_vel_tanks(self, velocity: float, left: bool, right: bool) -> None:
         for tank in self.get_tanks():

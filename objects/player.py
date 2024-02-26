@@ -107,9 +107,9 @@ class Player:
     def bomber(self) -> None:
         self.__bombs_list.append(bomb.Bomb(self.get_bombs_group(), self.get_pos(), (self.get_heli().get_rect().x, self.get_heli().get_rect().y), self.get_screen()))
     
-    def bombs_handle(self) -> None:
+    def bombs_handle(self, targets: list) -> None:
         for bomb in self.get_bombs_list():
-            bomb.fall()
+            bomb.fall(targets)
             if bomb.get_exploded():
                 self.get_bombs_group().remove(bomb)
                 self.__bombs_list.pop(self.__bombs_list.index(bomb))
