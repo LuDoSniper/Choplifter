@@ -52,6 +52,7 @@ class Game:
             self.get_map().afficher(self.get_screen())
             self.get_player().afficher(self.get_screen())
             self.get_player().afficher_bombs(self.get_screen())
+            self.get_player().afficher_bullets(self.get_screen())
             self.get_enemis().afficher(self.get_screen())
             
             self.get_player().get_heli().sync_side(self.get_player().get_dir())
@@ -65,8 +66,12 @@ class Game:
                 if event.type == pygame.KEYDOWN:
                     
                     # Lancement d'une bombe
-                    if event.key == pygame.K_SPACE:
+                    if event.key == pygame.K_b:
                         self.get_player().bomber()
+                    
+                    # Lancement d'un tir
+                    if event.key == pygame.K_SPACE:
+                        self.get_player().shoot()
             
             # Etat des touches
             pressed = pygame.key.get_pressed()
@@ -80,11 +85,16 @@ class Game:
                 self.get_map().sync_vel(self.get_player().get_velocity())
                 self.get_enemis().sync_vel_tanks(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
                 self.get_player().sync_vel_bombs(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
+                self.get_player().sync_vel_bullets(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
             self.get_player().get_heli().sync_vel(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
             
             # Gestion des bombes
             if self.get_player().get_bombs_list() != []:
                 self.get_player().bombs_handle(self.get_enemis().get_tanks())
+            
+            # Gestion des bullets
+            if self.get_player().get_bullets_list() != []:
+                self.get_player().bullets_handle()
             
             # Mouvements des tanks
             self.get_enemis().handle_tanks(self.get_player().get_pos()[0])
