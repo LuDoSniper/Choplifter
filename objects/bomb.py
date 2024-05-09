@@ -6,6 +6,7 @@ class Bomb(pygame.sprite.Sprite):
         self.image = pygame.image.load("assets/imgs/Bomb_tmp_7x20.png")
         self.rect = self.image.get_rect()
         self.rect.x = local_pos[0]
+        self.rect.y = local_pos[1]
         
         self.__screen = screen
         
