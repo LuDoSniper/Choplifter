@@ -78,6 +78,7 @@ class Game:
             
             # Mouvements du player
             self.get_player().set_dir(pressed[pygame.K_RIGHT] - pressed[pygame.K_LEFT])
+            self.get_player().set_vertical_dir(pressed[pygame.K_UP] - pressed[pygame.K_DOWN])
             self.get_player().move()
             
             # Syncronisation des mouvements
@@ -86,7 +87,7 @@ class Game:
                 self.get_enemis().sync_vel_tanks(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
                 self.get_player().sync_vel_bombs(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
                 self.get_player().sync_vel_bullets(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
-            self.get_player().get_heli().sync_vel(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
+            self.get_player().get_heli().sync_vel(self.get_player().get_velocity(), self.get_player().get_vertical_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border(), self.get_player().get_max_height(), self.get_player().get_min_height())
             
             # Gestion des bombes
             if self.get_player().get_bombs_list() != []:

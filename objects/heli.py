@@ -63,8 +63,9 @@ class Heli:
         self.__screen = screen
     
     # Méthodes
-    def sync_vel(self, velocity: float, left_border: bool, right_border: bool) -> None:
+    def sync_vel(self, velocity: float, vertical_velocity: float, left_border: bool, right_border: bool, top_limit: int, bottom_limit: int) -> None:
         self.__rect.x += velocity
+        self.__rect.y -= vertical_velocity
         
         # Bride le mouvement de l'helico
         if left_border:
@@ -84,6 +85,11 @@ class Heli:
             self.set_limited(True)
         else:
             self.set_limited(False)
+    
+        if self.__rect.y < top_limit:
+            self.__rect.y = top_limit
+        elif self.__rect.y > bottom_limit:
+            self.__rect.y = bottom_limit
     
     # Fait tourner l'image de l'helico
     def sync_side(self, dir: int) -> None:

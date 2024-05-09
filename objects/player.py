@@ -13,11 +13,16 @@ class Player:
         self.__resistance = 0.9
         self.__acceleration = 0.5
         self.__max_speed = 3
+        self.__max_vertical_speed = 1.5
         self.__velocity = 0
+        self.__vertical_velocity = 0
         self.__dir = 0
+        self.__vertical_dir = 0
         self.__angle = 90
         
         self.__pos = pos
+        self.__max_height = 0
+        self.__min_height = 50
         self.__map_size = map_size
         
         # Gestion des bombes
@@ -53,16 +58,31 @@ class Player:
         return self.__max_speed
     def set_max_speed(self, max_speed: float) -> None:
         self.__max_speed = max_speed
+        
+    def get_max_vertical_speed(self) -> float:
+        return self.__max_vertical_speed
+    def set_max_vertical_speed(self, max_vertical_speed: float) -> None:
+        self.__max_vertical_speed = max_vertical_speed
     
     def get_velocity(self) -> float:
         return self.__velocity
     def set_velocity(self, velocity: float) -> None:
         self.__velocity = velocity
+        
+    def get_vertical_velocity(self) -> float:
+        return self.__vertical_velocity
+    def set_vertical_velocity(self, vertical_velocity: float) -> None:
+        self.__vertical_velocity = vertical_velocity
     
     def get_dir(self) -> int:
         return self.__dir
     def set_dir(self, dir: int):
         self.__dir = dir
+        
+    def get_vertical_dir(self) -> int:
+        return self.__vertical_dir
+    def set_vertical_dir(self, vertical_dir: int):
+        self.__vertical_dir = vertical_dir
         
     def get_angle(self) -> int:
         return self.__angle
@@ -74,6 +94,16 @@ class Player:
     def set_pos(self, pos: tuple) -> None:
         self.__pos = pos
     
+    def get_max_height(self) -> int:
+        return self.__max_height
+    def set_max_height(self, max_height: int) -> None:
+        self.__max_height = max_height
+        
+    def get_min_height(self) -> int:
+        return self.__min_height
+    def set_min_height(self, min_height: int) -> None:
+        self.__min_height = min_height
+        
     def get_map_size(self) -> int:
         return self.__map_size
     def set_map_size(self, map_size: int) -> None:
@@ -110,6 +140,7 @@ class Player:
     
     def move(self) -> None:
         self.set_velocity(self.get_velocity() + (self.get_acceleration() * self.get_dir()))
+        self.set_vertical_velocity(self.get_vertical_velocity() + (self.get_acceleration() * self.get_vertical_dir()))
         
         # Rotation de l'helico
         self.get_heli().sync_side(self.get_dir())
@@ -124,14 +155,23 @@ class Player:
         self.set_velocity(self.get_velocity() * self.get_resistance())
         if abs(self.get_velocity()) < 0.2:
             self.set_velocity(0)
+        self.set_vertical_velocity(self.get_vertical_velocity() * self.get_resistance())
+        if abs(self.get_vertical_velocity()) < 0.2:
+            self.set_vertical_velocity(0)
         
         # Brider la velocité
         if abs(self.get_velocity()) > self.get_max_speed():
             self.set_velocity(self.get_max_speed() * self.get_dir())
+        if abs(self.get_vertical_velocity()) > self.get_max_vertical_speed():
+            self.set_vertical_velocity(self.get_max_vertical_speed() * self.get_vertical_dir())
         
         # Mise à jour de pos
-        pos_y = 0
+        pos_y = self.get_pos()[1] + self.get_vertical_velocity()
         pos_x = self.get_pos()[0] + self.get_velocity()
+        if self.get_heli().get_rect().y >= self.get_max_height():
+            pos_y = 0
+        elif self.get_heli().get_rect().y + self.get_heli().get_rect().height >= self.get_min_height():
+            pos_y = self.get_min_height - self.get_heli().get_rect().height
         if self.get_heli().get_rect().x <= 0:
             pos_x = 0
         elif self.get_heli().get_rect().x + self.get_heli().get_rect().width >= self.get_screen().get_width():
