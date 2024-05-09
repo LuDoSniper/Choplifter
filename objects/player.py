@@ -15,6 +15,7 @@ class Player:
         self.__max_speed = 3
         self.__velocity = 0
         self.__dir = 0
+        self.__angle = 90
         
         self.__pos = pos
         self.__map_size = map_size
@@ -62,6 +63,11 @@ class Player:
         return self.__dir
     def set_dir(self, dir: int):
         self.__dir = dir
+        
+    def get_angle(self) -> int:
+        return self.__angle
+    def set_angle(self, angle: int):
+        self.__angle = angle
     
     def get_pos(self) -> tuple:
         return self.__pos
@@ -95,10 +101,47 @@ class Player:
     
     # Méthodes
     def afficher(self, screen: pygame.Surface) -> None:
-        screen.blit(self.get_heli().get_image(), self.get_heli().get_rect())
+        image = self.get_heli().get_image()
+        rect = self.get_heli().get_rect()
+        if self.get_angle() not in (-90, 90):
+            image = self.get_heli().get_image_tmp()
+            # rect = self.get_heli().get_rect(center=self.get_heli().get_center())
+        screen.blit(image, rect)
     
     def move(self) -> None:
         self.set_velocity(self.get_velocity() + (self.get_acceleration() * self.get_dir()))
+        
+        # Rotation de l'helico
+        self.get_heli().sync_side(self.get_dir())
+        if 0 > self.get_velocity() >= -1 and self.get_angle() != -95:
+            self.get_heli().rotate(-95)
+            self.set_angle(-95)
+        elif 0 < self.get_velocity() <= 1 and self.get_angle() != 95:
+            self.get_heli().rotate(95)
+            self.set_angle(95)
+        elif -1 > self.get_velocity() >= -2.5 and self.get_angle() != -100:
+            self.get_heli().rotate(-100)
+            self.set_angle(-100)
+        elif 1 < self.get_velocity() <= 2.5 and self.get_angle() != 100:
+            self.get_heli().rotate(100)
+            self.set_angle(100)
+        elif -2.5 > self.get_velocity() >= -3 and self.get_angle() != -105:
+            self.get_heli().rotate(-105)
+            self.set_angle(-105)
+        elif 2.5 < self.get_velocity() <= 3 and self.get_angle() != 105:
+            self.get_heli().rotate(105)
+            self.set_angle(105)
+        elif self.get_dir() < 0 and self.get_angle() != -110:
+            self.get_heli().rotate(-110)
+            self.set_angle(-110)
+        elif self.get_dir() > 0 and self.get_angle() != 110:
+            self.get_heli().rotate(110)
+            self.set_angle(110)
+        if self.get_velocity() == 0:
+            if self.get_heli().get_sens():
+                self.set_angle(-90)
+            else:
+                self.set_angle(90)
         
         # Application de la resistance
         self.set_velocity(self.get_velocity() * self.get_resistance())
@@ -144,12 +187,12 @@ class Player:
             dir = -1
         else:
             dir = 1
-        self.__bullets_list.append(bullet.Bullet(self.get_bullets_group(), dir, self.get_pos(), self.get_heli().get_rect().x))
+        self.__bullets_list.append(bullet.Bullet(self.get_bullets_group(), dir, self.get_angle(), self.get_pos(), self.get_heli().get_rect().x, self.get_heli().get_rect().y))
     
     def bullets_handle(self) -> None:
         for bullet in self.get_bullets_list():
             bullet.move()
-            if bullet.rect.x < 0 or bullet.rect.x > self.get_map_size():
+            if bullet.rect.x < 0 or bullet.rect.x > self.get_map_size() or bullet.rect.y < 0 or bullet.rect.y > self.get_screen().get_height():
                 self.get_bullets_list().pop(self.get_bullets_list().index(bullet))
                 self.get_bullets_group().remove(bullet)
     

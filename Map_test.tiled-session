@@ -11,8 +11,8 @@
             "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 334,
-                "y": 64
+                "x": 333,
+                "y": 63
             }
         },
         "assets/tilesets/map_test_tileset.tsx": {
