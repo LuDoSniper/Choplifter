@@ -19,6 +19,8 @@ class Player:
         self.__dir = 0
         self.__vertical_dir = 0
         self.__angle = 90
+        self.__max_storage = 5
+        self.__storage = 0
         
         self.__pos = pos
         self.__max_height = 0
@@ -88,6 +90,16 @@ class Player:
         return self.__angle
     def set_angle(self, angle: int):
         self.__angle = angle
+    
+    def get_max_storage(self) -> int:
+        return self.__max_storage
+    def set_max_storage(self, max_storage: int) -> None:
+        self.__max_storage = max_storage
+    
+    def get_storage(self) -> int:
+        return self.__storage
+    def set_storage(self, storage: int) -> None:
+        self.__storage = storage
     
     def get_pos(self) -> tuple:
         return self.__pos
