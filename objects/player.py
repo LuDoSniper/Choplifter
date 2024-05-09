@@ -113,36 +113,13 @@ class Player:
         
         # Rotation de l'helico
         self.get_heli().sync_side(self.get_dir())
-        if 0 > self.get_velocity() >= -1 and self.get_angle() != -95:
-            self.get_heli().rotate(-95)
-            self.set_angle(-95)
-        elif 0 < self.get_velocity() <= 1 and self.get_angle() != 95:
-            self.get_heli().rotate(95)
-            self.set_angle(95)
-        elif -1 > self.get_velocity() >= -2.5 and self.get_angle() != -100:
-            self.get_heli().rotate(-100)
-            self.set_angle(-100)
-        elif 1 < self.get_velocity() <= 2.5 and self.get_angle() != 100:
-            self.get_heli().rotate(100)
-            self.set_angle(100)
-        elif -2.5 > self.get_velocity() >= -3 and self.get_angle() != -105:
-            self.get_heli().rotate(-105)
-            self.set_angle(-105)
-        elif 2.5 < self.get_velocity() <= 3 and self.get_angle() != 105:
-            self.get_heli().rotate(105)
-            self.set_angle(105)
-        elif self.get_dir() < 0 and self.get_angle() != -110:
-            self.get_heli().rotate(-110)
-            self.set_angle(-110)
-        elif self.get_dir() > 0 and self.get_angle() != 110:
-            self.get_heli().rotate(110)
-            self.set_angle(110)
-        if self.get_velocity() == 0:
-            if self.get_heli().get_sens():
-                self.set_angle(-90)
-            else:
-                self.set_angle(90)
-        
+        sens = 1
+        if self.get_heli().get_sens():
+            sens = -1
+        q = abs(self.get_velocity()) / (self.get_max_speed() + 0.5) # jsp pk mais la velocity atteint |3.5|
+        self.set_angle((q * 20 + 90) * sens)
+        self.get_heli().rotate(self.get_angle())
+                
         # Application de la resistance
         self.set_velocity(self.get_velocity() * self.get_resistance())
         if abs(self.get_velocity()) < 0.2:
