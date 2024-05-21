@@ -55,6 +55,7 @@ class Game:
             self.get_player().afficher_bullets(self.get_screen())
             self.get_enemis().afficher(self.get_screen())
             
+            self.get_player().get_heli().sync_frame()
             self.get_player().get_heli().sync_side(self.get_player().get_dir())
             
             # Events uniques

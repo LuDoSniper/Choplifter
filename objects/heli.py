@@ -1,17 +1,21 @@
 import pygame
-import math
 
 class Heli:
     
     LIMIT = 20
     
     def __init__(self, screen: pygame.Surface) -> None:
-        self.__image = pygame.image.load("assets/imgs/Helicopter_tmp_32x13.png")
+        self.__image = pygame.image.load("assets/helico/main/helicopter-1.png")
         self.__image_tmp = self.__image
         self.__rect = self.__image.get_rect()
         self.__rect.x = screen.get_width() / 2 - self.__rect.width / 2
         self.__rect.y = 5
         self.__center = self.__image.get_rect().center
+        
+        # Pour la gestion du changement d'image
+        self.__frame = 1
+        self.__frame_speed = 3
+        self.__frame_tmp = 0
         
         # Dire si la map doit bouger ou non
         self.__limited = False
@@ -46,6 +50,21 @@ class Heli:
         return self.__center
     def set_center(self, center: int) -> None:
         self.__center = center
+    
+    def get_frame(self) -> int:
+        return self.__frame
+    def set_frame(self, frame: int) -> None:
+        self.__frame = frame
+        
+    def get_frame_speed(self) -> float:
+        return self.__frame_speed
+    def set_frame_speed(self, frame_speed: float) -> None:
+        self.__frame_speed = frame_speed
+        
+    def get_frame_tmp(self) -> float:
+        return self.__frame_tmp
+    def set_frame_tmp(self, frame_tmp: float) -> None:
+        self.__frame_tmp = frame_tmp
     
     def get_limited(self) -> bool:
         return self.__limited
@@ -96,6 +115,22 @@ class Heli:
         if dir < 0 and not self.get_sens() or dir > 0 and self.get_sens():
             self.set_image(pygame.transform.flip(self.get_image(), True, False))
             self.set_sens(not(self.get_sens()))
+    
+    # Fait changer d'image
+    def sync_frame(self):
+        self.set_image(pygame.image.load(f"assets/helico/main/helicopter-{self.get_frame()}.png"))
+        if self.__sens:
+            self.set_image(pygame.transform.flip(self.get_image(), True, False))
+        
+        # Incrémenter frame
+        if self.__frame_tmp < self.__frame_speed:
+            self.__frame_tmp += 1
+        elif self.__frame_tmp == self.__frame_speed:
+            self.__frame_tmp = 0
+            
+            self.__frame += 1
+            if self.__frame >= 5:
+                self.__frame = 1
     
     # Fait rotate l'image de l'helico
     def rotate(self, angle: int) -> None:
