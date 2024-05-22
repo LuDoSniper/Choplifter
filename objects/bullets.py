@@ -7,15 +7,32 @@ class Bullet(pygame.sprite.Sprite):
     
     def __init__(self, group: pygame.sprite.Group, dir: int, angle: int, pos: tuple, local_x: int, local_y: int) -> None:
         super().__init__(group)
-        self.image = pygame.image.load("assets/imgs/Bullet_tmp_4x4.png")
+        self.image = pygame.image.load("assets/tir/missiles/missile-joueur.png")
         self.rect = self.image.get_rect()
         self.rect.x = local_x
-        self.rect.y = local_y
+        self.rect.y = local_y + 10
         
         self.__dir = dir
         self.__angle = angle
         self.__pos = pos
         self.__local_x = local_x
+        
+        # Mettre dans le bon sens l'image (mirroir)
+        if dir == -1:
+            self.image = pygame.transform.flip(self.image, True, False)
+        
+        # Faire rotate l'image
+        if angle < 0:
+            signe = -1
+        else:
+            signe = 1
+        self.image = pygame.transform.rotate(self.image, -(angle - 90 * signe))
+        
+        # Faire partir le tir du nez de l'helico
+        if dir != 1:
+            self.rect.x += 8 * self.SPEED
+        for i in range(0, 8):
+            self.move()
     
     # Geter / Seter
     def get_dir(self) -> int:

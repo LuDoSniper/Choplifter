@@ -7,7 +7,7 @@ class Tank(pygame.sprite.Sprite):
     def __init__(self, group: pygame.sprite.Group, screen: pygame.Surface, map_size: int, pos: tuple = (0, 40)) -> None:
         super().__init__(group)
         # Image et Rect doivent être publiques pour Sprite
-        self.image = pygame.image.load("assets/imgs/Tank_tmp_56x24.png")
+        self.image = pygame.image.load("assets/tanks/tank-1.png")
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = pos
         
