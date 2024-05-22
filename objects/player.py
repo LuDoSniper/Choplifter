@@ -2,6 +2,7 @@ import pygame
 import objects.heli as heli
 import objects.bomb as bomb
 import objects.bullets as bullet
+import objects.explosion as explosion
 
 class Player:
     def __init__(self, screen: pygame.Surface, pos: tuple, map_size: int) -> None:
@@ -34,6 +35,10 @@ class Player:
         # Gestion des tirs
         self.__bullets_list = []
         self.__bullets_group = pygame.sprite.Group()
+        
+        # Gestion des explosions
+        self.__explosions_list = []
+        self.__explosions_group = pygame.sprite.Group()
     
     # Geter / Seter
     def get_heli(self) -> heli.Heli:
@@ -141,6 +146,16 @@ class Player:
     def set_bullets_group(self, group: pygame.sprite.Group) -> None:
         self.__bullets_group = group
     
+    def get_explosions_list(self) -> list:
+        return self.__explosions_list
+    def set_bullets_list(self, list: list) -> None:
+        self.__explosions_list = list
+        
+    def get_explosions_group(self) -> pygame.sprite.Group:
+        return self.__explosions_group
+    def set_explosions_group(self, group: pygame.sprite.Group) -> None:
+        self.__explosions_group = group
+    
     # Méthodes
     def afficher(self, screen: pygame.Surface) -> None:
         image = self.get_heli().get_image()
@@ -218,10 +233,12 @@ class Player:
             dir = 1
         self.__bullets_list.append(bullet.Bullet(self.get_bullets_group(), dir, self.get_angle(), self.get_pos(), self.get_heli().get_rect().x, self.get_heli().get_rect().y))
     
-    def bullets_handle(self) -> None:
+    def bullets_handle(self, targets: list = []) -> None:
         for bullet in self.get_bullets_list():
-            bullet.move()
-            if bullet.rect.x < 0 or bullet.rect.x > self.get_map_size() or bullet.rect.y < 0 or bullet.rect.y > self.get_screen().get_height():
+            bullet.move(targets)
+            if bullet.rect.x < 0 or bullet.rect.x > self.get_map_size() or bullet.rect.y < 0 or bullet.rect.y > self.get_screen().get_height() or bullet.get_exploded():
+                if bullet.get_exploded():
+                    self.explode(bullet.rect.x, bullet.rect.y, bullet.get_pos(), 1)
                 self.get_bullets_list().pop(self.get_bullets_list().index(bullet))
                 self.get_bullets_group().remove(bullet)
     
@@ -231,3 +248,21 @@ class Player:
     
     def afficher_bullets(self, screen: pygame.Surface) -> None:
         self.get_bullets_group().draw(screen)
+    
+    # Explosions
+    def explode(self, local_x: int, local_y: int, pos: tuple, size: float = 1) -> None:
+        self.__explosions_list.append(explosion.Explosion(self.get_explosions_group(), local_x, local_y, pos, size))
+    
+    def explosions_handle(self) -> None:
+        for explosion in self.get_explosions_list():
+            if explosion.explode():
+                self.get_explosions_list().pop(self.get_explosions_list().index(explosion))
+                self.get_explosions_group().remove(explosion)
+    
+    def sync_vel_explosions(self, velocity: float, left: bool, right: bool) -> None:
+        for explosion in self.get_explosions_list():
+            explosion.sync_vel(velocity, left, right)
+    
+    def afficher_explosions(self, screen: pygame.Surface) -> None:
+        self.get_explosions_group().draw(screen)
+    

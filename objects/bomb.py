@@ -1,4 +1,5 @@
 import pygame
+import objects.tank as tank
 
 class Bomb(pygame.sprite.Sprite):
     def __init__(self, group: pygame.sprite.Group, pos: tuple, local_pos: tuple, screen: pygame.Surface) -> None:
@@ -42,12 +43,13 @@ class Bomb(pygame.sprite.Sprite):
         
         # Explosion
         if self.rect.y > self.get_screen().get_height(): # Sortie d'écran
-            self.set_exploded
+            self.set_exploded(True)
         
         for target in targets:
             if self.rect.colliderect(target.rect): # Collision
+                if type(target) == tank.Tank and target.hit(3):
+                    target.set_exploded(True)
                 self.set_exploded(True)
-                target.set_exploded(True)
     
     def sync_vel(self, velocity: float, left: bool, right: bool) -> None:
         # Bouge de la même manière que la map

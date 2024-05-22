@@ -1,5 +1,6 @@
 import pygame
 import math
+import objects.tank as tank
 
 class Bullet(pygame.sprite.Sprite):
     
@@ -16,6 +17,8 @@ class Bullet(pygame.sprite.Sprite):
         self.__angle = angle
         self.__pos = pos
         self.__local_x = local_x
+        
+        self.__exploded = False
         
         # Mettre dans le bon sens l'image (mirroir)
         if dir == -1:
@@ -55,8 +58,13 @@ class Bullet(pygame.sprite.Sprite):
     def set_local_x(self, local_x: int) -> None:
         self.__local_x = local_x
 
+    def get_exploded(self) -> bool:
+        return self.__exploded
+    def set_exploded(self, exploded: bool) -> None:
+        self.__exploded = exploded
+
     # Méthodes
-    def move(self) -> None:
+    def move(self, targets: list = []) -> None:
         self.set_pos((self.get_pos()[0] + self.SPEED * self.get_dir(), self.get_pos()[1]))
         # tmp = 1
         # if self.get_angle() < 0:
@@ -64,6 +72,16 @@ class Bullet(pygame.sprite.Sprite):
         # angle = (abs(self.get_angle()) - 90) * tmp
         self.rect.x += self.SPEED * math.sin(math.radians(self.get_angle()))
         self.rect.y -= self.SPEED * math.cos(math.radians(self.get_angle()))
+        
+        # Explosion
+        for target in targets:
+            if self.rect.colliderect(target.rect): # Collision
+                self.set_exploded(True)
+                if type(target) == tank.Tank:
+                    if target.hit():
+                        target.set_exploded(True)
+                else:
+                    target.set_exploded(True)
     
     def sync_vel(self, velocity: float, left: bool, right: bool) -> None:
         # Bouge de la même manière que la map

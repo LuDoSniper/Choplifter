@@ -4,15 +4,21 @@ class Tank(pygame.sprite.Sprite):
     
     RANGE = 250
     
-    def __init__(self, group: pygame.sprite.Group, screen: pygame.Surface, map_size: int, pos: tuple = (0, 40)) -> None:
+    def __init__(self, group: pygame.sprite.Group, screen: pygame.Surface, map_size: int, pos: tuple = (0, 40), type: int = 1) -> None:
         super().__init__(group)
         # Image et Rect doivent être publiques pour Sprite
-        self.image = pygame.image.load("assets/tanks/tank-1.png")
+        if type == 1:
+            tmp = 3
+        else:
+            tmp = 5
+        self.image = pygame.image.load(f"assets/tanks/tank-{type}-{tmp}.png")
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = pos
         
         self.__group = group
         
+        self.__type = type
+        self.__health = tmp
         self.__resistance = 0.9
         self.__acceleration = 0.5
         self.__max_speed = 1
@@ -34,6 +40,16 @@ class Tank(pygame.sprite.Sprite):
         return self.__group
     def set_group(self, group: pygame.sprite.Group) -> None:
         self.__group = group
+    
+    def get_type(self) -> int:
+        return self.__type
+    def set_type(self, type: int) -> None:
+        self.__type = type
+    
+    def get_health(self) -> int:
+        return self.__health
+    def set_health(self, health: int) -> None:
+        self.__health = health
     
     def get_resistance(self) -> float:
         return self.__resistance
@@ -128,6 +144,14 @@ class Tank(pygame.sprite.Sprite):
         # else:
         #     self.set_pos((self.get_pos()[0] + self.get_velocity(), self.get_pos()[1]))
         self.set_pos((self.get_pos()[0] + self.get_velocity(), self.get_pos()[1]))
+
+    def hit(self, damage: int = 1) -> bool:
+        self.__health -= damage
+        if self.__health <= 0:
+            return True
+        self.image = pygame.image.load(f"assets/tanks/tank-{self.__type}-{self.__health}.png")
+        print(self.__type, self.__health)
+        return False
 
     def sync_side(self):
         if self.get_dir() == 1 and not self.get_side() or self.get_dir() == -1 and self.get_side():
