@@ -20,8 +20,9 @@ class Game:
 
         # Class contenant tout les enemis
         self.__enemis = enemis.Enemis()
-        self.get_enemis().add_tank(self.get_screen(), 20 * 32, type=1)
-        self.get_enemis().add_tank(self.get_screen(), 20 * 32, (50, 40), 2)
+        # self.get_enemis().add_tank(self.get_screen(), 20 * 32, type=1)
+        # self.get_enemis().add_tank(self.get_screen(), 20 * 32, (50, 40), 2)
+        self.get_enemis().add_avion(self.get_screen(), 20 * 32, type=2)
     
     # Geter / Seter
     def get_screen(self) -> pygame.Surface:
@@ -56,6 +57,7 @@ class Game:
             self.get_player().afficher_bullets(self.get_screen())
             self.get_player().afficher_explosions(self.get_screen())
             self.get_enemis().afficher(self.get_screen())
+            self.get_enemis().display_avions_bullets(self.get_screen())
             
             self.get_player().get_heli().sync_frame()
             self.get_player().get_heli().sync_side(self.get_player().get_dir())
@@ -88,6 +90,7 @@ class Game:
             if self.get_player().get_heli().get_limited():
                 self.get_map().sync_vel(self.get_player().get_velocity())
                 self.get_enemis().sync_vel_tanks(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
+                self.get_enemis().sync_vel_avions(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
                 self.get_enemis().sync_vel_explosions(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
                 self.get_player().sync_vel_bombs(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
                 self.get_player().sync_vel_bullets(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
@@ -100,10 +103,14 @@ class Game:
             
             # Gestion des bullets
             if self.get_player().get_bullets_list() != []:
-                self.get_player().bullets_handle(self.get_enemis().get_tanks())
+                self.get_player().bullets_handle(self.get_enemis().get_tanks() + self.get_enemis().get_avions())
+            self.get_enemis().move_avions_bullets([self.get_player().get_heli()])
             
             # Mouvements des tanks
             self.get_enemis().handle_tanks(self.get_player().get_pos()[0])
+            
+            # Mouvement des avions
+            self.get_enemis().handle_avions()
             
             # Gestion des explosions
             self.get_player().explosions_handle()

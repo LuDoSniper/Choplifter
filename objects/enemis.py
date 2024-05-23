@@ -1,5 +1,6 @@
 import pygame
 import objects.tank as tank
+import objects.avion as avion
 import objects.explosion as explosion
 
 class Enemis:
@@ -7,6 +8,7 @@ class Enemis:
         self.__group = pygame.sprite.Group()
         self.__explosions = []
         self.__tanks = []
+        self.__avions = []
         self.__list = []
     
     # Geter / Seter
@@ -24,6 +26,11 @@ class Enemis:
         return self.__tanks
     def set_tanks(self, tanks: list) -> None:
         self.__tanks = tanks
+        
+    def get_avions(self) -> list:
+        return self.__avions
+    def set_avions(self, avions: list) -> None:
+        self.__avions = avions
     
     def get_list(self) -> list:
         return self.__list
@@ -63,6 +70,40 @@ class Enemis:
     def sync_vel_explosions(self, velocity: float, left: bool, right: bool) -> None:
         for explosion in self.get_explosions():
             explosion.sync_vel(velocity, left, right)
+    
+    #Avion
+    def add_avion(self, screen: pygame.Surface, map_size: int, pos: tuple = (0, 40), type: int = 1, dir = 1) -> None:
+        self.__avions.append(avion.Avion(self.get_group(), screen, map_size, pos, type, dir))
+    
+    def handle_avions(self) -> None:
+        for avion in self.get_avions():
+            avion.move()
+            
+            # Gestion des morts
+            if avion.get_exploded():
+                self.explode(avion.rect.x, avion.rect.y, avion.get_pos(), 2)
+                self.__group.remove(avion)
+                self.__avions.pop(self.__avions.index(avion))
+            
+            # Gestion des bullets
+            for bullet in avion.get_bullets_list():
+                if bullet.get_exploded():
+                    avion.get_bullets_group().remove(bullet)
+                    avion.get_bullets_list().pop(avion.get_bullets_list().index(bullet))
+                    self.explode(bullet.rect.x, bullet.rect.y, bullet.get_pos(), 0.5)
+    
+    def sync_vel_avions(self, velocity: float, left: bool, right: bool) -> None:
+        for avion in self.get_avions():
+            avion.sync_vel(velocity, left, right)
+    
+    def display_avions_bullets(self, screen: pygame.Surface) -> None:
+        for avion in self.get_avions():
+            avion.get_bullets_group().draw(screen)
+    
+    def move_avions_bullets(self, targets: list = []) -> None:
+        for avion in self.get_avions():
+            for bullet in avion.get_bullets_list():
+                bullet.move(targets)
     
     # Affichage de touts le group
     def afficher(self, screen: pygame.Surface) -> None:

@@ -150,7 +150,6 @@ class Tank(pygame.sprite.Sprite):
         if self.__health <= 0:
             return True
         self.image = pygame.image.load(f"assets/tanks/tank-{self.__type}-{self.__health}.png")
-        print(self.__type, self.__health)
         return False
 
     def sync_side(self):
