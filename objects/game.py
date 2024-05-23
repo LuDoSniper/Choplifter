@@ -19,10 +19,10 @@ class Game:
         self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), 20 * 32)
 
         # Class contenant tout les enemis
-        self.__enemis = enemis.Enemis()
+        self.__enemis = enemis.Enemis(self.__screen)
         # self.get_enemis().add_tank(self.get_screen(), 20 * 32, type=1)
-        # self.get_enemis().add_tank(self.get_screen(), 20 * 32, (50, 40), 2)
-        self.get_enemis().add_avion(self.get_screen(), 20 * 32, type=2)
+        self.get_enemis().add_tank(self.get_screen(), 20 * 32, (50, 40), 2)
+        # self.get_enemis().add_avion(self.get_screen(), 20 * 32, type=2)
     
     # Geter / Seter
     def get_screen(self) -> pygame.Surface:
@@ -58,6 +58,7 @@ class Game:
             self.get_player().afficher_explosions(self.get_screen())
             self.get_enemis().afficher(self.get_screen())
             self.get_enemis().display_avions_bullets(self.get_screen())
+            self.get_enemis().display_tanks_bullet(self.get_screen())
             
             self.get_player().get_heli().sync_frame()
             self.get_player().get_heli().sync_side(self.get_player().get_dir())
@@ -107,7 +108,7 @@ class Game:
             self.get_enemis().move_avions_bullets([self.get_player().get_heli()])
             
             # Mouvements des tanks
-            self.get_enemis().handle_tanks(self.get_player().get_pos()[0])
+            self.get_enemis().handle_tanks(self.get_player())
             
             # Mouvement des avions
             self.get_enemis().handle_avions()

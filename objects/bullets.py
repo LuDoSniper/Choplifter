@@ -8,7 +8,7 @@ class Bullet(pygame.sprite.Sprite):
     
     SPEED = 5
     
-    def __init__(self, group: pygame.sprite.Group, dir: int, angle: int, pos: tuple, local_x: int, local_y: int, boost: int = 0, name: str = "missile-joueur") -> None:
+    def __init__(self, group: pygame.sprite.Group, screen: pygame.Surface, dir: int, angle: int, pos: tuple, local_x: int, local_y: int, boost: int = 0, name: str = "missile-joueur") -> None:
         super().__init__(group)
         self.image = pygame.image.load(f"assets/tir/missiles/{name}.png")
         if name == "balle-avion":
@@ -17,6 +17,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = local_x
         self.rect.y = local_y + 10
+        self.__screen = screen
         
         self.__boost = boost
         
@@ -45,6 +46,11 @@ class Bullet(pygame.sprite.Sprite):
             self.move()
     
     # Geter / Seter
+    
+    def get_screen(self) -> pygame.Surface:
+        return self.__screen
+    def set_screen(self, screen: pygame.Surface) -> None:
+        self.__screen = screen
     
     def get_boost(self) -> int:
         return self.__boost
@@ -97,7 +103,7 @@ class Bullet(pygame.sprite.Sprite):
                     target.set_exploded(True)
             elif type(target) == heli.Heli and self.rect.colliderect(target.get_rect()):
                 self.set_exploded(True)
-        if self.rect.x <= 0 - self.rect.width or self.rect.x >= 500 + self.rect.width:
+        if self.rect.x <= 0 - self.rect.width or self.rect.x >= self.__screen.get_width() + self.rect.width or self.rect.y < -100:
             self.set_exploded(True)
     
     def sync_vel(self, velocity: float, left: bool, right: bool) -> None:

@@ -231,7 +231,7 @@ class Player:
             dir = -1
         else:
             dir = 1
-        self.__bullets_list.append(bullet.Bullet(self.get_bullets_group(), dir, self.get_angle(), self.get_pos(), self.get_heli().get_rect().x, self.get_heli().get_rect().y))
+        self.__bullets_list.append(bullet.Bullet(self.get_bullets_group(), self.__screen, dir, self.get_angle(), self.get_pos(), self.get_heli().get_rect().x, self.get_heli().get_rect().y))
     
     def bullets_handle(self, targets: list = []) -> None:
         for bullet in self.get_bullets_list():

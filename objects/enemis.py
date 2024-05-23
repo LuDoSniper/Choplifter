@@ -2,14 +2,17 @@ import pygame
 import objects.tank as tank
 import objects.avion as avion
 import objects.explosion as explosion
+import objects.player as player
 
 class Enemis:
-    def __init__(self) -> None:
+    def __init__(self, screen: pygame.Surface) -> None:
         self.__group = pygame.sprite.Group()
         self.__explosions = []
         self.__tanks = []
         self.__avions = []
         self.__list = []
+        
+        self.__screen = screen
     
     # Geter / Seter
     def get_group(self) -> pygame.sprite.Group:
@@ -36,15 +39,20 @@ class Enemis:
         return self.__list
     def set_list(self, list: list) -> None:
         self.__list = list
+        
+    def get_screen(self) -> pygame.Surface:
+        return self.__screen
+    def set_screen(self, screen: pygame.Surface) -> None:
+        self.__screen = screen
 
     # Methodes
     # Tanks
     def add_tank(self, screen: pygame.Surface, map_size: int, pos: tuple = (0, 40), type: int = 1) -> None:
         self.__tanks.append(tank.Tank(self.get_group(), screen, map_size, pos, type))
     
-    def handle_tanks(self, heli_pos: int) -> None:
+    def handle_tanks(self, player: player.Player) -> None:
         for tank in self.get_tanks():
-            tank.scan(heli_pos)
+            tank.scan(player)
             tank.sync_side()
             
             # Gestion des morts
@@ -52,10 +60,22 @@ class Enemis:
                 self.explode(tank.rect.x, tank.rect.y, tank.get_pos(), 2)
                 self.__group.remove(tank)
                 self.__tanks.pop(self.__tanks.index(tank))
+            
+            # Gestion des bullets
+            if tank.get_bullet() is not None:
+                tank.get_bullet().move([player.get_heli()])
+                if tank.get_bullet().get_exploded():
+                    self.explode(tank.get_bullet().rect.x, tank.get_bullet().rect.y, tank.get_bullet().get_pos())
+                    tank.get_bullet_group().remove(tank.get_bullet())
+                    tank.set_bullet(None)
     
     def sync_vel_tanks(self, velocity: float, left: bool, right: bool) -> None:
         for tank in self.get_tanks():
             tank.sync_vel(velocity, left, right)
+    
+    def display_tanks_bullet(self, screen: pygame.Surface) -> None:
+        for tank in self.get_tanks():
+            tank.get_bullet_group().draw(screen)
     
     # Explosion
     def explode(self, local_x: int, local_y: int, pos: tuple, size: float = 1) -> None:

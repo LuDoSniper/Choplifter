@@ -1,4 +1,6 @@
 import pygame
+import objects.bullets as bullets
+import objects.player as player
 
 class Tank(pygame.sprite.Sprite):
     
@@ -34,6 +36,10 @@ class Tank(pygame.sprite.Sprite):
         self.__side = True # False gauche - True droite
         
         self.__exploded = False
+        self.__bullet = None
+        self.__bullet_group = pygame.sprite.Group()
+        self.__delay = 60
+        self.__timer = 0
     
     # Geter / Seter
     def get_group(self) -> pygame.sprite.Group:
@@ -100,12 +106,22 @@ class Tank(pygame.sprite.Sprite):
         return self.__exploded
     def set_exploded(self, exploded: bool) -> None:
         self.__exploded = exploded
+        
+    def get_bullet(self) -> bullets.Bullet:
+        return self.__bullet
+    def set_bullet(self, bullet: bullets.Bullet) -> None:
+        self.__bullet = bullet
+        
+    def get_bullet_group(self) -> pygame.sprite.Group:
+        return self.__bullet_group
+    def set_bullet_group(self, group: pygame.sprite.Group) -> None:
+        self.__bullet_group = group
     
     # Méthodes
-    def scan(self, heli_pos: int) -> None:
+    def scan(self, player) -> None:
         # Agis si l'helico se trouve à portée (Se base uniquement sur l'abscisse)
         marge = 10
-        heli_pos = round(heli_pos)
+        heli_pos = round(player.get_pos()[0])
         if abs(abs(self.get_pos()[0]) - abs(heli_pos)) <= self.RANGE:
             # Helico à portée
             if self.get_pos()[0] > heli_pos + marge:
@@ -115,9 +131,17 @@ class Tank(pygame.sprite.Sprite):
             else:
                 self.set_dir(0)
             self.move()
+            # Tirer
+            self.__timer += 1
+            if (self.__bullet == None and self.__dir != 0) and self.__timer >= self.__delay:
+                self.__timer = 0
+                self.shoot()
         else:
             # Stoper le mouvement
             self.set_dir(0)
+    
+    def shoot(self) -> None:
+        self.__bullet = bullets.Bullet(self.__bullet_group, self.__screen, self.__dir, 65 * self.__dir, self.__pos, self.rect.x + (18 * self.__dir), self.rect.y - 5, boost=-3)
     
     def move(self) -> None:
         self.set_velocity(self.get_velocity() + (self.get_acceleration() * self.get_dir()))
@@ -150,6 +174,8 @@ class Tank(pygame.sprite.Sprite):
         if self.__health <= 0:
             return True
         self.image = pygame.image.load(f"assets/tanks/tank-{self.__type}-{self.__health}.png")
+        if self.__dir == -1:
+            self.image = pygame.transform.flip(self.image, True, False)
         return False
 
     def sync_side(self):
@@ -161,3 +187,6 @@ class Tank(pygame.sprite.Sprite):
         # Bouge de la même manière que la map
         if not left and not right:
             self.rect.x -= velocity
+        # Syncroniser la velocité de la bullet
+        if self.__bullet is not None:
+            self.__bullet.sync_vel(velocity, left, right)
