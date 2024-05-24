@@ -2,10 +2,11 @@ import pygame
 import objects.map as map
 import objects.player as player
 import objects.enemis as enemis
+import objects.structure as structure
 
 class Game:
     def __init__(self) -> None:
-        self.__screen = pygame.display.set_mode((500, 500))
+        self.__screen = pygame.display.set_mode((700, 500))
         pygame.display.set_caption("Choplifter")
         
         # Clock pour les itérations max
@@ -13,7 +14,7 @@ class Game:
         self.__clock = pygame.time.Clock()
         
         # La map pourrais changer de game en game
-        self.__map = map.Map(20, 4, 32, self.__screen)
+        self.__map = map.Map(20, 4, 64, self.__screen)
         
         # Il faudra rajouter un autre player pour le mode multi
         self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), 20 * 32)
@@ -21,8 +22,13 @@ class Game:
         # Class contenant tout les enemis
         self.__enemis = enemis.Enemis(self.__screen)
         # self.get_enemis().add_tank(self.get_screen(), 20 * 32, type=1)
-        self.get_enemis().add_tank(self.get_screen(), 20 * 32, (50, 40), 2)
+        self.get_enemis().add_tank(self.get_screen(), 20 * 32, (50, 100), 2)
         # self.get_enemis().add_avion(self.get_screen(), 20 * 32, type=2)
+        
+        # Structures
+        self.__structures_group = pygame.sprite.Group()
+        self.__structures_list = []
+        self.__structures_list.append(structure.Structure(self.__structures_group, 200, 100, (200, 100), "batiment", "brick"))
     
     # Geter / Seter
     def get_screen(self) -> pygame.Surface:
@@ -52,6 +58,7 @@ class Game:
             
             # Affichage
             self.get_map().afficher(self.get_screen())
+            self.afficher_structures()
             self.get_player().afficher(self.get_screen())
             self.get_player().afficher_bombs(self.get_screen())
             self.get_player().afficher_bullets(self.get_screen())
@@ -96,6 +103,7 @@ class Game:
                 self.get_player().sync_vel_bombs(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
                 self.get_player().sync_vel_bullets(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
                 self.get_player().sync_vel_explosions(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
+                self.sync_vel_structures(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
             self.get_player().get_heli().sync_vel(self.get_player().get_velocity(), self.get_player().get_vertical_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border(), self.get_player().get_max_height(), self.get_player().get_min_height())
             
             # Gestion des bombes
@@ -104,7 +112,7 @@ class Game:
             
             # Gestion des bullets
             if self.get_player().get_bullets_list() != []:
-                self.get_player().bullets_handle(self.get_enemis().get_tanks() + self.get_enemis().get_avions())
+                self.get_player().bullets_handle(self.get_enemis().get_tanks() + self.get_enemis().get_avions() + self.__structures_list)
             self.get_enemis().move_avions_bullets([self.get_player().get_heli()])
             
             # Mouvements des tanks
@@ -123,6 +131,13 @@ class Game:
         
         self.quit()
     
-    def quit(self):
+    def afficher_structures(self) -> None:
+        self.__structures_group.draw(self.__screen)
+    
+    def sync_vel_structures(self, velocity: float, left: bool, right: bool) -> None:
+        for structure in self.__structures_list:
+            structure.sync_vel(velocity, left, right)
+    
+    def quit(self) -> None:
         # Sauvegarde surement mais a voir (juste au cas où)
         pass

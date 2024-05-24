@@ -7,6 +7,7 @@ class Tile(pygame.sprite.Sprite):
     def __init__(self, surface: pygame.Surface, pos: tuple, local_pos: tuple, group: pygame.sprite.Group) -> None:
         super().__init__(group)
         self.image = surface
+        self.image = pygame.transform.scale(self.image, (self.image.get_rect().width * 2, self.image.get_rect().height * 2))
         self.rect = self.image.get_rect(topleft = pos)
         self.__local_pos = local_pos
     
