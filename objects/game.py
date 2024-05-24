@@ -125,14 +125,23 @@ class Game:
             self.get_player().explosions_handle()
             self.get_enemis().handle_explosions()
             
+            # Gestion des structures
+            self.handle_structures()
+            
             # Rafraichissement de la fenêtre
             pygame.display.flip()
             self.__clock.tick(60)
         
         self.quit()
     
+    def handle_structures(self) -> None:
+        for structure in self.__structures_list:
+            structure.handle()
+    
     def afficher_structures(self) -> None:
         self.__structures_group.draw(self.__screen)
+        for structure in self.__structures_list:
+            structure.afficher_civils(self.__screen)
     
     def sync_vel_structures(self, velocity: float, left: bool, right: bool) -> None:
         for structure in self.__structures_list:
