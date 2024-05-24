@@ -115,3 +115,6 @@ class Map:
         # Modifier les tuiles
         for tuile in self.get_tiles():
             tuile.rect.x = self.__rect.x + tuile.get_local_pos()[0] * self.get_tile_size()
+    
+    def get_map_size(self) -> int:
+        return self.__width * self.__tile_size

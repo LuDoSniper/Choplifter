@@ -4,6 +4,7 @@ import objects.tank as tank
 import objects.avion as avion
 import objects.heli as heli
 import objects.structure as structure
+import objects.civil as civil
 
 class Bullet(pygame.sprite.Sprite):
     
@@ -100,6 +101,8 @@ class Bullet(pygame.sprite.Sprite):
                 if type(target) in (tank.Tank, avion.Avion, structure.Structure):
                     if target.hit():
                         target.set_exploded(True)
+                elif type(target) == civil.Civil:
+                    target.hit()
                 else:
                     target.set_exploded(True)
             elif type(target) == heli.Heli and self.rect.colliderect(target.get_rect()):

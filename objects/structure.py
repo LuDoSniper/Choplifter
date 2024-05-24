@@ -39,15 +39,20 @@ class Structure(pygame.sprite.Sprite):
     def set_destroyed(self, destroyed: bool) -> None:
         self.__destroyed = destroyed
     
+    def get_civils_list(self) -> list:
+        return self.__civils_list
+    def set_civils_list(self, list: list) -> None:
+        self.__civils_list = list
+    
     # Méthodes
     
     def sync_vel(self, velocity: float, left: bool, right: bool) -> None:
         # Bouge de la même manière que la map
         if not left and not right:
             self.rect.x -= velocity
-            # Synchrnise également les civils
-            for civil in self.__civils_list:
-                civil.sync_vel(velocity, left, right)
+        # Synchrnise également les civils
+        for civil in self.__civils_list:
+            civil.sync_vel(velocity, left, right)
     
     def add_civil(self) -> None:
         self.__civils_list.append(civil.Civil(self.__civils_group, self.rect.x, self.rect.y - 20, self.__pos, "Female", 1, 1))
@@ -58,10 +63,10 @@ class Structure(pygame.sprite.Sprite):
             self.image = pygame.image.load(f"assets/structure/{self.__type}/{self.__theme}-decombres.png")
             self.add_civil()
     
-    def handle(self) -> None:
+    def handle(self, map_size: int) -> None:
         # Gérer les civils
         for civil in self.__civils_list:
-            civil.handle()
+            civil.handle(map_size)
     
     def afficher_civils(self, screen: pygame.Surface) -> None:
         self.__civils_group.draw(screen)

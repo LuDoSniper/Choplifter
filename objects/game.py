@@ -17,13 +17,13 @@ class Game:
         self.__map = map.Map(20, 4, 64, self.__screen)
         
         # Il faudra rajouter un autre player pour le mode multi
-        self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), 20 * 32)
+        self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size())
 
         # Class contenant tout les enemis
         self.__enemis = enemis.Enemis(self.__screen)
-        # self.get_enemis().add_tank(self.get_screen(), 20 * 32, type=1)
-        self.get_enemis().add_tank(self.get_screen(), 20 * 32, (50, 100), 2)
-        # self.get_enemis().add_avion(self.get_screen(), 20 * 32, type=2)
+        # self.get_enemis().add_tank(self.get_screen(), self.__map().get_map_size(), type=1)
+        # self.get_enemis().add_tank(self.get_screen(), self.__map.get_map_size(), (50, 100), 2)
+        # self.get_enemis().add_avion(self.get_screen(), self.__map.get_map_size(), type=2)
         
         # Structures
         self.__structures_group = pygame.sprite.Group()
@@ -112,7 +112,7 @@ class Game:
             
             # Gestion des bullets
             if self.get_player().get_bullets_list() != []:
-                self.get_player().bullets_handle(self.get_enemis().get_tanks() + self.get_enemis().get_avions() + self.__structures_list)
+                self.get_player().bullets_handle(self.get_enemis().get_tanks() + self.get_enemis().get_avions() + self.__structures_list + self.get_civils())
             self.get_enemis().move_avions_bullets([self.get_player().get_heli()])
             
             # Mouvements des tanks
@@ -126,7 +126,7 @@ class Game:
             self.get_enemis().handle_explosions()
             
             # Gestion des structures
-            self.handle_structures()
+            self.handle_structures(self.__map.get_map_size())
             
             # Rafraichissement de la fenêtre
             pygame.display.flip()
@@ -134,9 +134,15 @@ class Game:
         
         self.quit()
     
-    def handle_structures(self) -> None:
+    def handle_structures(self, map_size: int) -> None:
         for structure in self.__structures_list:
-            structure.handle()
+            structure.handle(map_size)
+    
+    def get_civils(self) -> list:
+        list = []
+        for structure in self.__structures_list:
+            list += structure.get_civils_list()
+        return list
     
     def afficher_structures(self) -> None:
         self.__structures_group.draw(self.__screen)
