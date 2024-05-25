@@ -28,6 +28,8 @@ class Structure(pygame.sprite.Sprite):
         self.rect.y = local_y
         
         self.__pos_tmp = []
+        
+        self.__egged = False
 
     # Geter / Seter
     
@@ -97,7 +99,7 @@ class Structure(pygame.sprite.Sprite):
                     x = random.randint(self.rect.x, self.rect.x + self.rect.width)
             self.__pos_tmp.append(x)
             y_offset = 10
-            self.__civils_list.append(civil.Civil(self.__civils_group, x, self.rect.y + y_offset, (x, self.rect.y + y_offset), gender, type, clothes))
+            self.__civils_list.append(civil.Civil(self.__civils_group, x, self.rect.y + y_offset, (x, self.rect.y + y_offset), gender, type, clothes, self.__egged))
     
     def hit(self) -> None:
         if not self.__destroyed:
@@ -114,8 +116,13 @@ class Structure(pygame.sprite.Sprite):
         for civil in self.__civils_list:
             civil.handle(map_size, player)
     
-    def afficher_civils(self, screen: pygame.Surface) -> None:
+    def afficher_civils(self, screen: pygame.Surface, egged: bool = False) -> None:
+        self.ester_egg(egged)
         for civil in self.__civils_list:
             if civil.get_aboard():
                 self.__civils_group.remove(civil)
         self.__civils_group.draw(screen)
+    
+    def ester_egg(self, egged: bool) -> None:
+        for civil in self.get_civils_list():
+            civil.set_egged(egged)

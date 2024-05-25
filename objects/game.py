@@ -39,6 +39,10 @@ class Game:
         self.__base_group = pygame.sprite.Group()
         self.__base = base.Base(self.__base_group, 700, 30, (700, 30))
     
+        # Ester egg
+        self.__egg = []
+        self.__egged = False
+    
     # Geter / Seter
     def get_screen(self) -> pygame.Surface:
         return self.__screen
@@ -72,7 +76,7 @@ class Game:
             
             # Affichage
             self.get_map().afficher(self.get_screen())
-            self.afficher_structures()
+            self.afficher_structures(self.__egged)
             self.__base_group.draw(self.__screen)
             self.get_player().afficher(self.get_screen())
             self.get_player().afficher_bombs(self.get_screen())
@@ -94,6 +98,18 @@ class Game:
                 
                 # Touche pressée
                 if event.type == pygame.KEYDOWN:
+                    
+                    # Ester egg
+                    if event.key == pygame.K_e:
+                        if self.__egg == []:
+                            self.__egg.append('e')
+                        else:
+                            self.__egg = []
+                    if event.key == pygame.K_g:
+                        if self.__egg in (['e'], ['e', 'g']):
+                            self.__egg.append('g')
+                        else:
+                            self.__egg = []
                     
                     # Lancement d'une bombe
                     if event.key == pygame.K_b:
@@ -153,6 +169,12 @@ class Game:
             # Gestion de la base
             self.__base.handle(self.__player)
             
+            # Ester egg
+            if self.__egg == ['e', 'g', 'g']:
+                self.__egged = True
+            else:
+                self.__egged = False
+            
             # Rafraichissement de la fenêtre
             pygame.display.flip()
             self.__clock.tick(60)
@@ -175,10 +197,10 @@ class Game:
             list += structure.get_civils_not_aboarded()
         return list
         
-    def afficher_structures(self) -> None:
+    def afficher_structures(self, egged: bool = False) -> None:
         self.__structures_group.draw(self.__screen)
         for structure in self.__structures_list:
-            structure.afficher_civils(self.__screen)
+            structure.afficher_civils(self.__screen, egged)
     
     def sync_vel_structures(self, velocity: float, left: bool, right: bool) -> None:
         for structure in self.__structures_list:

@@ -6,7 +6,7 @@ class Civil(pygame.sprite.Sprite):
     
     RANGE = 200
     
-    def __init__(self, group: pygame.sprite.Group, local_x: int, local_y: int, pos: tuple, gender: str, type: int, clothes: int) -> None:
+    def __init__(self, group: pygame.sprite.Group, local_x: int, local_y: int, pos: tuple, gender: str, type: int, clothes: int, egged: bool = False) -> None:
         super().__init__(group)
         self.image = pygame.image.load(f"assets/civils/Exported_PNGs/{gender}/Character {type}/Clothes {clothes}/Character{type}{gender[0]}_{clothes}_idle_0.png")
         # self.image = pygame.image.load(f"assets/Update/otages/Female/character-1/clothes-1/Character1F_1_idle_0.png")
@@ -21,6 +21,7 @@ class Civil(pygame.sprite.Sprite):
         self.__gender = gender
         self.__type = type
         self.__clothes = clothes
+        self.__egged = egged
         
         self.__state = "idle"
         self.__frame = 0
@@ -44,6 +45,11 @@ class Civil(pygame.sprite.Sprite):
         return self.__saved
     def set_saved(self, saved: bool) -> None:
         self.__saved = saved
+    
+    def get_egged(self) -> bool:
+        return self.__egged
+    def set_egged(self, egged: bool) -> None:
+        self.__egged = egged
     
     def get_pos(self) -> tuple:
         return self.__pos
@@ -97,39 +103,35 @@ class Civil(pygame.sprite.Sprite):
         if self.__state == "idle":
             if self.__frame > 7:
                 self.__frame = 0
-            self.image = pygame.image.load(f"assets/civils/Exported_PNGs/{self.__gender}/Character {self.__type}/Clothes {self.__clothes}/Character{self.__type}{self.__gender[0]}_{self.__clothes}_{self.__state}_{self.__frame}.png")
-            # self.image = pygame.image.load(f"assets/Update/otages/Female/character-1/clothes-1/Character1F_1_{self.__state}_{self.__frame}.png")
         elif self.__state == "walk":
             if self.__frame > 7:
                 self.__frame = 0
-            self.image = pygame.image.load(f"assets/civils/Exported_PNGs/{self.__gender}/Character {self.__type}/Clothes {self.__clothes}/Character{self.__type}{self.__gender[0]}_{self.__clothes}_{self.__state}_{self.__frame}.png")
-            # self.image = pygame.image.load(f"assets/Update/otages/Female/character-1/clothes-1/Character1F_1_{self.__state}_{self.__frame}.png")
         elif self.__state == "wait":
             if self.__frame > 5:
                 self.__frame = 0
-            self.image = pygame.image.load(f"assets/civils/Exported_PNGs/{self.__gender}/Character {self.__type}/Clothes {self.__clothes}/Character{self.__type}{self.__gender[0]}_{self.__clothes}_{self.__state}_{self.__frame}.png")
-            # self.image = pygame.image.load(f"assets/Update/otages/Female/character-1/clothes-1/Character1F_1_{self.__state}_{self.__frame}.png")
         elif self.__state == "run":
             if self.__frame > 7:
                 self.__frame = 0
-            self.image = pygame.image.load(f"assets/civils/Exported_PNGs/{self.__gender}/Character {self.__type}/Clothes {self.__clothes}/Character{self.__type}{self.__gender[0]}_{self.__clothes}_{self.__state}_{self.__frame}.png")
-            # self.image = pygame.image.load(f"assets/Update/otages/Female/character-1/clothes-1/Character1F_1_{self.__state}_{self.__frame}.png")
         elif self.__state == "talk":
             if self.__frame > 6:
                 self.__frame = 0
-            self.image = pygame.image.load(f"assets/civils/Exported_PNGs/{self.__gender}/Character {self.__type}/Clothes {self.__clothes}/Character{self.__type}{self.__gender[0]}_{self.__clothes}_{self.__state}_{self.__frame}.png")
-            # self.image = pygame.image.load(f"assets/Update/otages/Female/character-1/clothes-1/Character1F_1_{self.__state}_{self.__frame}.png")
         elif self.__state == "death":
-            if self.__frame > 7:
-                self.__frame = 7
-            self.image = pygame.image.load(f"assets/civils/Exported_PNGs/{self.__gender}/Character {self.__type}/Clothes {self.__clothes}/Character{self.__type}{self.__gender[0]}_{self.__clothes}_{self.__state}_{self.__frame}.png")
-            # self.image = pygame.image.load(f"assets/Update/otages/Female/character-1/clothes-1/Character1F_1_{self.__state}_{self.__frame}.png")
+            if self.__gender == "Female":
+                limit = 7
+            elif self.__gender == "Male":
+                limit = 6
+            if self.__frame > limit:
+                self.__frame = limit
         elif self.__state == "damage":
             if self.__frame > 0:
                 self.__frame = 1
-            self.image = pygame.image.load(f"assets/civils/Exported_PNGs/{self.__gender}/Character {self.__type}/Clothes {self.__clothes}/Character{self.__type}{self.__gender[0]}_{self.__clothes}_{self.__state}_{self.__frame}.png")
-            # self.image = pygame.image.load(f"assets/Update/otages/Female/character-1/clothes-1/Character1F_1_{self.__state}_{self.__frame}.png")
             self.__state = "death"
+        
+        if self.__egged:
+            clothes = 4
+        else:
+            clothes = self.__clothes
+        self.image = pygame.image.load(f"assets/civils/Exported_PNGs/{self.__gender}/Character {self.__type}/Clothes {clothes}/Character{self.__type}{self.__gender[0]}_{clothes}_{self.__state}_{self.__frame}.png")
         
         if self.__reversed:
             self.image = pygame.transform.flip(self.image, True, False)
