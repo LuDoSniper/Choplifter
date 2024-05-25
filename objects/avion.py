@@ -174,10 +174,16 @@ class Avion(pygame.sprite.Sprite):
                 self.image = pygame.transform.rotate(self.image, 5)
                 self.__rotated = -1
             elif self.__rotated == 1 and dir_tmp == 0: # Stabilisation du haut vers milieu
-                self.image = pygame.transform.rotate(self.image, 5)
+                #self.image = pygame.transform.rotate(self.image, 5) <-- Obsolete car perte de qualité
+                self.image = pygame.image.load(f"assets/avion/avion-{self.__type}-{self.__health}.png")
+                if self.__rotated and self.__dir == 1:
+                    self.image = pygame.transform.flip(self.image, True, False)
                 self.__rotated = 0
             elif self.__rotated == -1 and dir_tmp == 0: # Stabilisation du bas vers milieu
-                self.image = pygame.transform.rotate(self.image, -5)
+                #self.image = pygame.transform.rotate(self.image, -5) <-- Obsolete car perte de qualité
+                self.image = pygame.image.load(f"assets/avion/avion-{self.__type}-{self.__health}.png")
+                if self.__rotated and self.__dir == 1:
+                    self.image = pygame.transform.flip(self.image, True, False)
                 self.__rotated = 0
             
             # Appliquer la velocité sur le rect
