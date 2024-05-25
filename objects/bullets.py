@@ -2,7 +2,7 @@ import pygame
 import math
 import objects.tank as tank
 import objects.avion as avion
-import objects.heli as heli
+import objects.player as player
 import objects.structure as structure
 import objects.civil as civil
 
@@ -10,7 +10,7 @@ class Bullet(pygame.sprite.Sprite):
     
     SPEED = 5
     
-    def __init__(self, group: pygame.sprite.Group, screen: pygame.Surface, dir: int, angle: int, pos: tuple, local_x: int, local_y: int, boost: int = 0, name: str = "missile-joueur") -> None:
+    def __init__(self, group: pygame.sprite.Group, screen: pygame.Surface, origine, dir: int, angle: int, pos: tuple, local_x: int, local_y: int, boost: int = 0, name: str = "missile-joueur") -> None:
         super().__init__(group)
         self.image = pygame.image.load(f"assets/tir/missiles/{name}.png")
         if name == "balle-avion":
@@ -21,6 +21,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.y = local_y + 10
         self.__screen = screen
         
+        self.__origine = origine
         self.__boost = boost
         
         self.__dir = dir
@@ -53,6 +54,11 @@ class Bullet(pygame.sprite.Sprite):
         return self.__screen
     def set_screen(self, screen: pygame.Surface) -> None:
         self.__screen = screen
+    
+    def get_origine(self):
+        return self.__origine
+    def set_origine(self, origine) -> None:
+        self.__origine = origine
     
     def get_boost(self) -> int:
         return self.__boost
@@ -96,7 +102,7 @@ class Bullet(pygame.sprite.Sprite):
         
         # Explosion
         for target in targets:
-            if type(target) != heli.Heli and self.rect.colliderect(target.rect): # Collision
+            if type(target) != player.Player and self.rect.colliderect(target.rect): # Collision
                 self.set_exploded(True)
                 if type(target) in (tank.Tank, avion.Avion, structure.Structure):
                     if target.hit():
@@ -105,8 +111,13 @@ class Bullet(pygame.sprite.Sprite):
                     target.hit()
                 else:
                     target.set_exploded(True)
-            elif type(target) == heli.Heli and self.rect.colliderect(target.get_rect()):
+            elif type(target) == player.Player and self.rect.colliderect(target.get_heli().get_rect()):
                 self.set_exploded(True)
+                if type(self.__origine) == avion.Avion:
+                    damage = 10
+                elif type(self.__origine) == tank.Tank:
+                    damage = 30
+                target.set_health(target.get_health() - damage)
         if self.rect.x <= 0 - self.rect.width or self.rect.x >= self.__screen.get_width() + self.rect.width or self.rect.y < -100:
             self.set_exploded(True)
     

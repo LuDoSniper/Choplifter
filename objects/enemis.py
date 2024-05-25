@@ -63,7 +63,7 @@ class Enemis:
             
             # Gestion des bullets
             if tank.get_bullet() is not None:
-                tank.get_bullet().move([player.get_heli()])
+                tank.get_bullet().move([player])
                 if tank.get_bullet().get_exploded():
                     self.explode(tank.get_bullet().rect.x, tank.get_bullet().rect.y, tank.get_bullet().get_pos())
                     tank.get_bullet_group().remove(tank.get_bullet())

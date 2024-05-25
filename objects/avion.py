@@ -210,7 +210,7 @@ class Avion(pygame.sprite.Sprite):
             self.__shooting = True
             self.__delay = 0
             self.__shooted = 5
-            self.__bullets_list.append(bullets.Bullet(self.__bullets_group, self.__screen, self.__dir, 90 * self.__dir, self.__pos, self.rect.x, self.rect.y, 2, "balle-avion"))
+            self.__bullets_list.append(bullets.Bullet(self.__bullets_group, self.__screen, self, self.__dir, 90 * self.__dir, self.__pos, self.rect.x, self.rect.y, 2, "balle-avion"))
         if self.__shooted >= self.__max_shoot:
             self.__shooting = False
 

@@ -20,12 +20,17 @@ class Player:
         self.__dir = 0
         self.__vertical_dir = 0
         self.__angle = 90
+        
         self.__max_storage = 5
         self.__storage = 0
+        self.__health = 100
+        self.__fuel = 100
+        self.__fuel_timer = 0
+        self.__fuel_timer_delay = 50
         
         self.__pos = pos
         self.__max_height = 0
-        self.__min_height = 50
+        self.__min_height = 100
         self.__map_size = map_size
         
         # Gestion des bombes
@@ -106,6 +111,16 @@ class Player:
     def set_storage(self, storage: int) -> None:
         self.__storage = storage
     
+    def get_health(self) -> int:
+        return self.__health
+    def set_health(self, health: int) -> None:
+        self.__health = health
+    
+    def get_fuel(self) -> int:
+        return self.__fuel
+    def set_fuel(self, fuel: int) -> None:
+        self.__fuel = fuel
+    
     def get_pos(self) -> tuple:
         return self.__pos
     def set_pos(self, pos: tuple) -> None:
@@ -166,6 +181,13 @@ class Player:
         screen.blit(image, rect)
     
     def move(self) -> None:
+        # Consommer du carburant
+        self.__fuel_timer += 1
+        if self.__fuel_timer >= self.__fuel_timer_delay:
+            self.__fuel_timer = 0
+            self.__fuel -= 1
+        
+        # Mouvement
         self.set_velocity(self.get_velocity() + (self.get_acceleration() * self.get_dir()))
         self.set_vertical_velocity(self.get_vertical_velocity() + (self.get_acceleration() * self.get_vertical_dir()))
         
@@ -205,7 +227,6 @@ class Player:
             pos_x = self.get_map_size() - self.get_heli().get_rect().width
         
         self.set_pos((pos_x, pos_y))
-    
     # Bombes
     def bomber(self) -> None:
         self.__bombs_list.append(bomb.Bomb(self.get_bombs_group(), self.get_pos(), (self.get_heli().get_rect().x, self.get_heli().get_rect().y), self.get_screen()))
@@ -231,7 +252,7 @@ class Player:
             dir = -1
         else:
             dir = 1
-        self.__bullets_list.append(bullet.Bullet(self.get_bullets_group(), self.__screen, dir, self.get_angle(), self.get_pos(), self.get_heli().get_rect().x, self.get_heli().get_rect().y))
+        self.__bullets_list.append(bullet.Bullet(self.get_bullets_group(), self.__screen, self, dir, self.get_angle(), self.get_pos(), self.get_heli().get_rect().x, self.get_heli().get_rect().y))
     
     def bullets_handle(self, targets: list = []) -> None:
         for bullet in self.get_bullets_list():

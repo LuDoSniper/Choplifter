@@ -6,6 +6,10 @@ class Heli:
     
     def __init__(self, screen: pygame.Surface) -> None:
         self.__image = pygame.image.load("assets/helico/main/helicopter-1.png")
+        self.__image = pygame.transform.scale(self.__image, (
+            self.__image.get_rect().width * 1.5,
+            self.__image.get_rect().height * 1.5
+        ))
         self.__image_tmp = self.__image
         self.__rect = self.__image.get_rect()
         self.__rect.x = screen.get_width() / 2 - self.__rect.width / 2
@@ -119,6 +123,10 @@ class Heli:
     # Fait changer d'image
     def sync_frame(self):
         self.set_image(pygame.image.load(f"assets/helico/main/helicopter-{self.get_frame()}.png"))
+        self.__image = pygame.transform.scale(self.__image, (
+            self.__image.get_rect().width * 1.5,
+            self.__image.get_rect().height * 1.5
+        ))
         if self.__sens:
             self.set_image(pygame.transform.flip(self.get_image(), True, False))
         

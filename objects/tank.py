@@ -141,7 +141,7 @@ class Tank(pygame.sprite.Sprite):
             self.set_dir(0)
     
     def shoot(self) -> None:
-        self.__bullet = bullets.Bullet(self.__bullet_group, self.__screen, self.__dir, 65 * self.__dir, self.__pos, self.rect.x + (18 * self.__dir), self.rect.y - 5, boost=-3)
+        self.__bullet = bullets.Bullet(self.__bullet_group, self.__screen, self, self.__dir, 65 * self.__dir, self.__pos, self.rect.x + (18 * self.__dir), self.rect.y - 5, boost=-3)
     
     def move(self) -> None:
         self.set_velocity(self.get_velocity() + (self.get_acceleration() * self.get_dir()))

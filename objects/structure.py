@@ -13,6 +13,10 @@ class Structure(pygame.sprite.Sprite):
         self.__civils_list = []
         
         self.image = pygame.image.load(f"assets/structure/{self.__type}/{self.__theme}.png")
+        self.image = pygame.transform.scale(self.image, (
+            self.image.get_rect().width * 2,
+            self.image.get_rect().height * 2
+        ))
         self.rect = self.image.get_rect()
         self.rect.x = local_x
         self.rect.y = local_y
@@ -55,12 +59,16 @@ class Structure(pygame.sprite.Sprite):
             civil.sync_vel(velocity, left, right)
     
     def add_civil(self) -> None:
-        self.__civils_list.append(civil.Civil(self.__civils_group, self.rect.x, self.rect.y - 20, self.__pos, "Female", 1, 1))
+        self.__civils_list.append(civil.Civil(self.__civils_group, self.rect.x, self.rect.y + 10, self.__pos, "Female", 1, 1))
     
     def hit(self) -> None:
         if not self.__destroyed:
             self.__destroyed = True
             self.image = pygame.image.load(f"assets/structure/{self.__type}/{self.__theme}-decombres.png")
+            self.image = pygame.transform.scale(self.image, (
+                self.image.get_rect().width * 2,
+                self.image.get_rect().height * 2
+            ))
             self.add_civil()
     
     def handle(self, map_size: int) -> None:

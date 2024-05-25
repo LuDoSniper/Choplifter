@@ -3,6 +3,7 @@ import objects.map as map
 import objects.player as player
 import objects.enemis as enemis
 import objects.structure as structure
+import objects.hud as hud
 
 class Game:
     def __init__(self) -> None:
@@ -22,13 +23,16 @@ class Game:
         # Class contenant tout les enemis
         self.__enemis = enemis.Enemis(self.__screen)
         # self.get_enemis().add_tank(self.get_screen(), self.__map().get_map_size(), type=1)
-        # self.get_enemis().add_tank(self.get_screen(), self.__map.get_map_size(), (50, 100), 2)
-        # self.get_enemis().add_avion(self.get_screen(), self.__map.get_map_size(), type=2)
+        self.get_enemis().add_tank(self.get_screen(), self.__map.get_map_size(), (50, 100), 2)
+        self.get_enemis().add_avion(self.get_screen(), self.__map.get_map_size(), type=2)
         
         # Structures
         self.__structures_group = pygame.sprite.Group()
         self.__structures_list = []
-        self.__structures_list.append(structure.Structure(self.__structures_group, 200, 100, (200, 100), "batiment", "brick"))
+        self.__structures_list.append(structure.Structure(self.__structures_group, 200, 72, (200, 72), "batiment", "brick"))
+    
+        # HUD
+        self.__hud = hud.HUD(self.__screen)
     
     # Geter / Seter
     def get_screen(self) -> pygame.Surface:
@@ -51,6 +55,11 @@ class Game:
     def set_enemis(self, enemis: enemis.Enemis) -> None:
         self.__enemis = enemis
     
+    def get_hud(self) -> hud.HUD:
+        return self.__hud
+    def set_hud(self, hud: hud.HUD) -> None:
+        self.__hud = hud
+    
     # Méthodes
     def handle(self):
         running = True
@@ -69,6 +78,8 @@ class Game:
             
             self.get_player().get_heli().sync_frame()
             self.get_player().get_heli().sync_side(self.get_player().get_dir())
+            
+            self.__hud.afficher(self.get_player().get_health(), self.get_player().get_fuel())
             
             # Events uniques
             for event in pygame.event.get():
@@ -90,7 +101,11 @@ class Game:
             pressed = pygame.key.get_pressed()
             
             # Mouvements du player
-            self.get_player().set_dir(pressed[pygame.K_RIGHT] - pressed[pygame.K_LEFT])
+            if self.get_player().get_heli().get_rect().y < 80:
+                dir = pressed[pygame.K_RIGHT] - pressed[pygame.K_LEFT]
+            else:
+                dir = 0
+            self.get_player().set_dir(dir)
             self.get_player().set_vertical_dir(pressed[pygame.K_UP] - pressed[pygame.K_DOWN])
             self.get_player().move()
             
@@ -113,7 +128,7 @@ class Game:
             # Gestion des bullets
             if self.get_player().get_bullets_list() != []:
                 self.get_player().bullets_handle(self.get_enemis().get_tanks() + self.get_enemis().get_avions() + self.__structures_list + self.get_civils())
-            self.get_enemis().move_avions_bullets([self.get_player().get_heli()])
+            self.get_enemis().move_avions_bullets([self.get_player()])
             
             # Mouvements des tanks
             self.get_enemis().handle_tanks(self.get_player())
