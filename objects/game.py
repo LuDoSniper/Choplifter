@@ -79,7 +79,7 @@ class Game:
             self.get_player().get_heli().sync_frame()
             self.get_player().get_heli().sync_side(self.get_player().get_dir())
             
-            self.__hud.afficher(self.get_player().get_health(), self.get_player().get_fuel())
+            self.__hud.afficher(self.get_player().get_health(), self.get_player().get_fuel(), self.__player.get_storage(), self.__player.get_max_storage())
             
             # Events uniques
             for event in pygame.event.get():
@@ -127,7 +127,7 @@ class Game:
             
             # Gestion des bullets
             if self.get_player().get_bullets_list() != []:
-                self.get_player().bullets_handle(self.get_enemis().get_tanks() + self.get_enemis().get_avions() + self.__structures_list + self.get_civils())
+                self.get_player().bullets_handle(self.get_enemis().get_tanks() + self.get_enemis().get_avions() + self.__structures_list + self.get_civils_not_aboarded())
             self.get_enemis().move_avions_bullets([self.get_player()])
             
             # Mouvements des tanks
@@ -151,7 +151,7 @@ class Game:
     
     def handle_structures(self, map_size: int) -> None:
         for structure in self.__structures_list:
-            structure.handle(map_size)
+            structure.handle(map_size, self.__player)
     
     def get_civils(self) -> list:
         list = []
@@ -159,6 +159,12 @@ class Game:
             list += structure.get_civils_list()
         return list
     
+    def get_civils_not_aboarded(self) -> list:
+        list = []
+        for structure in self.__structures_list:
+            list += structure.get_civils_not_aboarded()
+        return list
+        
     def afficher_structures(self) -> None:
         self.__structures_group.draw(self.__screen)
         for structure in self.__structures_list:

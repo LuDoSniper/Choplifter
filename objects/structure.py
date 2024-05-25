@@ -1,4 +1,5 @@
 import pygame
+import random
 import objects.civil as civil
 
 class Structure(pygame.sprite.Sprite):
@@ -7,6 +8,11 @@ class Structure(pygame.sprite.Sprite):
         self.__pos = pos
         self.__type = type
         self.__theme = theme
+        
+        if self.__type == "batiment":
+            self.__civils_number = random.randint(3, 5)
+        elif self.__type == "garade":
+            self.__civils_number = random.randint(1, 3)
         
         self.__destroyed = False
         self.__civils_group = pygame.sprite.Group()
@@ -20,6 +26,8 @@ class Structure(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = local_x
         self.rect.y = local_y
+        
+        self.__pos_tmp = []
 
     # Geter / Seter
     
@@ -38,6 +46,11 @@ class Structure(pygame.sprite.Sprite):
     def set_theme(self, theme: int) -> None:
         self.__theme = theme
     
+    def get_civils_number(self) -> int:
+        return self.__civils_number
+    def set_civils_number(self, n: int) -> None:
+        self.__civils_number = n
+    
     def get_destroyed(self) -> bool:
         return self.__destroyed
     def set_destroyed(self, destroyed: bool) -> None:
@@ -47,6 +60,13 @@ class Structure(pygame.sprite.Sprite):
         return self.__civils_list
     def set_civils_list(self, list: list) -> None:
         self.__civils_list = list
+    
+    def get_civils_not_aboarded(self) -> list:
+        list = []
+        for civil in self.__civils_list:
+            if not civil.get_aboard():
+                list.append(civil)
+        return list
     
     # Méthodes
     
@@ -58,8 +78,26 @@ class Structure(pygame.sprite.Sprite):
         for civil in self.__civils_list:
             civil.sync_vel(velocity, left, right)
     
-    def add_civil(self) -> None:
-        self.__civils_list.append(civil.Civil(self.__civils_group, self.rect.x, self.rect.y + 10, self.__pos, "Female", 1, 1))
+    def add_civils(self) -> None:
+        for i in range(self.__civils_number):
+            if random.randint(1, 2) == 1:
+                gender = "Male"
+            else:
+                gender = "Female"
+            type = random.randint(1, 3)
+            clothes = random.randint(1, 3)
+            x = random.randint(self.rect.x - 20, self.rect.x + self.rect.width)
+            check = False
+            while not check and self.__pos_tmp != []:
+                for pos in self.__pos_tmp:
+                    if not(pos - 10 <= x <= pos + 10):
+                        check = True
+                        break
+                if not check:
+                    x = random.randint(self.rect.x, self.rect.x + self.rect.width)
+            self.__pos_tmp.append(x)
+            y_offset = 10
+            self.__civils_list.append(civil.Civil(self.__civils_group, x, self.rect.y + y_offset, (x, self.rect.y + y_offset), gender, type, clothes))
     
     def hit(self) -> None:
         if not self.__destroyed:
@@ -69,12 +107,15 @@ class Structure(pygame.sprite.Sprite):
                 self.image.get_rect().width * 2,
                 self.image.get_rect().height * 2
             ))
-            self.add_civil()
+            self.add_civils()
     
-    def handle(self, map_size: int) -> None:
+    def handle(self, map_size: int, player) -> None:
         # Gérer les civils
         for civil in self.__civils_list:
-            civil.handle(map_size)
+            civil.handle(map_size, player)
     
     def afficher_civils(self, screen: pygame.Surface) -> None:
+        for civil in self.__civils_list:
+            if civil.get_aboard():
+                self.__civils_group.remove(civil)
         self.__civils_group.draw(screen)

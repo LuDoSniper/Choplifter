@@ -1,7 +1,11 @@
 import pygame
 import random
+import objects.player as player
 
 class Civil(pygame.sprite.Sprite):
+    
+    RANGE = 200
+    
     def __init__(self, group: pygame.sprite.Group, local_x: int, local_y: int, pos: tuple, gender: str, type: int, clothes: int) -> None:
         super().__init__(group)
         self.image = pygame.image.load(f"assets/civils/Exported_PNGs/{gender}/Character {type}/Clothes {clothes}/Character{type}{gender[0]}_{clothes}_idle_0.png")
@@ -9,6 +13,9 @@ class Civil(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = local_x
         self.rect.y = local_y
+        
+        self.__aboard = False
+        self.__saved = False
         
         self.__pos = pos
         self.__gender = gender
@@ -28,6 +35,16 @@ class Civil(pygame.sprite.Sprite):
         
     # Geter / Seter
     
+    def get_aboard(self) -> bool:
+        return self.__aboard
+    def set_aboard(self, aboard: bool) -> None:
+        self.__aboard = aboard
+    
+    def get_saved(self) -> bool:
+        return self.__saved
+    def set_saved(self, saved: bool) -> None:
+        self.__saved = saved
+    
     def get_pos(self) -> tuple:
         return self.__pos
     def set_pos(self, pos: tuple) -> None:
@@ -35,22 +52,40 @@ class Civil(pygame.sprite.Sprite):
         
     # Méthodes
     
-    def handle(self, map_size: int) -> None:
+    def handle(self, map_size: int, player) -> None:
         self.animate()
         self.sync_side()
         
-        self.__switch_animation_timer += 1
-        if self.__switch_animation_timer >= self.__switch_animation_timer_target and self.__state not in ("death", "damage"):
-            self.__switch_animation_timer = 0
-            self.__switch_animation_timer_target = random.randint(150, 250)
-            self.__state = random.choice(["idle", "walk", "wait"])
+        if self.__state not in ("death", "damage"):
+            if self.rect.colliderect(player.get_heli().get_rect()) and player.get_storage() < player.get_max_storage() and not self.__aboard and player.get_landed():
+                player.set_storage(player.get_storage() + 1)
+                self.__aboard = True
             
-            if self.__state == "walk":
-                self.__dir = random.choice([-1, 1])
-            elif self.__state in ("idle", "wait"):
-                self.__dir = 0
+            if self.rect.x - self.RANGE <= player.get_heli().get_rect().x <= self.rect.x + self.RANGE and player.get_landed():
+                self.__state = "run"
+                self.__speed = 2
+                if self.rect.x > player.get_heli().get_rect().x:
+                    self.__dir = -1
+                else:
+                    self.__dir = 1
+            elif self.rect.x - self.RANGE <= player.get_heli().get_rect().x <= self.rect.x + self.RANGE:
+                self.__state = "talk"
+            elif self.__state == "talk":
+                self.__state = "idle"
+            else:
+                self.__switch_animation_timer += 1
+                if self.__switch_animation_timer >= self.__switch_animation_timer_target and self.__state not in ("death", "damage"):
+                    self.__switch_animation_timer = 0
+                    self.__switch_animation_timer_target = random.randint(150, 250)
+                    self.__state = random.choice(["idle", "walk", "wait"])
+                    
+                    if self.__state == "walk":
+                        self.__speed = 1
+                        self.__dir = random.choice([-1, 1])
+                    elif self.__state in ("idle", "wait"):
+                        self.__dir = 0
         
-        if self.__state == "walk":
+        if self.__state in ("walk", "run"):
             self.move(map_size)
     
     def animate(self) -> None:
@@ -71,6 +106,16 @@ class Civil(pygame.sprite.Sprite):
             # self.image = pygame.image.load(f"assets/Update/otages/Female/character-1/clothes-1/Character1F_1_{self.__state}_{self.__frame}.png")
         elif self.__state == "wait":
             if self.__frame > 5:
+                self.__frame = 0
+            self.image = pygame.image.load(f"assets/civils/Exported_PNGs/{self.__gender}/Character {self.__type}/Clothes {self.__clothes}/Character{self.__type}{self.__gender[0]}_{self.__clothes}_{self.__state}_{self.__frame}.png")
+            # self.image = pygame.image.load(f"assets/Update/otages/Female/character-1/clothes-1/Character1F_1_{self.__state}_{self.__frame}.png")
+        elif self.__state == "run":
+            if self.__frame > 7:
+                self.__frame = 0
+            self.image = pygame.image.load(f"assets/civils/Exported_PNGs/{self.__gender}/Character {self.__type}/Clothes {self.__clothes}/Character{self.__type}{self.__gender[0]}_{self.__clothes}_{self.__state}_{self.__frame}.png")
+            # self.image = pygame.image.load(f"assets/Update/otages/Female/character-1/clothes-1/Character1F_1_{self.__state}_{self.__frame}.png")
+        elif self.__state == "talk":
+            if self.__frame > 6:
                 self.__frame = 0
             self.image = pygame.image.load(f"assets/civils/Exported_PNGs/{self.__gender}/Character {self.__type}/Clothes {self.__clothes}/Character{self.__type}{self.__gender[0]}_{self.__clothes}_{self.__state}_{self.__frame}.png")
             # self.image = pygame.image.load(f"assets/Update/otages/Female/character-1/clothes-1/Character1F_1_{self.__state}_{self.__frame}.png")

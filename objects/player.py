@@ -31,6 +31,7 @@ class Player:
         self.__pos = pos
         self.__max_height = 0
         self.__min_height = 100
+        self.__landed = False
         self.__map_size = map_size
         
         # Gestion des bombes
@@ -136,6 +137,11 @@ class Player:
     def set_min_height(self, min_height: int) -> None:
         self.__min_height = min_height
         
+    def get_landed(self) -> bool:
+        return self.__landed
+    def set_landed(self, landed: bool) -> None:
+        self.__landed = landed
+        
     def get_map_size(self) -> int:
         return self.__map_size
     def set_map_size(self, map_size: int) -> None:
@@ -190,6 +196,11 @@ class Player:
         # Mouvement
         self.set_velocity(self.get_velocity() + (self.get_acceleration() * self.get_dir()))
         self.set_vertical_velocity(self.get_vertical_velocity() + (self.get_acceleration() * self.get_vertical_dir()))
+        
+        if self.get_heli().get_rect().y >= self.__min_height:
+            self.__landed = True
+        else:
+            self.__landed = False
         
         # Rotation de l'helico
         self.get_heli().sync_side(self.get_dir())
