@@ -39,7 +39,7 @@ class Game:
         self.__base_group = pygame.sprite.Group()
         self.__base = base.Base(self.__base_group, 700, 30, (700, 30))
     
-        # Ester egg
+        # Easter egg
         self.__egg = []
         self.__egged = False
     
@@ -99,7 +99,7 @@ class Game:
                 # Touche pressée
                 if event.type == pygame.KEYDOWN:
                     
-                    # Ester egg
+                    # Easter egg
                     if event.key == pygame.K_e:
                         if self.__egg == []:
                             self.__egg.append('e')
@@ -169,7 +169,7 @@ class Game:
             # Gestion de la base
             self.__base.handle(self.__player)
             
-            # Ester egg
+            # Easter egg
             if self.__egg == ['e', 'g', 'g']:
                 self.__egged = True
             else:

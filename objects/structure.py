@@ -117,12 +117,12 @@ class Structure(pygame.sprite.Sprite):
             civil.handle(map_size, player)
     
     def afficher_civils(self, screen: pygame.Surface, egged: bool = False) -> None:
-        self.ester_egg(egged)
+        self.easter_egg(egged)
         for civil in self.__civils_list:
             if civil.get_aboard():
                 self.__civils_group.remove(civil)
         self.__civils_group.draw(screen)
     
-    def ester_egg(self, egged: bool) -> None:
+    def easter_egg(self, egged: bool) -> None:
         for civil in self.get_civils_list():
             civil.set_egged(egged)
