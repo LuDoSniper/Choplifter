@@ -16,6 +16,7 @@ class Civil(pygame.sprite.Sprite):
         
         self.__aboard = False
         self.__saved = False
+        self.__base = False
         
         self.__pos = pos
         self.__gender = gender
@@ -46,6 +47,11 @@ class Civil(pygame.sprite.Sprite):
     def set_saved(self, saved: bool) -> None:
         self.__saved = saved
     
+    def get_base(self) -> bool:
+        return self.__base
+    def set_base(self, base: bool) -> None:
+        self.__base = base
+    
     def get_egged(self) -> bool:
         return self.__egged
     def set_egged(self, egged: bool) -> None:
@@ -58,16 +64,28 @@ class Civil(pygame.sprite.Sprite):
         
     # Méthodes
     
-    def handle(self, map_size: int, player) -> None:
+    def handle(self, map_size: int, player, base_porte: pygame.Rect) -> None:
         self.animate()
         self.sync_side()
         
         if self.__state not in ("death", "damage"):
-            if self.rect.colliderect(player.get_heli().get_rect()) and player.get_storage() < player.get_max_storage() and not self.__aboard and player.get_landed():
+            if self.__aboard:
+                self.rect.x = player.get_heli().get_rect().x
+            elif self.__base:
+                if self.rect.x < base_porte.x:
+                    self.__dir = 1
+                elif self.rect.x > base_porte.x:
+                    self.__dir = -1
+                self.__state = "run"
+                if self.rect.colliderect(base_porte):
+                    self.__base = False
+                    self.__saved = True
+            
+            elif self.rect.colliderect(player.get_heli().get_rect()) and player.get_storage() < player.get_max_storage() and not self.__aboard and player.get_landed():
                 player.set_storage(player.get_storage() + 1)
                 self.__aboard = True
             
-            if self.rect.x - self.RANGE <= player.get_heli().get_rect().x <= self.rect.x + self.RANGE and player.get_landed():
+            elif self.rect.x - self.RANGE <= player.get_heli().get_rect().x <= self.rect.x + self.RANGE and player.get_landed():
                 self.__state = "run"
                 self.__speed = 2
                 if self.rect.x > player.get_heli().get_rect().x:

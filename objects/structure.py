@@ -15,6 +15,7 @@ class Structure(pygame.sprite.Sprite):
             self.__civils_number = random.randint(1, 3)
         
         self.__destroyed = False
+        self.__unloading = False
         self.__civils_group = pygame.sprite.Group()
         self.__civils_list = []
         
@@ -57,16 +58,21 @@ class Structure(pygame.sprite.Sprite):
         return self.__destroyed
     def set_destroyed(self, destroyed: bool) -> None:
         self.__destroyed = destroyed
+
+    def get_unloading(self) -> bool:
+        return self.__unloading
+    def set_unloading(self, unloading: bool) -> None:
+        self.__unloading = unloading
     
     def get_civils_list(self) -> list:
         return self.__civils_list
     def set_civils_list(self, list: list) -> None:
         self.__civils_list = list
     
-    def get_civils_not_aboarded(self) -> list:
+    def get_civils_not_aboarded_and_not_saved(self) -> list:
         list = []
         for civil in self.__civils_list:
-            if not civil.get_aboard():
+            if not civil.get_aboard() and not civil.get_saved():
                 list.append(civil)
         return list
     
@@ -111,15 +117,29 @@ class Structure(pygame.sprite.Sprite):
             ))
             self.add_civils()
     
-    def handle(self, map_size: int, player) -> None:
+    def handle(self, map_size: int, player, base_porte: pygame.Rect) -> None:
         # Gérer les civils
         for civil in self.__civils_list:
-            civil.handle(map_size, player)
+            civil.handle(map_size, player, base_porte)
+        
+        # Gérer le déchargement
+        if self.__unloading:
+            for civil in self.__civils_list:
+                if civil.get_aboard():
+                    civil.set_aboard(False)
+                    self.__civils_group.add(civil)
+                    civil.set_base(True)
+                    player.set_storage(player.get_storage() - 1)
+        
+        # Ne plus gérer les civils sauvés
+        for civil in self.__civils_list:
+            if civil.get_saved():
+                self.__civils_group.remove(civil)
     
     def afficher_civils(self, screen: pygame.Surface, egged: bool = False) -> None:
         self.easter_egg(egged)
         for civil in self.__civils_list:
-            if civil.get_aboard():
+            if civil.get_aboard() or civil.get_saved():
                 self.__civils_group.remove(civil)
         self.__civils_group.draw(screen)
     

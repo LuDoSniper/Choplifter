@@ -76,8 +76,8 @@ class Game:
             
             # Affichage
             self.get_map().afficher(self.get_screen())
-            self.afficher_structures(self.__egged)
             self.__base_group.draw(self.__screen)
+            self.afficher_structures(self.__egged)
             self.get_player().afficher(self.get_screen())
             self.get_player().afficher_bombs(self.get_screen())
             self.get_player().afficher_bullets(self.get_screen())
@@ -150,7 +150,7 @@ class Game:
             
             # Gestion des bullets
             if self.get_player().get_bullets_list() != []:
-                self.get_player().bullets_handle(self.get_enemis().get_tanks() + self.get_enemis().get_avions() + self.__structures_list + self.get_civils_not_aboarded())
+                self.get_player().bullets_handle(self.get_enemis().get_tanks() + self.get_enemis().get_avions() + self.__structures_list + self.get_civils_not_aboarded_and_not_saved())
             self.get_enemis().move_avions_bullets([self.get_player()])
             
             # Mouvements des tanks
@@ -164,10 +164,10 @@ class Game:
             self.get_enemis().handle_explosions()
             
             # Gestion des structures
-            self.handle_structures(self.__map.get_map_size())
+            self.handle_structures(self.__map.get_map_size(), self.__base.porte)
             
             # Gestion de la base
-            self.__base.handle(self.__player)
+            self.__base.handle(self.__player, self.__structures_list)
             
             # Easter egg
             if self.__egg == ['e', 'g', 'g']:
@@ -181,9 +181,9 @@ class Game:
         
         self.quit()
     
-    def handle_structures(self, map_size: int) -> None:
+    def handle_structures(self, map_size: int, base_porte: pygame.Rect) -> None:
         for structure in self.__structures_list:
-            structure.handle(map_size, self.__player)
+            structure.handle(map_size, self.__player, base_porte)
     
     def get_civils(self) -> list:
         list = []
@@ -191,10 +191,10 @@ class Game:
             list += structure.get_civils_list()
         return list
     
-    def get_civils_not_aboarded(self) -> list:
+    def get_civils_not_aboarded_and_not_saved(self) -> list:
         list = []
         for structure in self.__structures_list:
-            list += structure.get_civils_not_aboarded()
+            list += structure.get_civils_not_aboarded_and_not_saved()
         return list
         
     def afficher_structures(self, egged: bool = False) -> None:

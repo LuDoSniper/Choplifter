@@ -8,6 +8,7 @@ class Base(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = local_x
         self.rect.y = local_y
+        self.porte = pygame.Rect(local_x + 89 * 2, local_y + 35 * 2, 8 * 2, 12 * 2)
         
         self.__pos = pos
         
@@ -28,10 +29,11 @@ class Base(pygame.sprite.Sprite):
     
     # Méthodes
     
-    def handle(self, player) -> None:
+    def handle(self, player, structures: list) -> None:
         self.animate()
         
         if self.rect.colliderect(player.get_heli().get_rect()) and player.get_landed():
+            # Gestion du fuel
             player.set_refueling(True)
             self.__fuel_timer += 1
             if self.__fuel_timer >= self.__fuel_timer_delay:
@@ -39,8 +41,14 @@ class Base(pygame.sprite.Sprite):
                 player.set_fuel(player.get_fuel() + self.__refuel_speed)
                 if player.get_fuel() > 100:
                     player.set_fuel(100)
+            unloading = True
         else:
             player.set_refueling(False)
+            unloading = False
+            
+        # Gestion des civils
+        for structure in structures:
+            structure.set_unloading(unloading)
     
     def animate(self) -> None:
         self.__animation_timer += 1
@@ -56,3 +64,4 @@ class Base(pygame.sprite.Sprite):
         # Bouge de la même manière que la map
         if not left and not right:
             self.rect.x -= velocity
+            self.porte.x = self.rect.x + 89 * 2
