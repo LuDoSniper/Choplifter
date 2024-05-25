@@ -247,12 +247,13 @@ class Player:
         self.set_pos((pos_x, pos_y))
     # Bombes
     def bomber(self) -> None:
-        self.__bombs_list.append(bomb.Bomb(self.get_bombs_group(), self.get_pos(), (self.get_heli().get_rect().x, self.get_heli().get_rect().y), self.get_screen()))
+        self.__bombs_list.append(bomb.Bomb(self.get_bombs_group(), (self.get_pos()[0] + self.get_heli().get_rect().width / 2, self.get_pos()[1] + self.get_heli().get_rect().height), (self.get_heli().get_rect().x + self.get_heli().get_rect().width / 2, self.get_heli().get_rect().y + self.get_heli().get_rect().height), self.get_screen()))
     
     def bombs_handle(self, targets: list) -> None:
         for bomb in self.get_bombs_list():
             bomb.fall(targets)
             if bomb.get_exploded():
+                self.explode(bomb.rect.x - 30, bomb.rect.y - 10, bomb.get_pos(), 2)
                 self.get_bombs_group().remove(bomb)
                 self.__bombs_list.pop(self.__bombs_list.index(bomb))
     

@@ -107,7 +107,7 @@ class Structure(pygame.sprite.Sprite):
             y_offset = 10
             self.__civils_list.append(civil.Civil(self.__civils_group, x, self.rect.y + y_offset, (x, self.rect.y + y_offset), gender, type, clothes, self.__egged))
     
-    def hit(self) -> None:
+    def hit(self, bomb: bool = False) -> None:
         if not self.__destroyed:
             self.__destroyed = True
             self.image = pygame.image.load(f"assets/structure/{self.__type}/{self.__theme}-decombres.png")
@@ -116,6 +116,13 @@ class Structure(pygame.sprite.Sprite):
                 self.image.get_rect().height * 2
             ))
             self.add_civils()
+            # Tuer entre 2 et 3 civils
+            if bomb:
+                kill = random.randint(2, 3)
+            for civil in self.__civils_list:
+                if kill > 0:
+                    civil.hit()
+                    kill -= 1
     
     def handle(self, map_size: int, player, base_porte: pygame.Rect) -> None:
         # Gérer les civils

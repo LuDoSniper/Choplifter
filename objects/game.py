@@ -146,7 +146,7 @@ class Game:
             
             # Gestion des bombes
             if self.get_player().get_bombs_list() != []:
-                self.get_player().bombs_handle(self.get_enemis().get_tanks())
+                self.get_player().bombs_handle(self.get_enemis().get_tanks() + self.__structures_list + self.get_civils_not_aboarded_and_not_saved())
             
             # Gestion des bullets
             if self.get_player().get_bullets_list() != []:
