@@ -4,6 +4,7 @@ import objects.player as player
 import objects.enemis as enemis
 import objects.structure as structure
 import objects.hud as hud
+import objects.base as base
 
 class Game:
     def __init__(self) -> None:
@@ -33,6 +34,10 @@ class Game:
     
         # HUD
         self.__hud = hud.HUD(self.__screen)
+    
+        # Base
+        self.__base_group = pygame.sprite.Group()
+        self.__base = base.Base(self.__base_group, 700, 30, (700, 30))
     
     # Geter / Seter
     def get_screen(self) -> pygame.Surface:
@@ -68,6 +73,7 @@ class Game:
             # Affichage
             self.get_map().afficher(self.get_screen())
             self.afficher_structures()
+            self.__base_group.draw(self.__screen)
             self.get_player().afficher(self.get_screen())
             self.get_player().afficher_bombs(self.get_screen())
             self.get_player().afficher_bullets(self.get_screen())
@@ -119,6 +125,7 @@ class Game:
                 self.get_player().sync_vel_bullets(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
                 self.get_player().sync_vel_explosions(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
                 self.sync_vel_structures(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
+                self.__base.sync_vel(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
             self.get_player().get_heli().sync_vel(self.get_player().get_velocity(), self.get_player().get_vertical_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border(), self.get_player().get_max_height(), self.get_player().get_min_height())
             
             # Gestion des bombes
@@ -142,6 +149,9 @@ class Game:
             
             # Gestion des structures
             self.handle_structures(self.__map.get_map_size())
+            
+            # Gestion de la base
+            self.__base.handle(self.__player)
             
             # Rafraichissement de la fenêtre
             pygame.display.flip()

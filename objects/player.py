@@ -27,6 +27,7 @@ class Player:
         self.__fuel = 100
         self.__fuel_timer = 0
         self.__fuel_timer_delay = 50
+        self.__refueling = False
         
         self.__pos = pos
         self.__max_height = 0
@@ -122,6 +123,11 @@ class Player:
     def set_fuel(self, fuel: int) -> None:
         self.__fuel = fuel
     
+    def get_refueling(self) -> bool:
+        return self.__refueling
+    def set_refueling(self, refueling: bool) -> None:
+        self.__refueling = refueling
+    
     def get_pos(self) -> tuple:
         return self.__pos
     def set_pos(self, pos: tuple) -> None:
@@ -188,10 +194,11 @@ class Player:
     
     def move(self) -> None:
         # Consommer du carburant
-        self.__fuel_timer += 1
-        if self.__fuel_timer >= self.__fuel_timer_delay:
-            self.__fuel_timer = 0
-            self.__fuel -= 1
+        if not self.__refueling:
+            self.__fuel_timer += 1
+            if self.__fuel_timer >= self.__fuel_timer_delay:
+                self.__fuel_timer = 0
+                self.__fuel -= 1
         
         # Mouvement
         self.set_velocity(self.get_velocity() + (self.get_acceleration() * self.get_dir()))
