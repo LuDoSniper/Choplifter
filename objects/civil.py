@@ -57,6 +57,11 @@ class Civil(pygame.sprite.Sprite):
     def set_egged(self, egged: bool) -> None:
         self.__egged = egged
     
+    def get_state(self) -> str:
+        return self.__state
+    def set_state(self, state: str) -> None:
+        self.__state = state
+    
     def get_pos(self) -> tuple:
         return self.__pos
     def set_pos(self, pos: tuple) -> None:

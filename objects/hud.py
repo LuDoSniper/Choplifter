@@ -35,32 +35,75 @@ class Fuel(pygame.sprite.Sprite):
         pygame.draw.rect(self.__screen, (255, 199, 54), self.fuel_rect)
 
 class Civil_Background(pygame.sprite.Sprite):
-    def __init__(self, group: pygame.sprite.Group, pos: tuple) -> None:
+    def __init__(self, group: pygame.sprite.Group, pos: tuple, size: tuple) -> None:
         super().__init__(group)
         self.image = pygame.image.load("assets/hud_ig/ottages.png")
-        self.image = pygame.transform.scale(self.image, (75, 20))
+        self.image = pygame.transform.scale(self.image, size)
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = pos
 
 class Logo(pygame.sprite.Sprite):
-    def __init__(self, group: pygame.sprite.Group, logo: str, pos: tuple) -> None:
+    def __init__(self, group: pygame.sprite.Group, logo: str, pos: tuple, size: tuple) -> None:
         super().__init__(group)
         self.image = pygame.image.load(f"assets/hud_ig/{logo}.png")
-        self.image = pygame.transform.scale(self.image, (15, 15))
+        self.image = pygame.transform.scale(self.image, size)
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = pos
 
 class Saved():
-    def __init__(self, group: pygame.sprite.Group, screen: pygame.Surface) -> None:
-        super().__init__(group)
-        self.image = None
+    def __init__(self, screen: pygame.Surface) -> None:
+        self.__screen = screen
+        self.__items = pygame.sprite.Group()
+        self.__background = Civil_Background(self.__items, (self.__screen.get_width() - 75 - 10, 10), (75, 20))
+        self.__logo = Logo(self.__items, "people-vector-2", (self.__screen.get_width() - 30 - 10 - 2, 12), (30, 15))
+        self.__font = pygame.font.Font("assets/font/kenvector_future.ttf", 12)
+    
+    def afficher(self, saved: int, max_civil: int) -> None:
+        self.__items.draw(self.__screen)
+        font_surface = self.__font.render(f"{saved}/{max_civil}", True, (255, 255, 255))
+        font_rect = font_surface.get_rect()
+        font_rect.x, font_rect.y = (
+            self.__background.rect.x + ((self.__background.rect.width - 2 * 2 - self.__logo.rect.width) / 2) - font_rect.width / 2,
+            self.__background.rect.y + self.__background.rect.height / 2 - font_rect.height / 2
+        )
+        self.__screen.blit(font_surface, font_rect)
+
+class Dead():
+    def __init__(self, screen: pygame.Surface) -> None:
+        self.__screen = screen
+        self.__items = pygame.sprite.Group()
+        self.__background = Civil_Background(self.__items, (self.__screen.get_width() - 75 - 10, 35), (75, 20))
+        self.__logo = Logo(self.__items, "dead-2", (self.__screen.get_width() - 15 - 10 - 2, 37), (15, 15))
+        self.__font = pygame.font.Font("assets/font/kenvector_future.ttf", 12)
+    
+    def afficher(self, dead: int, max_civil: int) -> None:
+        self.__items.draw(self.__screen)
+        font_surface = self.__font.render(f"{dead}/{max_civil}", True, (255, 255, 255))
+        font_rect = font_surface.get_rect()
+        font_rect.x, font_rect.y = (
+            self.__background.rect.x + ((self.__background.rect.width - 2 * 2 - self.__logo.rect.width) / 2) - font_rect.width / 2,
+            self.__background.rect.y + self.__background.rect.height / 2 - font_rect.height / 2
+        )
+        self.__screen.blit(font_surface, font_rect)
+
+class Try():
+    def __init__(self, screen: pygame.Surface, nb_try: int) -> None:
+        self.__screen = screen
+        self.__items = pygame.sprite.Group()
+        self.__background = Civil_Background(self.__items, (10, 60), (75, 20))
+        self.__logos = []
+        for i in range(nb_try):
+            self.__logos.append(Logo(self.__items, "helico-icon", (((self.__background.rect.width / 4) * (i + 1) - 15 / 2) + 10, 62), (15, 15)))
+    
+    def afficher(self) -> None:
+        self.__items.draw(self.__screen)
 
 class Stored():
     def __init__(self, screen: pygame.Surface) -> None:
         self.__screen = screen
         self.__items = pygame.sprite.Group()
-        self.__background = Civil_Background(self.__items, (86, 60))
-        self.__logo = Logo(self.__items, "storage", ((152 + 10) - 19, 62))
+        self.__background = Civil_Background(self.__items, (86, 60), (75, 20))
+        self.__logo = Logo(self.__items, "storage", ((152 + 10) - 19, 62), (15, 15))
         self.__font = pygame.font.Font("assets/font/kenvector_future.ttf", 12)
     
     def afficher(self, stored: int, max_storage: int) -> None:
@@ -73,14 +116,16 @@ class Stored():
         )
         self.__screen.blit(font_surface, font_rect)
         
-
 class HUD():
-    def __init__(self, screen: pygame.Surface) -> None:
+    def __init__(self, screen: pygame.Surface, nb_try: int) -> None:
         self.__screen = screen
         self.__items = pygame.sprite.Group()
         self.__health = Health(self.__items, self.__screen)
         self.__fuel = Fuel(self.__items, self.__screen)
         self.__stored = Stored(self.__screen)
+        self.__saved = Saved(self.__screen)
+        self.__dead = Dead(self.__screen)
+        self.__try = Try(self.__screen, nb_try)
     
     # Geter / Seter
     
@@ -91,9 +136,12 @@ class HUD():
     
     # Méthodes
     
-    def afficher(self, health: int, fuel: int, stored: int, max_storage: int) -> None:
+    def afficher(self, health: int, fuel: int, stored: int, max_storage: int, saved: int, max_civil: int, dead: int) -> None:
         self.__health.afficher(health)
         self.__fuel.afficher(fuel)
         self.__stored.afficher(stored, max_storage)
+        self.__saved.afficher(saved, max_civil)
+        self.__dead.afficher(dead, max_civil)
+        self.__try.afficher()
         
         self.__items.draw(self.__screen)

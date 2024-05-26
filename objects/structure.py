@@ -69,10 +69,10 @@ class Structure(pygame.sprite.Sprite):
     def set_civils_list(self, list: list) -> None:
         self.__civils_list = list
     
-    def get_civils_not_aboarded_and_not_saved(self) -> list:
+    def get_civils_playable(self) -> list:
         list = []
         for civil in self.__civils_list:
-            if not civil.get_aboard() and not civil.get_saved():
+            if not civil.get_aboard() and not civil.get_saved() and civil.get_state() not in ("death", "damage"):
                 list.append(civil)
         return list
     
@@ -119,10 +119,10 @@ class Structure(pygame.sprite.Sprite):
             # Tuer entre 2 et 3 civils
             if bomb:
                 kill = random.randint(2, 3)
-            for civil in self.__civils_list:
-                if kill > 0:
-                    civil.hit()
-                    kill -= 1
+                for civil in self.__civils_list:
+                    if kill > 0:
+                        civil.hit()
+                        kill -= 1
     
     def handle(self, map_size: int, player, base_porte: pygame.Rect) -> None:
         # Gérer les civils
@@ -136,6 +136,7 @@ class Structure(pygame.sprite.Sprite):
                     civil.set_aboard(False)
                     self.__civils_group.add(civil)
                     civil.set_base(True)
+                    civil.rect.x = random.randint(civil.rect.x - 10, civil.rect.x + 10)
                     player.set_storage(player.get_storage() - 1)
         
         # Ne plus gérer les civils sauvés

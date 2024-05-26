@@ -24,6 +24,7 @@ class Player:
         self.__max_storage = 5
         self.__storage = 0
         self.__health = 100
+        self.__try = 3
         self.__fuel = 100
         self.__fuel_timer = 0
         self.__fuel_timer_delay = 50
@@ -117,6 +118,11 @@ class Player:
         return self.__health
     def set_health(self, health: int) -> None:
         self.__health = health
+    
+    def get_try(self) -> int:
+        return self.__try
+    def set_try(self, n_try: int) -> None:
+        self.__try = n_try
     
     def get_fuel(self) -> int:
         return self.__fuel

@@ -31,9 +31,10 @@ class Game:
         self.__structures_group = pygame.sprite.Group()
         self.__structures_list = []
         self.__structures_list.append(structure.Structure(self.__structures_group, 200, 72, (200, 72), "batiment", "brick"))
+        self.__civil_numbers = self.get_civils_number()
     
         # HUD
-        self.__hud = hud.HUD(self.__screen)
+        self.__hud = hud.HUD(self.__screen, self.__player.get_try())
     
         # Base
         self.__base_group = pygame.sprite.Group()
@@ -89,7 +90,7 @@ class Game:
             self.get_player().get_heli().sync_frame()
             self.get_player().get_heli().sync_side(self.get_player().get_dir())
             
-            self.__hud.afficher(self.get_player().get_health(), self.get_player().get_fuel(), self.__player.get_storage(), self.__player.get_max_storage())
+            self.__hud.afficher(self.get_player().get_health(), self.get_player().get_fuel(), self.__player.get_storage(), self.__player.get_max_storage(), len(self.get_civils_saved()), self.__civil_numbers, len(self.get_civils_dead()))
             
             # Events uniques
             for event in pygame.event.get():
@@ -146,11 +147,11 @@ class Game:
             
             # Gestion des bombes
             if self.get_player().get_bombs_list() != []:
-                self.get_player().bombs_handle(self.get_enemis().get_tanks() + self.__structures_list + self.get_civils_not_aboarded_and_not_saved())
+                self.get_player().bombs_handle(self.get_enemis().get_tanks() + self.get_intacts_structures() + self.get_civils_playable())
             
             # Gestion des bullets
             if self.get_player().get_bullets_list() != []:
-                self.get_player().bullets_handle(self.get_enemis().get_tanks() + self.get_enemis().get_avions() + self.__structures_list + self.get_civils_not_aboarded_and_not_saved())
+                self.get_player().bullets_handle(self.get_enemis().get_tanks() + self.get_enemis().get_avions() + self.get_intacts_structures() + self.get_civils_playable())
             self.get_enemis().move_avions_bullets([self.get_player()])
             
             # Mouvements des tanks
@@ -185,16 +186,43 @@ class Game:
         for structure in self.__structures_list:
             structure.handle(map_size, self.__player, base_porte)
     
+    def get_intacts_structures(self) -> list:
+        list = []
+        for structure in self.__structures_list:
+            if not structure.get_destroyed():
+                list.append(structure)
+        return list
+    
+    def get_civils_number(self) -> int:
+        n = 0
+        for structure in self.__structures_list:
+            n += structure.get_civils_number()
+        return n
+    
     def get_civils(self) -> list:
         list = []
         for structure in self.__structures_list:
             list += structure.get_civils_list()
         return list
     
-    def get_civils_not_aboarded_and_not_saved(self) -> list:
+    def get_civils_dead(self) -> list:
+        list = []
+        for civil in self.get_civils():
+            if civil.get_state() in ("death", "damage"):
+                list.append(civil)
+        return list
+    
+    def get_civils_saved(self) -> list:
+        list = []
+        for civil in self.get_civils():
+            if civil.get_saved():
+                list.append(civil)
+        return list
+    
+    def get_civils_playable(self) -> list:
         list = []
         for structure in self.__structures_list:
-            list += structure.get_civils_not_aboarded_and_not_saved()
+            list += structure.get_civils_playable()
         return list
         
     def afficher_structures(self, egged: bool = False) -> None:
