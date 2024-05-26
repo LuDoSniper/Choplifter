@@ -7,9 +7,11 @@ import objects.hud as hud
 import objects.base as base
 import objects.menu.assets as assets
 import objects.menu.link as link
+import objects.music as music
 
 class Game:
-    def __init__(self, mode: str) -> None:
+    def __init__(self, music_manager: music.Music, mode: str) -> None:
+        self.__music_manager = music_manager
         self.__mode = mode
         self.__assets = assets.Assets()
         self.__link = link.Link(self.__assets)
@@ -117,6 +119,9 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.__response = "exit"
                     self.quit()
+                
+                if event.type == self.__music_manager.END_EVENT:
+                    self.__music_manager.switch()
                 
                 if self.__mode == "menu":
                     self.__response = self.__link.handle_event(event)

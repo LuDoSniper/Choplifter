@@ -48,9 +48,9 @@ class Assets:
 
         self.click_sound = pygame.mixer.Sound('assets/menu/click_sound.mp3')
         self.background_music = 'assets/menu/background_music.ogg'
-        pygame.mixer.music.load(self.background_music)
+        # pygame.mixer.music.load(self.background_music)
         pygame.mixer.music.set_volume(0.5)
-        pygame.mixer.music.play(-1)
+        # pygame.mixer.music.play(-1)
 
     def get_jaune(self):
         return self.JAUNE
