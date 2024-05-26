@@ -13,6 +13,7 @@ current_game.handle()
 
 while current_game.get_response() != "exit":
     if current_game.get_response() == "solo":
+        music_manager.switch("mission1")
         current_game = game.Game(music_manager, "solo")
         current_game.handle()
 

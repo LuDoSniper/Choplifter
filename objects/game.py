@@ -121,7 +121,7 @@ class Game:
                     self.quit()
                 
                 if event.type == self.__music_manager.END_EVENT:
-                    self.__music_manager.switch()
+                    self.__music_manager.loop()
                 
                 if self.__mode == "menu":
                     self.__response = self.__link.handle_event(event)
