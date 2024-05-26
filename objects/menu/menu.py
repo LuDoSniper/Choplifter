@@ -38,7 +38,9 @@ class Menu:
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             for button in self.buttons:
                 if button.is_hovered(event.pos):
-                    button.on_click()
+                    response = button.on_click()
+                    if response is not None:
+                        return response
 
     def quit_game(self):
         pygame.quit()

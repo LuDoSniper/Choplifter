@@ -9,7 +9,8 @@ import objects.menu.assets as assets
 import objects.menu.link as link
 
 class Game:
-    def __init__(self) -> None:
+    def __init__(self, mode: str) -> None:
+        self.__mode = mode
         self.__assets = assets.Assets()
         self.__link = link.Link(self.__assets)
         self.__screen = pygame.display.set_mode((self.__assets.get_screen_width(), self.__assets.get_screen_height()))
@@ -50,6 +51,8 @@ class Game:
         
         # Environnement
         self.__paused = False
+        self.__response = None
+        self.__running = True
     
     # Geter / Seter
     def get_screen(self) -> pygame.Surface:
@@ -77,59 +80,69 @@ class Game:
     def set_hud(self, hud: hud.HUD) -> None:
         self.__hud = hud
     
+    def get_response(self) -> str:
+        return self.__response
+    def set_response(self, response: str) -> None:
+        self.__response = response
+    
     # Méthodes
     def handle(self):
-        running = True
-        while running:
+        while self.__running:
             
             # Affichage
-            self.__screen.fill((239, 204, 172))
-            self.__link.draw()
+            if self.__mode == "menu":
+                self.__screen.fill((239, 204, 172))
+                self.__link.draw()
+            else:
+                self.get_map().afficher(self.get_screen())
+                self.__base_group.draw(self.__screen)
+                self.afficher_structures(self.__egged)
+                self.get_player().afficher(self.get_screen())
+                self.get_player().afficher_bombs(self.get_screen())
+                self.get_player().afficher_bullets(self.get_screen())
+                self.get_player().afficher_explosions(self.get_screen())
+                self.get_enemis().afficher(self.get_screen())
+                self.get_enemis().display_avions_bullets(self.get_screen())
+                self.get_enemis().display_tanks_bullet(self.get_screen())
             
-            self.get_map().afficher(self.get_screen())
-            self.__base_group.draw(self.__screen)
-            self.afficher_structures(self.__egged)
-            self.get_player().afficher(self.get_screen())
-            self.get_player().afficher_bombs(self.get_screen())
-            self.get_player().afficher_bullets(self.get_screen())
-            self.get_player().afficher_explosions(self.get_screen())
-            self.get_enemis().afficher(self.get_screen())
-            self.get_enemis().display_avions_bullets(self.get_screen())
-            self.get_enemis().display_tanks_bullet(self.get_screen())
-            
-            if not self.__paused:
+            if not self.__paused and self.__mode != "menu":
                 self.get_player().get_heli().sync_frame()
                 self.get_player().get_heli().sync_side(self.get_player().get_dir())
             
-            self.__hud.afficher(self.get_player().get_health(), self.get_player().get_fuel(), self.__player.get_storage(), self.__player.get_max_storage(), len(self.get_civils_saved()), self.__civil_numbers, len(self.get_civils_dead()))
+            if self.__mode != "menu":
+                self.__hud.afficher(self.get_player().get_health(), self.get_player().get_fuel(), self.__player.get_storage(), self.__player.get_max_storage(), len(self.get_civils_saved()), self.__civil_numbers, len(self.get_civils_dead()))
             
             # Events uniques
             for event in pygame.event.get():
-                self.__link.handle_event(event)
-                
                 if event.type == pygame.QUIT:
-                    running = False
+                    self.__response = "exit"
+                    self.quit()
                 
-                # Touche pressée
-                if event.type == pygame.KEYDOWN:
-                    
-                    if not self.__paused:
-                        # Easter egg
-                        if event.key == pygame.K_e:
-                            if self.__egg == []:
-                                self.__egg.append('e')
-                            else:
-                                self.__egg = []
-                        if event.key == pygame.K_g:
-                            if self.__egg in (['e'], ['e', 'g']):
-                                self.__egg.append('g')
-                            else:
-                                self.__egg = []
-                    
-                    if event.key == pygame.K_ESCAPE:
-                        self.__paused = not self.__paused
+                if self.__mode == "menu":
+                    self.__response = self.__link.handle_event(event)
+                    if self.__response == "solo":
+                        self.quit()
+                else:
+                    # Touche pressée
+                    if event.type == pygame.KEYDOWN:
+                        
+                        if not self.__paused:
+                            # Easter egg
+                            if event.key == pygame.K_e:
+                                if self.__egg == []:
+                                    self.__egg.append('e')
+                                else:
+                                    self.__egg = []
+                            if event.key == pygame.K_g:
+                                if self.__egg in (['e'], ['e', 'g']):
+                                    self.__egg.append('g')
+                                else:
+                                    self.__egg = []
+                        
+                        if event.key == pygame.K_ESCAPE:
+                            self.__paused = not self.__paused
             
-            if not self.__paused:
+            if not self.__paused and self.__mode != "menu":
                 # Etat des touches
                 pressed = pygame.key.get_pressed()
                 
@@ -254,4 +267,4 @@ class Game:
     
     def quit(self) -> None:
         # Sauvegarde surement mais a voir (juste au cas où)
-        pass
+        self.__running = False

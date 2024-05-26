@@ -22,10 +22,7 @@ class Link:
         self.current_menu = menu_name
 
     def handle_event(self, event):
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-        self.menus[self.current_menu].handle_event(event)
+        return self.menus[self.current_menu].handle_event(event)
 
     def draw(self):
         self.menus[self.current_menu].draw()

@@ -20,8 +20,7 @@ class Button:
 
     def on_click(self):
         self.assets.click_sound.play()
-        self.callback()
-
+        return self.callback()
 
     def update(self, mouse_pos):
         pass
