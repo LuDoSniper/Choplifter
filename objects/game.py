@@ -116,14 +116,6 @@ class Game:
                                 self.__egg.append('g')
                             else:
                                 self.__egg = []
-                        
-                        # Lancement d'une bombe
-                        if event.key == pygame.K_b:
-                            self.get_player().bomber()
-                        
-                        # Lancement d'un tir
-                        if event.key == pygame.K_SPACE:
-                            self.get_player().shoot()
                     
                     if event.key == pygame.K_ESCAPE:
                         self.__paused = not self.__paused
@@ -131,6 +123,14 @@ class Game:
             if not self.__paused:
                 # Etat des touches
                 pressed = pygame.key.get_pressed()
+                
+                # Lancement d'une bombe
+                if pressed[pygame.K_b]:
+                    self.get_player().bomber()
+                
+                # Lancement d'un tir
+                if pressed[pygame.K_SPACE]:
+                    self.get_player().shoot()
                 
                 # Mouvements du player
                 if self.get_player().get_heli().get_rect().y < 80:

@@ -39,10 +39,14 @@ class Player:
         # Gestion des bombes
         self.__bombs_list = []
         self.__bombs_group = pygame.sprite.Group()
+        self.__bombs_timer_delay = 150
+        self.__bombs_timer = self.__bombs_timer_delay
         
         # Gestion des tirs
         self.__bullets_list = []
         self.__bullets_group = pygame.sprite.Group()
+        self.__bullets_timer_delay = 25
+        self.__bullets_timer = self.__bullets_timer_delay
         
         # Gestion des explosions
         self.__explosions_list = []
@@ -191,6 +195,11 @@ class Player:
     
     # Méthodes
     def afficher(self, screen: pygame.Surface) -> None:
+        # Gestions des timers
+        self.__bullets_timer += 1
+        self.__bombs_timer += 1
+        
+        # Gestion de l'affichage
         image = self.get_heli().get_image()
         rect = self.get_heli().get_rect()
         if self.get_angle() not in (-90, 90):
@@ -253,7 +262,9 @@ class Player:
         self.set_pos((pos_x, pos_y))
     # Bombes
     def bomber(self) -> None:
-        self.__bombs_list.append(bomb.Bomb(self.get_bombs_group(), (self.get_pos()[0] + self.get_heli().get_rect().width / 2, self.get_pos()[1] + self.get_heli().get_rect().height), (self.get_heli().get_rect().x + self.get_heli().get_rect().width / 2, self.get_heli().get_rect().y + self.get_heli().get_rect().height), self.get_screen()))
+        if self.__bombs_timer >= self.__bombs_timer_delay:
+            self.__bombs_timer = 0
+            self.__bombs_list.append(bomb.Bomb(self.get_bombs_group(), (self.get_pos()[0] + self.get_heli().get_rect().width / 2, self.get_pos()[1] + self.get_heli().get_rect().height), (self.get_heli().get_rect().x + self.get_heli().get_rect().width / 2, self.get_heli().get_rect().y + self.get_heli().get_rect().height), self.get_screen()))
     
     def bombs_handle(self, targets: list) -> None:
         for bomb in self.get_bombs_list():
@@ -272,12 +283,14 @@ class Player:
     
     # Bullets
     def shoot(self) -> None:
-        sens = self.get_heli().get_sens()
-        if sens:
-            dir = -1
-        else:
-            dir = 1
-        self.__bullets_list.append(bullet.Bullet(self.get_bullets_group(), self.__screen, self, dir, self.get_angle(), self.get_pos(), self.get_heli().get_rect().x, self.get_heli().get_rect().y))
+        if self.__bullets_timer >= self.__bullets_timer_delay:
+            self.__bullets_timer = 0
+            sens = self.get_heli().get_sens()
+            if sens:
+                dir = -1
+            else:
+                dir = 1
+            self.__bullets_list.append(bullet.Bullet(self.get_bullets_group(), self.__screen, self, dir, self.get_angle(), self.get_pos(), self.get_heli().get_rect().x, self.get_heli().get_rect().y))
     
     def bullets_handle(self, targets: list = []) -> None:
         for bullet in self.get_bullets_list():
@@ -311,4 +324,3 @@ class Player:
     
     def afficher_explosions(self, screen: pygame.Surface) -> None:
         self.get_explosions_group().draw(screen)
-    
