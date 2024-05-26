@@ -43,6 +43,9 @@ class Game:
         # Easter egg
         self.__egg = []
         self.__egged = False
+        
+        # Environnement
+        self.__paused = False
     
     # Geter / Seter
     def get_screen(self) -> pygame.Surface:
@@ -87,8 +90,9 @@ class Game:
             self.get_enemis().display_avions_bullets(self.get_screen())
             self.get_enemis().display_tanks_bullet(self.get_screen())
             
-            self.get_player().get_heli().sync_frame()
-            self.get_player().get_heli().sync_side(self.get_player().get_dir())
+            if not self.__paused:
+                self.get_player().get_heli().sync_frame()
+                self.get_player().get_heli().sync_side(self.get_player().get_dir())
             
             self.__hud.afficher(self.get_player().get_health(), self.get_player().get_fuel(), self.__player.get_storage(), self.__player.get_max_storage(), len(self.get_civils_saved()), self.__civil_numbers, len(self.get_civils_dead()))
             
@@ -100,81 +104,86 @@ class Game:
                 # Touche pressée
                 if event.type == pygame.KEYDOWN:
                     
-                    # Easter egg
-                    if event.key == pygame.K_e:
-                        if self.__egg == []:
-                            self.__egg.append('e')
-                        else:
-                            self.__egg = []
-                    if event.key == pygame.K_g:
-                        if self.__egg in (['e'], ['e', 'g']):
-                            self.__egg.append('g')
-                        else:
-                            self.__egg = []
+                    if not self.__paused:
+                        # Easter egg
+                        if event.key == pygame.K_e:
+                            if self.__egg == []:
+                                self.__egg.append('e')
+                            else:
+                                self.__egg = []
+                        if event.key == pygame.K_g:
+                            if self.__egg in (['e'], ['e', 'g']):
+                                self.__egg.append('g')
+                            else:
+                                self.__egg = []
+                        
+                        # Lancement d'une bombe
+                        if event.key == pygame.K_b:
+                            self.get_player().bomber()
+                        
+                        # Lancement d'un tir
+                        if event.key == pygame.K_SPACE:
+                            self.get_player().shoot()
                     
-                    # Lancement d'une bombe
-                    if event.key == pygame.K_b:
-                        self.get_player().bomber()
-                    
-                    # Lancement d'un tir
-                    if event.key == pygame.K_SPACE:
-                        self.get_player().shoot()
+                    if event.key == pygame.K_ESCAPE:
+                        self.__paused = not self.__paused
             
-            # Etat des touches
-            pressed = pygame.key.get_pressed()
-            
-            # Mouvements du player
-            if self.get_player().get_heli().get_rect().y < 80:
-                dir = pressed[pygame.K_RIGHT] - pressed[pygame.K_LEFT]
-            else:
-                dir = 0
-            self.get_player().set_dir(dir)
-            self.get_player().set_vertical_dir(pressed[pygame.K_UP] - pressed[pygame.K_DOWN])
-            self.get_player().move()
-            
-            # Syncronisation des mouvements
-            if self.get_player().get_heli().get_limited():
-                self.get_map().sync_vel(self.get_player().get_velocity())
-                self.get_enemis().sync_vel_tanks(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
-                self.get_enemis().sync_vel_avions(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
-                self.get_enemis().sync_vel_explosions(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
-                self.get_player().sync_vel_bombs(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
-                self.get_player().sync_vel_bullets(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
-                self.get_player().sync_vel_explosions(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
-                self.sync_vel_structures(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
-                self.__base.sync_vel(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
-            self.get_player().get_heli().sync_vel(self.get_player().get_velocity(), self.get_player().get_vertical_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border(), self.get_player().get_max_height(), self.get_player().get_min_height())
-            
-            # Gestion des bombes
-            if self.get_player().get_bombs_list() != []:
-                self.get_player().bombs_handle(self.get_enemis().get_tanks() + self.get_intacts_structures() + self.get_civils_playable())
-            
-            # Gestion des bullets
-            if self.get_player().get_bullets_list() != []:
-                self.get_player().bullets_handle(self.get_enemis().get_tanks() + self.get_enemis().get_avions() + self.get_intacts_structures() + self.get_civils_playable())
-            self.get_enemis().move_avions_bullets([self.get_player()])
-            
-            # Mouvements des tanks
-            self.get_enemis().handle_tanks(self.get_player())
-            
-            # Mouvement des avions
-            self.get_enemis().handle_avions()
-            
-            # Gestion des explosions
-            self.get_player().explosions_handle()
-            self.get_enemis().handle_explosions()
-            
-            # Gestion des structures
-            self.handle_structures(self.__map.get_map_size(), self.__base.porte)
-            
-            # Gestion de la base
-            self.__base.handle(self.__player, self.__structures_list)
-            
-            # Easter egg
-            if self.__egg == ['e', 'g', 'g']:
-                self.__egged = True
-            else:
-                self.__egged = False
+            if not self.__paused:
+                # Etat des touches
+                pressed = pygame.key.get_pressed()
+                
+                # Mouvements du player
+                if self.get_player().get_heli().get_rect().y < 80:
+                    dir = pressed[pygame.K_RIGHT] - pressed[pygame.K_LEFT]
+                else:
+                    dir = 0
+                self.get_player().set_dir(dir)
+                self.get_player().set_vertical_dir(pressed[pygame.K_UP] - pressed[pygame.K_DOWN])
+                self.get_player().move()
+                
+                # Syncronisation des mouvements
+                if self.get_player().get_heli().get_limited():
+                    self.get_map().sync_vel(self.get_player().get_velocity())
+                    self.get_enemis().sync_vel_tanks(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
+                    self.get_enemis().sync_vel_avions(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
+                    self.get_enemis().sync_vel_explosions(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
+                    self.get_player().sync_vel_bombs(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
+                    self.get_player().sync_vel_bullets(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
+                    self.get_player().sync_vel_explosions(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
+                    self.sync_vel_structures(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
+                    self.__base.sync_vel(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
+                self.get_player().get_heli().sync_vel(self.get_player().get_velocity(), self.get_player().get_vertical_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border(), self.get_player().get_max_height(), self.get_player().get_min_height())
+                
+                # Gestion des bombes
+                if self.get_player().get_bombs_list() != []:
+                    self.get_player().bombs_handle(self.get_enemis().get_tanks() + self.get_intacts_structures() + self.get_civils_playable())
+                
+                # Gestion des bullets
+                if self.get_player().get_bullets_list() != []:
+                    self.get_player().bullets_handle(self.get_enemis().get_tanks() + self.get_enemis().get_avions() + self.get_intacts_structures() + self.get_civils_playable())
+                self.get_enemis().move_avions_bullets([self.get_player()])
+                
+                # Mouvements des tanks
+                self.get_enemis().handle_tanks(self.get_player())
+                
+                # Mouvement des avions
+                self.get_enemis().handle_avions()
+                
+                # Gestion des explosions
+                self.get_player().explosions_handle()
+                self.get_enemis().handle_explosions()
+                
+                # Gestion des structures
+                self.handle_structures(self.__map.get_map_size(), self.__base.porte)
+                
+                # Gestion de la base
+                self.__base.handle(self.__player, self.__structures_list)
+                
+                # Easter egg
+                if self.__egg == ['e', 'g', 'g']:
+                    self.__egged = True
+                else:
+                    self.__egged = False
             
             # Rafraichissement de la fenêtre
             pygame.display.flip()
