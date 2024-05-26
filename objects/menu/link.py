@@ -4,7 +4,6 @@ from objects.menu.menu_options import MenuOptions
 from objects.menu.menu_credits import MenuCredits
 
 import pygame
-import sys
 
 class Link:
     def __init__(self, assets):
@@ -38,3 +37,9 @@ class Link:
         for menu_name in self.menus:
             if hasattr(self.menus[menu_name], 'buttons'):
                 self.menus[menu_name].create_buttons()
+
+    def get_volume(self) -> dict:
+        return self.menus["options"].get_volume()
+    def set_volume(self, data: dict) -> None:
+        pygame.mixer.music.set_volume(data["music"])
+        self.assets.click_sound.set_volume(data["sfx"])

@@ -10,11 +10,13 @@ music_manager = music.Music()
 
 current_game = game.Game(music_manager, "menu")
 current_game.handle()
+volume = current_game.get_volume()
 
 while current_game.get_response() != "exit":
     if current_game.get_response() == "solo":
         music_manager.switch("mission1")
         current_game = game.Game(music_manager, "solo")
+        current_game.set_volume(volume)
         current_game.handle()
 
 pygame.quit()

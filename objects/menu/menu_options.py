@@ -55,3 +55,19 @@ class MenuOptions:
     def confirm(self):
         print("Options confirmées")
         self.change_menu_callback("main")
+    
+    def get_sliders(self) -> list:
+        sliders = []
+        for element in self.elements:
+            if type(element) == Slider:
+                sliders.append(element)
+        return sliders
+    
+    def get_volume(self) -> dict:
+        data = {}
+        for slider in self.get_sliders():
+            if slider.label == "Son":
+                data["sfx"] = slider.value
+            elif slider.label == "Musique":
+                data["music"] = slider.value
+        return data

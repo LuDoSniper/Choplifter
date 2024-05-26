@@ -21,7 +21,7 @@ class Assets:
         self.custom_font_16 = pygame.font.Font('assets/menu/police.ttf', 14)
 
         self.bouton = pygame.image.load(f'assets/menu/bouton_{self.THEME}.png').convert_alpha()
-        self.background_menu = pygame.image.load(f'assets/menu/background.png').convert()
+        self.background_menu = pygame.image.load(f'assets/menu/background.png')
 
         self.bouton_jouer = pygame.image.load('assets/menu/bouton_jouer.png').convert_alpha()
         self.background_menu_jouer = pygame.image.load('assets/menu/background_jouer.png').convert()

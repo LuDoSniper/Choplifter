@@ -270,6 +270,11 @@ class Game:
         for structure in self.__structures_list:
             structure.sync_vel(velocity, left, right)
     
+    def get_volume(self) -> dict:
+        return self.__link.get_volume()
+    def set_volume(self, data: dict) -> None:
+        self.__link.set_volume(data)
+    
     def quit(self) -> None:
         # Sauvegarde surement mais a voir (juste au cas où)
         self.__running = False
