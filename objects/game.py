@@ -5,10 +5,14 @@ import objects.enemis as enemis
 import objects.structure as structure
 import objects.hud as hud
 import objects.base as base
+import objects.menu.assets as assets
+import objects.menu.link as link
 
 class Game:
     def __init__(self) -> None:
-        self.__screen = pygame.display.set_mode((700, 500))
+        self.__assets = assets.Assets()
+        self.__link = link.Link(self.__assets)
+        self.__screen = pygame.display.set_mode((self.__assets.get_screen_width(), self.__assets.get_screen_height()))
         pygame.display.set_caption("Choplifter")
         
         # Clock pour les itérations max
@@ -79,6 +83,9 @@ class Game:
         while running:
             
             # Affichage
+            self.__screen.fill((239, 204, 172))
+            self.__link.draw()
+            
             self.get_map().afficher(self.get_screen())
             self.__base_group.draw(self.__screen)
             self.afficher_structures(self.__egged)
@@ -98,6 +105,8 @@ class Game:
             
             # Events uniques
             for event in pygame.event.get():
+                self.__link.handle_event(event)
+                
                 if event.type == pygame.QUIT:
                     running = False
                 
