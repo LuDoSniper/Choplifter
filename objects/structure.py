@@ -14,6 +14,7 @@ class Structure(pygame.sprite.Sprite):
         elif self.__type == "garade":
             self.__civils_number = random.randint(1, 3)
         
+        self.__state = 2
         self.__destroyed = False
         self.__unloading = False
         self.__civils_group = pygame.sprite.Group()
@@ -108,7 +109,18 @@ class Structure(pygame.sprite.Sprite):
             self.__civils_list.append(civil.Civil(self.__civils_group, x, self.rect.y + y_offset, (x, self.rect.y + y_offset), gender, type, clothes, self.__egged))
     
     def hit(self, bomb: bool = False) -> None:
-        if not self.__destroyed:
+        if bomb:
+            damage = 2
+        else:
+            damage = 1
+        self.__state -= damage
+        if self.__state == 1:
+            self.image = pygame.image.load(f"assets/structure/{self.__type}/{self.__theme}-fissure.png")
+            self.image = pygame.transform.scale(self.image, (
+                self.image.get_rect().width * 2,
+                self.image.get_rect().height * 2
+            ))
+        if not self.__destroyed and self.__state == 0:
             self.__destroyed = True
             self.image = pygame.image.load(f"assets/structure/{self.__type}/{self.__theme}-decombres.png")
             self.image = pygame.transform.scale(self.image, (

@@ -12,7 +12,7 @@ class Assets:
         self.SCREEN_WIDTH = 800
         self.SCREEN_HEIGHT = 600
 
-        self.THEME = 'Orange'
+        self.THEME = 'Gris'
 
         self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
         pygame.display.set_caption('Choplifter Menu')

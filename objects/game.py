@@ -15,6 +15,7 @@ class Game:
         self.__mode = mode
         self.__assets = assets.Assets()
         self.__link = link.Link(self.__assets)
+        pygame.display.set_icon(pygame.image.load("assets/icon/Icon.png"))
         self.__screen = pygame.display.set_mode((self.__assets.get_screen_width(), self.__assets.get_screen_height()))
         pygame.display.set_caption("Choplifter")
         
@@ -41,7 +42,7 @@ class Game:
         self.__civil_numbers = self.get_civils_number()
     
         # HUD
-        self.__hud = hud.HUD(self.__screen, self.__player.get_try())
+        self.__hud = hud.HUD(self.__screen, self.__player.get_try(), self.__assets.THEME)
     
         # Base
         self.__base_group = pygame.sprite.Group()
@@ -90,7 +91,7 @@ class Game:
     # Méthodes
     def handle(self):
         while self.__running:
-            
+            print(self.__assets.THEME)
             # Affichage
             if self.__mode == "menu":
                 self.__screen.fill((239, 204, 172))
@@ -270,10 +271,16 @@ class Game:
         for structure in self.__structures_list:
             structure.sync_vel(velocity, left, right)
     
-    def get_volume(self) -> dict:
-        return self.__link.get_volume()
-    def set_volume(self, data: dict) -> None:
-        self.__link.set_volume(data)
+    def get_data(self) -> dict:
+        return self.__link.get_data()
+    def set_data(self, data: dict) -> None:
+        pygame.mixer.music.set_volume(data["music"])
+        self.__assets.click_sound.set_volume(data["sfx"])
+        self.__assets.THEME = data["theme"]
+        self.update_hud()
+    
+    def update_hud(self) -> None:
+        self.__hud.update(self.__assets.THEME)
     
     def quit(self) -> None:
         # Sauvegarde surement mais a voir (juste au cas où)

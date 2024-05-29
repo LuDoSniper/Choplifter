@@ -38,8 +38,9 @@ class Link:
             if hasattr(self.menus[menu_name], 'buttons'):
                 self.menus[menu_name].create_buttons()
 
-    def get_volume(self) -> dict:
-        return self.menus["options"].get_volume()
-    def set_volume(self, data: dict) -> None:
-        pygame.mixer.music.set_volume(data["music"])
-        self.assets.click_sound.set_volume(data["sfx"])
+    def get_data(self) -> dict:
+        # Récupérer le volume
+        data = self.menus["options"].get_volume()
+        # Récupérer le theme
+        data["theme"] = self.assets.THEME
+        return data

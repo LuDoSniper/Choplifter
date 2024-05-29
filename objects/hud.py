@@ -35,12 +35,19 @@ class Fuel(pygame.sprite.Sprite):
         pygame.draw.rect(self.__screen, (255, 199, 54), self.fuel_rect)
 
 class Civil_Background(pygame.sprite.Sprite):
-    def __init__(self, group: pygame.sprite.Group, pos: tuple, size: tuple) -> None:
+    def __init__(self, group: pygame.sprite.Group, pos: tuple, size: tuple, color: str) -> None:
         super().__init__(group)
-        self.image = pygame.image.load("assets/hud_ig/ottages.png")
-        self.image = pygame.transform.scale(self.image, size)
+        self.__size = size
+        self.__color = color
+        self.image = pygame.image.load(f"assets/hud_ig/ottages-{self.__color}.png")
+        self.image = pygame.transform.scale(self.image, self.__size)
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = pos
+
+    def update(self, color: str) -> None:
+        self.__color = color
+        self.image = pygame.image.load(f"assets/hud_ig/ottages-{self.__color}.png")
+        self.image = pygame.transform.scale(self.image, self.__size)
 
 class Logo(pygame.sprite.Sprite):
     def __init__(self, group: pygame.sprite.Group, logo: str, pos: tuple, size: tuple) -> None:
@@ -51,12 +58,17 @@ class Logo(pygame.sprite.Sprite):
         self.rect.x, self.rect.y = pos
 
 class Saved():
-    def __init__(self, screen: pygame.Surface) -> None:
+    def __init__(self, screen: pygame.Surface, color: str) -> None:
         self.__screen = screen
+        self.__color = color
         self.__items = pygame.sprite.Group()
-        self.__background = Civil_Background(self.__items, (self.__screen.get_width() - 75 - 10, 10), (75, 20))
+        self.__background = Civil_Background(self.__items, (self.__screen.get_width() - 75 - 10, 10), (75, 20), self.__color)
         self.__logo = Logo(self.__items, "people-vector-2", (self.__screen.get_width() - 30 - 10 - 2, 12), (30, 15))
         self.__font = pygame.font.Font("assets/font/kenvector_future.ttf", 12)
+    
+    def update(self, color: str) -> None:
+        self.__color = color
+        self.__background.update(self.__color)
     
     def afficher(self, saved: int, max_civil: int) -> None:
         self.__items.draw(self.__screen)
@@ -69,12 +81,17 @@ class Saved():
         self.__screen.blit(font_surface, font_rect)
 
 class Dead():
-    def __init__(self, screen: pygame.Surface) -> None:
+    def __init__(self, screen: pygame.Surface, color: str) -> None:
         self.__screen = screen
+        self.__color = color
         self.__items = pygame.sprite.Group()
-        self.__background = Civil_Background(self.__items, (self.__screen.get_width() - 75 - 10, 35), (75, 20))
+        self.__background = Civil_Background(self.__items, (self.__screen.get_width() - 75 - 10, 35), (75, 20), self.__color)
         self.__logo = Logo(self.__items, "dead-2", (self.__screen.get_width() - 15 - 10 - 2, 37), (15, 15))
         self.__font = pygame.font.Font("assets/font/kenvector_future.ttf", 12)
+    
+    def update(self, color: str) -> None:
+        self.__color = color
+        self.__background.update(self.__color)
     
     def afficher(self, dead: int, max_civil: int) -> None:
         self.__items.draw(self.__screen)
@@ -87,24 +104,34 @@ class Dead():
         self.__screen.blit(font_surface, font_rect)
 
 class Try():
-    def __init__(self, screen: pygame.Surface, nb_try: int) -> None:
+    def __init__(self, screen: pygame.Surface, nb_try: int, color: str) -> None:
         self.__screen = screen
+        self.__color = color
         self.__items = pygame.sprite.Group()
-        self.__background = Civil_Background(self.__items, (10, 60), (75, 20))
+        self.__background = Civil_Background(self.__items, (10, 60), (75, 20), self.__color)
         self.__logos = []
         for i in range(nb_try):
             self.__logos.append(Logo(self.__items, "helico-icon", (((self.__background.rect.width / 4) * (i + 1) - 15 / 2) + 10, 62), (15, 15)))
+    
+    def update(self, color: str) -> None:
+        self.__color = color
+        self.__background.update(self.__color)
     
     def afficher(self) -> None:
         self.__items.draw(self.__screen)
 
 class Stored():
-    def __init__(self, screen: pygame.Surface) -> None:
+    def __init__(self, screen: pygame.Surface, color: str) -> None:
         self.__screen = screen
+        self.__color = color
         self.__items = pygame.sprite.Group()
-        self.__background = Civil_Background(self.__items, (86, 60), (75, 20))
+        self.__background = Civil_Background(self.__items, (86, 60), (75, 20), self.__color)
         self.__logo = Logo(self.__items, "storage", ((152 + 10) - 19, 62), (15, 15))
         self.__font = pygame.font.Font("assets/font/kenvector_future.ttf", 12)
+    
+    def update(self, color: str) -> None:
+        self.__color = color
+        self.__background.update(self.__color)
     
     def afficher(self, stored: int, max_storage: int) -> None:
         self.__items.draw(self.__screen)
@@ -117,15 +144,16 @@ class Stored():
         self.__screen.blit(font_surface, font_rect)
         
 class HUD():
-    def __init__(self, screen: pygame.Surface, nb_try: int) -> None:
+    def __init__(self, screen: pygame.Surface, nb_try: int, color: str) -> None:
         self.__screen = screen
+        self.__color = color
         self.__items = pygame.sprite.Group()
         self.__health = Health(self.__items, self.__screen)
         self.__fuel = Fuel(self.__items, self.__screen)
-        self.__stored = Stored(self.__screen)
-        self.__saved = Saved(self.__screen)
-        self.__dead = Dead(self.__screen)
-        self.__try = Try(self.__screen, nb_try)
+        self.__stored = Stored(self.__screen, self.__color)
+        self.__saved = Saved(self.__screen, self.__color)
+        self.__dead = Dead(self.__screen, self.__color)
+        self.__try = Try(self.__screen, nb_try, self.__color)
     
     # Geter / Seter
     
@@ -135,6 +163,11 @@ class HUD():
         self.__screen = screen
     
     # Méthodes
+    
+    def update(self, color: str) -> None:
+        self.__color = color
+        for item in [self.__stored, self.__saved, self.__dead, self.__try]:
+            item.update(self.__color)
     
     def afficher(self, health: int, fuel: int, stored: int, max_storage: int, saved: int, max_civil: int, dead: int) -> None:
         self.__health.afficher(health)
