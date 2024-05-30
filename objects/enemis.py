@@ -42,6 +42,13 @@ class Enemis:
     def set_terroristes(self, list: list) -> None:
         self.__terroristes = list
     
+    def get_terroristes_playable(self) -> list:
+        list = []
+        for terroriste in self.__terroristes:
+            if terroriste.get_state() not in ("death", "blood"):
+                list.append(terroriste)
+        return list
+    
     def get_list(self) -> list:
         return self.__list
     def set_list(self, list: list) -> None:
@@ -162,6 +169,10 @@ class Enemis:
     def afficher_gun(self, screen: pygame.Surface) -> None:
         for terroriste in self.__terroristes:
             terroriste.afficher_gun(screen)
+
+    def afficher_explosion(self, screen: pygame.Surface) -> None:
+        for terroriste in self.__terroristes:
+            terroriste.afficher_explosion(screen)
     
     # Affichage de touts le group
     def afficher(self, screen: pygame.Surface) -> None:

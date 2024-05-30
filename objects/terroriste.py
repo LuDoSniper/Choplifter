@@ -1,13 +1,14 @@
 import pygame
 import random
 import objects.bullets as bullets
+import objects.explosion as explosion
 
 class Terroriste(pygame.sprite.Sprite):
     def __init__(self, group: pygame.sprite.Group, local_x: int, local_y: int, pos: tuple, type: str):
         super().__init__(group)
         self.__type = type
         
-        self.image = pygame.image.load(f"assets/terroriste/{type}/idle/0.png")
+        self.image = pygame.image.load(f"assets/terroriste/{type}/idle 1/0.png")
         self.image = pygame.transform.scale(self.image, (self.image.get_rect().width * 1.75, self.image.get_rect().height * 1.75))
         self.rect = self.image.get_rect()
         self.rect.x = local_x
@@ -22,6 +23,9 @@ class Terroriste(pygame.sprite.Sprite):
         self.__speed = 1
         self.__range = 150
         self.__shooting = False
+        self.__exploding = False
+        self.__explosion = None
+        self.__explosion_group = pygame.sprite.Group()
         
         self.__pos = pos
         self.__bullets = []
@@ -43,6 +47,8 @@ class Terroriste(pygame.sprite.Sprite):
         self.__state_timer = self.__state_timer_delay
         self.__shooting_delay = 60
         self.__shooting_timer = self.__shooting_delay
+        self.__exploding_timer = 0
+        self.__exploding_delay = 60
         
     # Geter / Seter
     
@@ -61,12 +67,16 @@ class Terroriste(pygame.sprite.Sprite):
     def set_bullets_group(self, group: list) -> None:
         self.__bullets_group = group
     
+    def get_state(self) -> str:
+        return self.__state
+    
     # Méthodes
     
     def handle(self, map_size: int, screen: pygame.Surface, civils: list) -> None:
+        print(self.__state)
         self.animate()
         self.sync_side()
-        if self.__state != "death":
+        if self.__state not in ("death", "blood"):
             self.scan(screen, civils)
             
             self.__shooting_timer += 1
@@ -83,15 +93,32 @@ class Terroriste(pygame.sprite.Sprite):
                     self.__state = "run"
                     self.__dir = random.choice([-1, 1])
             
-            if self.__state == "run":
+            if self.__exploding:
+                self.__exploding_timer += 1
+                if self.__exploding_timer >= self.__exploding_delay and self.__state != "blood":
+                    self.__state = "blood"
+                    self.__frame = random.randint(0, 3)
+                    self.explode()
+                if self.__explosion is not None and not self.__explosion.explode():
+                    self.__explosion = None
+            
+            if self.__state in ("run", "scream"):
                 self.move(map_size)
             
             if self.__type == "classique":
                 self.gun_rect = self.rect
     
+    def explode(self) -> None:
+        self.__explosion = explosion.Explosion(self.__explosion_group, self.rect.width / 2, self.rect.height / 2, (self.__pos[0] + self.rect.width, self.__pos[1] + self.rect.height / 2))
+    
     def move(self, map_size: int) -> None:
         self.rect.x += self.__speed * self.__dir
         self.__pos = (self.__pos[0] + self.__speed * self.__dir, self.__pos[1])
+        
+        if self.__state == "scream":
+            self.__speed = 2
+        else:
+            self.__speed = 1
         
         # Empecher de sortir de la map
         if self.__pos[0] < 0:
@@ -104,15 +131,16 @@ class Terroriste(pygame.sprite.Sprite):
             self.rect.x -= map_size - tmp - self.rect.width
     
     def animate(self) -> None:
-        self.__animation_timer += 1
-        if self.__animation_timer >= self.__animation_timer_delay:
-            self.__animation_timer = 0
-            self.__frame += 1
-            
-        self.__animation_gun_timer +=1
-        if self.__animation_gun_timer >= self.__animation_gun_timer_delay:
-            self.__animation_gun_timer = 0
-            self.__gun_frame += 1
+        if self.__state != "blood":
+            self.__animation_timer += 1
+            if self.__animation_timer >= self.__animation_timer_delay:
+                self.__animation_timer = 0
+                self.__frame += 1
+                
+            self.__animation_gun_timer +=1
+            if self.__animation_gun_timer >= self.__animation_gun_timer_delay:
+                self.__animation_gun_timer = 0
+                self.__gun_frame += 1
         
         
         state = self.__state
@@ -139,6 +167,9 @@ class Terroriste(pygame.sprite.Sprite):
         elif self.__state == "death" and self.__frame >= 15:
             self.__frame = 15
         
+        elif self.__state == "scream" and self.__frame > 7:
+            self.__frame = 0
+        
         if self.__gun_state == "idle" and self.__gun_frame > 23: # 31
             self.__gun_frame = 0
         elif self.__gun_state == "shoot" and self.__gun_frame > 3:
@@ -156,12 +187,13 @@ class Terroriste(pygame.sprite.Sprite):
         variation = ""
         if self.__state == "idle":
             variation = " " + str(self.__idle_variation)
-        elif self.__state == "death":
+        elif self.__state == "death" and self.__type == "classique":
             variation = " " + str(self.__death_variation)
         self.image = pygame.image.load(f"assets/terroriste/{self.__type}/{state}{variation}/{self.__frame}.png")
-        self.gun_image = pygame.image.load(f"assets/terroriste/{self.__type}/gun/{self.__gun_state}/{self.__gun_frame}.png")
         self.image = pygame.transform.scale(self.image, (self.image.get_rect().width * 1.75, self.image.get_rect().height * 1.75))
-        self.gun_image = pygame.transform.scale(self.gun_image, (self.gun_image.get_rect().width * 1.75, self.gun_image.get_rect().height * 1.75))
+        if self.__type == "classique":
+            self.gun_image = pygame.image.load(f"assets/terroriste/{self.__type}/gun/{self.__gun_state}/{self.__gun_frame}.png")
+            self.gun_image = pygame.transform.scale(self.gun_image, (self.gun_image.get_rect().width * 1.75, self.gun_image.get_rect().height * 1.75))
     
         if self.__reversed:
             self.image = pygame.transform.flip(self.image, True, False)
@@ -176,13 +208,17 @@ class Terroriste(pygame.sprite.Sprite):
                 elif self.rect.x > civil.rect.x:
                     self.__dir = -1
 
-                self.__state == "shoot"
-                self.__gun_state = "shoot"
-                self.__gun_frame = 0
-                self.__shooting_timer = 0
-                self.__animation_gun_timer_delay = 5
-                self.__shooting = True
-                self.shoot(screen)
+                if self.__type == "classique":
+                    self.__state = "shoot"
+                    self.__gun_state = "shoot"
+                    self.__gun_frame = 0
+                    self.__shooting_timer = 0
+                    self.__animation_gun_timer_delay = 5
+                    self.__shooting = True
+                    self.shoot(screen)
+                elif self.__type == "kamikaze":
+                    self.__state = "scream"
+                    self.__exploding = True
     
     def shoot(self, screen: pygame.Surface) -> None:
         # x
@@ -226,6 +262,14 @@ class Terroriste(pygame.sprite.Sprite):
         # Pour les balles
         for bullet in self.__bullets:
             bullet.sync_vel(velocity, left, right)
+        # Pour l'explosion
+        if self.__explosion is not None:
+            self.__explosion.sync_vel(velocity, left, right)
     
     def afficher_gun(self, screen: pygame.Surface) -> None:
-        screen.blit(self.gun_image, self.gun_rect)
+        if self.__type == "classique":
+            screen.blit(self.gun_image, self.gun_rect)
+    
+    def afficher_explosion(self, screen: pygame.Surface) -> None:
+        if self.__explosion is not None:
+            self.__explosion_group.draw(screen)

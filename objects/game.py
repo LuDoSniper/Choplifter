@@ -35,6 +35,7 @@ class Game:
         self.get_enemis().add_tank(self.get_screen(), self.__map.get_map_size(), (50, 100), 2)
         self.get_enemis().add_avion(self.get_screen(), self.__map.get_map_size(), type=2)
         self.get_enemis().add_terroriste(10, 75, (10, 75), "classique")
+        self.get_enemis().add_terroriste(30, 75, (30, 75), "kamikaze")
         
         # Structures
         self.__structures_group = pygame.sprite.Group()
@@ -106,6 +107,7 @@ class Game:
                 self.get_player().afficher_explosions(self.get_screen())
                 self.get_enemis().afficher(self.get_screen())
                 self.get_enemis().afficher_gun(self.get_screen())
+                self.get_enemis().afficher_explosion(self.get_screen())
                 self.get_enemis().display_avions_bullets(self.get_screen())
                 self.get_enemis().display_tanks_bullet(self.get_screen())
                 self.get_enemis().display_terroristes_bullets(self.__screen)
@@ -187,11 +189,11 @@ class Game:
                 
                 # Gestion des bombes
                 if self.get_player().get_bombs_list() != []:
-                    self.get_player().bombs_handle(self.get_enemis().get_tanks() + self.get_intacts_structures() + self.get_civils_playable() + self.get_enemis().get_terroristes())
+                    self.get_player().bombs_handle(self.get_enemis().get_tanks() + self.get_intacts_structures() + self.get_civils_playable() + self.get_enemis().get_terroristes_playable())
                 
                 # Gestion des bullets
                 if self.get_player().get_bullets_list() != []:
-                    self.get_player().bullets_handle(self.get_enemis().get_tanks() + self.get_enemis().get_avions() + self.get_intacts_structures() + self.get_civils_playable() + self.get_enemis().get_terroristes())
+                    self.get_player().bullets_handle(self.get_enemis().get_tanks() + self.get_enemis().get_avions() + self.get_intacts_structures() + self.get_civils_playable() + self.get_enemis().get_terroristes_playable())
                 self.get_enemis().move_avions_bullets([self.get_player()])
                 self.get_enemis().move_terroristes_bullets(self.get_civils_playable())
                 
