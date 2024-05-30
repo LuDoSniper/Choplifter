@@ -3,6 +3,7 @@ import objects.tank as tank
 import objects.avion as avion
 import objects.explosion as explosion
 import objects.player as player
+import objects.terroriste as terroriste
 
 class Enemis:
     def __init__(self, screen: pygame.Surface) -> None:
@@ -10,6 +11,7 @@ class Enemis:
         self.__explosions = []
         self.__tanks = []
         self.__avions = []
+        self.__terroristes = []
         self.__list = []
         
         self.__screen = screen
@@ -34,6 +36,11 @@ class Enemis:
         return self.__avions
     def set_avions(self, avions: list) -> None:
         self.__avions = avions
+    
+    def get_terroristes(self) -> list:
+        return self.__terroristes
+    def set_terroristes(self, list: list) -> None:
+        self.__terroristes = list
     
     def get_list(self) -> list:
         return self.__list
@@ -124,6 +131,37 @@ class Enemis:
         for avion in self.get_avions():
             for bullet in avion.get_bullets_list():
                 bullet.move(targets)
+    
+    # Terroristes
+    def add_terroriste(self, local_x: int, local_y: int, pos: tuple = (0, 40), type: str = "classique") -> None:
+        self.__terroristes.append(terroriste.Terroriste(self.get_group(), local_x, local_y, pos, type)) # Remplir
+    
+    def handle_terroristes(self, map_size: int, screen: pygame.Surface, civils: list) -> None:
+        for terroriste in self.__terroristes:
+            terroriste.handle(map_size, screen, civils)
+            
+            # Gestion des bullets
+            for bullet in terroriste.get_bullets_list():
+                if bullet.get_exploded():
+                    terroriste.get_bullets_group().remove(bullet)
+                    terroriste.get_bullets_list().pop(terroriste.get_bullets_list().index(bullet))
+                    self.explode(bullet.rect.x, bullet.rect.y, bullet.get_pos(), 0.5)
+    
+    def sync_vel_terroristes(self, velocity: float, left: bool, right: bool) -> None:
+        for terroriste in self.__terroristes:
+            terroriste.sync_vel(velocity, left, right)
+    
+    def display_terroristes_bullets(self, screen: pygame.Surface) -> None:
+        for terroriste in self.__terroristes:
+            terroriste.get_bullets_group().draw(screen)
+    
+    def move_terroristes_bullets(self, targets: list = []) -> None:
+        for terroriste in self.__terroristes:
+            terroriste.bullets_handle(targets)
+    
+    def afficher_gun(self, screen: pygame.Surface) -> None:
+        for terroriste in self.__terroristes:
+            terroriste.afficher_gun(screen)
     
     # Affichage de touts le group
     def afficher(self, screen: pygame.Surface) -> None:

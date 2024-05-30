@@ -5,17 +5,22 @@ import objects.avion as avion
 import objects.player as player
 import objects.structure as structure
 import objects.civil as civil
+import objects.terroriste as terroriste
 
 class Bullet(pygame.sprite.Sprite):
     
     SPEED = 5
     
-    def __init__(self, group: pygame.sprite.Group, screen: pygame.Surface, origine, dir: int, angle: int, pos: tuple, local_x: int, local_y: int, boost: int = 0, name: str = "missile-joueur") -> None:
+    def __init__(self, group: pygame.sprite.Group, screen: pygame.Surface, origine, dir: int, angle: int, pos: tuple, local_x: int, local_y: int, boost: int = 0, name: str = "missile-joueur", size: int = 1) -> None:
         super().__init__(group)
         self.image = pygame.image.load(f"assets/tir/missiles/{name}.png")
         if name == "balle-avion":
             self.image = pygame.transform.scale(self.image, (self.image.get_rect().width * 0.75,
                                                              self.image.get_rect().height * 0.75))
+        else:
+            self.image = pygame.transform.scale(self.image, (self.image.get_rect().width * size,
+                                                             self.image.get_rect().height * size))
+        self.size = size
         self.rect = self.image.get_rect()
         self.rect.x = local_x
         self.rect.y = local_y + 10
@@ -43,10 +48,11 @@ class Bullet(pygame.sprite.Sprite):
         self.image = pygame.transform.rotate(self.image, -(angle - 90 * signe))
         
         # Faire partir le tir du nez de l'helico
-        if dir != 1:
-            self.rect.x += 8 * self.SPEED + self.__boost
-        for i in range(0, 8):
-            self.move()
+        if type(self.__origine) == player.Player:
+            if dir != 1:
+                self.rect.x += 8 * self.SPEED + self.__boost
+            for i in range(0, 8):
+                self.move()
     
     # Geter / Seter
     
@@ -107,7 +113,7 @@ class Bullet(pygame.sprite.Sprite):
                 if type(target) in (tank.Tank, avion.Avion, structure.Structure):
                     if target.hit():
                         target.set_exploded(True)
-                elif type(target) == civil.Civil:
+                elif type(target) in (civil.Civil, terroriste.Terroriste):
                     target.hit()
                 else:
                     target.set_exploded(True)

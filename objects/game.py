@@ -34,6 +34,7 @@ class Game:
         # self.get_enemis().add_tank(self.get_screen(), self.__map().get_map_size(), type=1)
         self.get_enemis().add_tank(self.get_screen(), self.__map.get_map_size(), (50, 100), 2)
         self.get_enemis().add_avion(self.get_screen(), self.__map.get_map_size(), type=2)
+        self.get_enemis().add_terroriste(10, 75, (10, 75), "classique")
         
         # Structures
         self.__structures_group = pygame.sprite.Group()
@@ -91,7 +92,6 @@ class Game:
     # Méthodes
     def handle(self):
         while self.__running:
-            print(self.__assets.THEME)
             # Affichage
             if self.__mode == "menu":
                 self.__screen.fill((239, 204, 172))
@@ -105,8 +105,10 @@ class Game:
                 self.get_player().afficher_bullets(self.get_screen())
                 self.get_player().afficher_explosions(self.get_screen())
                 self.get_enemis().afficher(self.get_screen())
+                self.get_enemis().afficher_gun(self.get_screen())
                 self.get_enemis().display_avions_bullets(self.get_screen())
                 self.get_enemis().display_tanks_bullet(self.get_screen())
+                self.get_enemis().display_terroristes_bullets(self.__screen)
             
             if not self.__paused and self.__mode != "menu":
                 self.get_player().get_heli().sync_frame()
@@ -124,7 +126,7 @@ class Game:
                 if event.type == self.__music_manager.END_EVENT:
                     self.__music_manager.loop()
                 
-                if self.__mode == "menu":
+                if self.__mode == "menu" and self.__response != "exit":
                     self.__response = self.__link.handle_event(event)
                     if self.__response == "solo":
                         self.quit()
@@ -174,6 +176,7 @@ class Game:
                     self.get_map().sync_vel(self.get_player().get_velocity())
                     self.get_enemis().sync_vel_tanks(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
                     self.get_enemis().sync_vel_avions(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
+                    self.get_enemis().sync_vel_terroristes(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
                     self.get_enemis().sync_vel_explosions(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
                     self.get_player().sync_vel_bombs(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
                     self.get_player().sync_vel_bullets(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
@@ -184,18 +187,22 @@ class Game:
                 
                 # Gestion des bombes
                 if self.get_player().get_bombs_list() != []:
-                    self.get_player().bombs_handle(self.get_enemis().get_tanks() + self.get_intacts_structures() + self.get_civils_playable())
+                    self.get_player().bombs_handle(self.get_enemis().get_tanks() + self.get_intacts_structures() + self.get_civils_playable() + self.get_enemis().get_terroristes())
                 
                 # Gestion des bullets
                 if self.get_player().get_bullets_list() != []:
-                    self.get_player().bullets_handle(self.get_enemis().get_tanks() + self.get_enemis().get_avions() + self.get_intacts_structures() + self.get_civils_playable())
+                    self.get_player().bullets_handle(self.get_enemis().get_tanks() + self.get_enemis().get_avions() + self.get_intacts_structures() + self.get_civils_playable() + self.get_enemis().get_terroristes())
                 self.get_enemis().move_avions_bullets([self.get_player()])
+                self.get_enemis().move_terroristes_bullets(self.get_civils_playable())
                 
                 # Mouvements des tanks
                 self.get_enemis().handle_tanks(self.get_player())
                 
                 # Mouvement des avions
                 self.get_enemis().handle_avions()
+                
+                # Gestion des terroristes
+                self.get_enemis().handle_terroristes(self.__map.get_map_size(), self.__screen, self.get_civils_playable())
                 
                 # Gestion des explosions
                 self.get_player().explosions_handle()
