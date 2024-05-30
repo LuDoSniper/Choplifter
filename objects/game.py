@@ -281,6 +281,7 @@ class Game:
     def get_data(self) -> dict:
         return self.__link.get_data()
     def set_data(self, data: dict) -> None:
+        self.__link.set_volume(data)
         pygame.mixer.music.set_volume(data["music"])
         self.__assets.click_sound.set_volume(data["sfx"])
         self.__assets.THEME = data["theme"]

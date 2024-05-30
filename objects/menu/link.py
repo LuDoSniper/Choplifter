@@ -44,3 +44,5 @@ class Link:
         # Récupérer le theme
         data["theme"] = self.assets.THEME
         return data
+    def set_volume(self, data: dict) -> None:
+        self.menus["options"].set_volume(data)

@@ -35,7 +35,7 @@ class Menu:
         self.buttons.append(Button('Quitter', start_x, start_y + 3 * (button_height + spacing), self.assets.bouton, self.quit_game, self.assets))
 
     def handle_event(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+        if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             for button in self.buttons:
                 if button.is_hovered(event.pos):
                     response = button.on_click()

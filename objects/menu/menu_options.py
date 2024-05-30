@@ -71,3 +71,9 @@ class MenuOptions:
             elif slider.label == "Musique":
                 data["music"] = slider.value
         return data
+    def set_volume(self, data: dict) -> None:
+        for slider in self.get_sliders():
+            if slider.label == "Son":
+                slider.value = data["sfx"]
+            elif slider.label == "Musique":
+                slider.value = data["music"]
