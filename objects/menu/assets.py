@@ -21,9 +21,11 @@ class Assets:
         self.custom_font_16 = pygame.font.Font('assets/menu/police.ttf', 14)
 
         self.bouton = pygame.image.load(f'assets/menu/bouton_{self.THEME}.png').convert_alpha()
+        self.bouton_click = pygame.image.load(f'assets/menu/button-on-{self.THEME}.png').convert_alpha()
         self.background_menu = pygame.image.load(f'assets/menu/background.png')
 
         self.bouton_jouer = pygame.image.load('assets/menu/bouton_jouer.png').convert_alpha()
+        self.bouton_jouer_click = pygame.image.load('assets/menu/button-on-Jaune.png').convert_alpha()
         self.background_menu_jouer = pygame.image.load('assets/menu/background_jouer.png').convert()
         self.background_menu_options = pygame.image.load('assets/menu/background_option.png').convert()
         self.background_menu_credits = pygame.image.load('assets/menu/background_credits.png').convert()
@@ -32,12 +34,16 @@ class Assets:
         self.bouton_cancel = pygame.image.load('assets/menu/cancel.png').convert_alpha()
         self.bouton_confirm = pygame.image.load('assets/menu/confirm.png').convert_alpha()
         self.bouton_continue = pygame.image.load('assets/menu/continuer.png').convert_alpha()
+        self.bouton_confirm_click = pygame.image.load('assets/menu/button-on-confirm.png').convert_alpha()
+        self.bouton_continue_click = pygame.image.load('assets/menu/button-on-continue.png').convert_alpha()   
 
         self.new_button_width = int(self.bouton_jouer.get_width() * 1.5)
         self.new_button_height = int(self.bouton_jouer.get_height() * 1.5)
 
         self.bouton_jouer = pygame.transform.scale(self.bouton_jouer, (self.new_button_width, self.new_button_height))
+        self.bouton_jouer_click = pygame.transform.scale(self.bouton_jouer_click, (self.new_button_width, self.new_button_height))
         self.bouton = pygame.transform.scale(self.bouton, (self.new_button_width, self.new_button_height))
+        self.bouton_click = pygame.transform.scale(self.bouton_click, (self.new_button_width, self.new_button_height))
         self.background_menu = pygame.transform.scale(self.background_menu, (int(self.background_menu.get_width() * 0.7), int(self.background_menu.get_height() * 0.7)))
         self.background_menu_jouer = pygame.transform.scale(self.background_menu_jouer, (int(self.background_menu_jouer.get_width() * 0.7), int(self.background_menu_jouer.get_height() * 0.7)))
         self.background_menu_options = pygame.transform.scale(self.background_menu_options, (int(self.background_menu_options.get_width() * 0.9), int(self.background_menu_options.get_height() * 0.9)))

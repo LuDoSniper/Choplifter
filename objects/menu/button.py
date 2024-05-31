@@ -1,10 +1,12 @@
 import pygame
 
 class Button:
-    def __init__(self, text, x, y, image, callback, assets, text_color=(255, 255, 255)):
+    def __init__(self, text, x, y, image, image_click, callback, assets, text_color=(255, 255, 255)):
         self.assets = assets
         self.text = text
         self.image = image
+        self.image_default = image
+        self.image_click = image_click
         self.rect = self.image.get_rect(topleft=(x, y))
         self.callback = callback
         self.text_color = text_color
@@ -19,7 +21,11 @@ class Button:
         return self.rect.collidepoint(mouse_pos)
 
     def on_click(self):
+        self.image = self.image_click
         self.assets.click_sound.play()
+
+    def up_click(self):
+        self.image = self.image_default
         return self.callback()
 
     def update(self, mouse_pos):
@@ -28,4 +34,10 @@ class Button:
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             if self.rect.collidepoint(event.pos):
+                self.image = self.image_click
                 self.on_click()
+        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+            if self.image == self.image_click: 
+                self.image = self.image_default
+                if self.rect.collidepoint(event.pos):
+                    self.up_click()

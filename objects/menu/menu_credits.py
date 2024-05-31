@@ -12,7 +12,7 @@ class MenuCredits:
         self.elements = []
         self.elements.append(Button("", (((self.assets.SCREEN_WIDTH + (self.assets.background_menu_credits.get_width() // 2)) // 2) - self.assets.bouton_continue.get_width()), 
                                       (self.assets.background_menu_credits.get_height()), 
-                                      self.assets.bouton_continue, 
+                                      self.assets.bouton_continue, self.assets.bouton_continue_click,
                                       self.continuer, self.assets))
 
     def draw(self):

@@ -29,18 +29,22 @@ class Menu:
         start_y = ((self.assets.SCREEN_HEIGHT - total_height) // 2) + 30
         start_x = (self.assets.SCREEN_WIDTH - button_width) // 2
 
-        self.buttons.append(Button('Jouer', start_x, start_y, self.assets.bouton_jouer, lambda: self.change_menu_callback("play"), self.assets, self.assets.JAUNE))
-        self.buttons.append(Button('Options', start_x, start_y + button_height + spacing, self.assets.bouton, lambda: self.change_menu_callback("options"), self.assets))
-        self.buttons.append(Button('Credits', start_x, start_y + 2 * (button_height + spacing), self.assets.bouton, lambda: self.change_menu_callback("credits"), self.assets))
-        self.buttons.append(Button('Quitter', start_x, start_y + 3 * (button_height + spacing), self.assets.bouton, self.quit_game, self.assets))
+        self.buttons.append(Button('Jouer', start_x, start_y, self.assets.bouton_jouer, self.assets.bouton_jouer_click, lambda: self.change_menu_callback("play"), self.assets, self.assets.JAUNE))
+        self.buttons.append(Button('Options', start_x, start_y + button_height + spacing, self.assets.bouton, self.assets.bouton_click, lambda: self.change_menu_callback("options"), self.assets))
+        self.buttons.append(Button('Credits', start_x, start_y + 2 * (button_height + spacing), self.assets.bouton, self.assets.bouton_click, lambda: self.change_menu_callback("credits"), self.assets))
+        self.buttons.append(Button('Quitter', start_x, start_y + 3 * (button_height + spacing), self.assets.bouton, self.assets.bouton_click, self.quit_game, self.assets))
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             for button in self.buttons:
                 if button.is_hovered(event.pos):
-                    response = button.on_click()
-                    if response is not None:
-                        return response
+                    button.image = button.image_default
+                    button.up_click()
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            for button in self.buttons:
+                if button.is_hovered(event.pos):
+                    button.image = button.image_click
+                    button.on_click()
 
     def quit_game(self):
         pygame.quit()
