@@ -39,8 +39,16 @@ class MenuCredits:
             self.screen.blit(name_surf, (bg_x + 135, bg_y + 240 + i * 20))
 
     def handle_event(self, event):
-        for element in self.elements:
-            element.handle_event(event)
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            for element in self.elements:
+                if element.is_hovered(event.pos):
+                    self.clicked_element = element
+                    element.on_click()
+        elif event.type == pygame.MOUSEBUTTONUP:
+            for element in self.elements:
+                if element == self.clicked_element:
+                    element.up_click()
+            self.clicked_element = None 
 
     def continuer(self):
         self.change_menu_callback("main")

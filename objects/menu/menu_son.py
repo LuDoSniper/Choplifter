@@ -29,13 +29,15 @@ class MenuSon:
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             for element in self.elements:
                 if isinstance(element, Button) and element.is_hovered(event.pos):
+                    self.clicked_element = element
                     element.on_click()
         elif event.type == pygame.MOUSEBUTTONUP:
             for element in self.elements:
-                if isinstance(element, Button) and element.is_hovered(event.pos):
+                if isinstance(element, Button) and element == self.clicked_element:
                     element.up_click()
                 elif isinstance(element, Slider):
                     element.handle_event(event)
+            self.clicked_element = None 
 
     def update_sound(self, value):
         self.assets.click_sound.set_volume(value)
