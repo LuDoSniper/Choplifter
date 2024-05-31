@@ -29,14 +29,20 @@ class Link:
 
     def update_theme(self, new_theme):
         self.assets.THEME = new_theme
+        self.retire_theme = [self.assets.theme for self.assets.theme in self.assets.THEMES if self.assets.theme != self.assets.THEME]
+        
         self.assets.bouton = pygame.image.load(f'assets/menu/bouton_{self.assets.THEME.lower()}.png').convert_alpha()
         self.assets.bouton = pygame.transform.scale(self.assets.bouton, (self.assets.new_button_width, self.assets.new_button_height))
-        
         self.assets.bouton_click = pygame.image.load(f'assets/menu/button-on-{self.assets.THEME.lower()}.png').convert_alpha()
-        self.assets.bouton_click = pygame.transform.scale(self.assets.bouton, (self.assets.new_button_width, self.assets.new_button_height))
+        self.assets.bouton_click = pygame.transform.scale(self.assets.bouton_click, (self.assets.new_button_width, self.assets.new_button_height))
         
         self.assets.background_menu = pygame.image.load(f'assets/menu/background-{self.assets.THEME.lower()}.png')
         self.assets.background_menu = pygame.transform.scale(self.assets.background_menu, (int(self.assets.background_menu.get_width() * 0.7), int(self.assets.background_menu.get_height() * 0.7)))
+
+        self.assets.bouton_jouer = pygame.image.load(f'assets/menu/bouton_jouer_{self.assets.THEME.lower()}.png').convert_alpha()
+        self.assets.bouton_jouer_click = pygame.image.load(f'assets/menu/bouton_jouer_click_{self.assets.THEME.lower()}.png').convert_alpha()
+        self.assets.bouton_jouer = pygame.transform.scale(self.assets.bouton_jouer, (self.assets.new_button_width, self.assets.new_button_height))
+        self.assets.bouton_jouer_click = pygame.transform.scale(self.assets.bouton_jouer_click, (self.assets.new_button_width, self.assets.new_button_height))
 
         self.menus["options"].update_sound(self.assets.click_sound.get_volume())
         self.menus["options"].update_music(pygame.mixer.music.get_volume())

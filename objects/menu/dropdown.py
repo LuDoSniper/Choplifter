@@ -17,7 +17,7 @@ class Dropdown:
         label_surf = self.assets.custom_font_16.render(self.label, True, self.assets.GRIS_CLAIR)
         screen.blit(label_surf, (self.rect.x, self.rect.y - 20))
 
-        selected_option = self.assets.custom_font_16.render(self.options[self.selected_index], True, self.assets.GRIS_FONCE)
+        selected_option = self.assets.custom_font_16.render(self.assets.THEME, True, self.assets.GRIS_FONCE)
         screen.blit(selected_option, (self.rect.x + 10, self.rect.y + (self.rect.height - selected_option.get_height()) // 2))
 
         if self.expanded:

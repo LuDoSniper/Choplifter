@@ -2,7 +2,7 @@ import pygame
 
 class Assets:
     def __init__(self) -> None:
-        self.JAUNE = (152, 120, 2)
+        
         self.BLANC = (255, 255, 255)
         self.BACKGROUND = (239, 204, 172)
 
@@ -13,6 +13,9 @@ class Assets:
         self.SCREEN_HEIGHT = 600
 
         self.THEME = 'Gris'
+        self.THEMES = ["Gris", "Orange", "Bleu", "Vert", "Jaune"]
+        self.retire_theme = [self.theme for self.theme in self.THEMES if self.theme != self.THEME]
+        self.color_theme = (255,255,255)
 
         self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
         pygame.display.set_caption('Choplifter Menu')
@@ -20,22 +23,22 @@ class Assets:
         self.custom_font_32 = pygame.font.Font('assets/menu/police.ttf', 32)
         self.custom_font_16 = pygame.font.Font('assets/menu/police.ttf', 14)
 
-        self.bouton = pygame.image.load(f'assets/menu/bouton_{self.THEME}.png')
-        self.bouton_click = pygame.image.load(f'assets/menu/button-on-{self.THEME}.png')
+        self.bouton = pygame.image.load(f'assets/menu/bouton_{self.THEME}.png').convert_alpha()
+        self.bouton_click = pygame.image.load(f'assets/menu/button-on-{self.THEME}.png').convert_alpha()
         self.background_menu = pygame.image.load(f'assets/menu/background-{self.THEME}.png')
 
-        self.bouton_jouer = pygame.image.load('assets/menu/bouton_jouer.png')
-        self.bouton_jouer_click = pygame.image.load('assets/menu/button-on-Jaune.png')
-        self.background_menu_jouer = pygame.image.load('assets/menu/background_jouer.png')
-        self.background_menu_options = pygame.image.load('assets/menu/background_option.png')
-        self.background_menu_credits = pygame.image.load('assets/menu/background_credits.png')
-        self.background_menu_pause = pygame.image.load('assets/menu/background_pause.png')
-        self.bouton_leave = pygame.image.load('assets/menu/leave.png')
-        self.bouton_cancel = pygame.image.load('assets/menu/cancel.png')
-        self.bouton_confirm = pygame.image.load('assets/menu/confirm.png')
-        self.bouton_continue = pygame.image.load('assets/menu/continuer.png')
-        self.bouton_confirm_click = pygame.image.load('assets/menu/button-on-confirm.png')
-        self.bouton_continue_click = pygame.image.load('assets/menu/button-on-continue.png')   
+        self.bouton_jouer = pygame.image.load(f'assets/menu/bouton_jouer_{self.THEME}.png').convert_alpha()
+        self.bouton_jouer_click = pygame.image.load(f'assets/menu/bouton_jouer_click_{self.THEME}.png').convert_alpha()
+        self.background_menu_jouer = pygame.image.load('assets/menu/background_jouer.png').convert()
+        self.background_menu_options = pygame.image.load('assets/menu/background_option.png').convert()
+        self.background_menu_credits = pygame.image.load('assets/menu/background_credits.png').convert()
+        self.background_menu_pause = pygame.image.load('assets/menu/background_pause.png').convert()
+        self.bouton_leave = pygame.image.load('assets/menu/leave.png').convert_alpha()
+        self.bouton_cancel = pygame.image.load('assets/menu/cancel.png').convert_alpha()
+        self.bouton_confirm = pygame.image.load('assets/menu/confirm.png').convert_alpha()
+        self.bouton_continue = pygame.image.load('assets/menu/continuer.png').convert_alpha()
+        self.bouton_confirm_click = pygame.image.load('assets/menu/button-on-confirm.png').convert_alpha()
+        self.bouton_continue_click = pygame.image.load('assets/menu/button-on-continue.png').convert_alpha()   
 
         self.new_button_width = int(self.bouton_jouer.get_width() * 1.5)
         self.new_button_height = int(self.bouton_jouer.get_height() * 1.5)
@@ -58,8 +61,8 @@ class Assets:
         pygame.mixer.music.set_volume(0.5)
         # pygame.mixer.music.play(-1)
 
-    def get_jaune(self):
-        return self.JAUNE
+    def get_color_theme(self):
+        return self.color_theme
 
     def get_blanc(self):
         return self.BLANC
@@ -135,3 +138,15 @@ class Assets:
 
     def get_background_music(self):
         return self.background_music
+    
+    def update_color(self):
+        if self.THEME == "Gris":
+            self.color_theme = (233, 233, 233)
+        elif self.THEME == "Orange":
+            self.color_theme = (255, 227, 208)
+        elif self.THEME == "Bleu":
+            self.color_theme = (208, 236, 255)
+        elif self.THEME == "Vert":
+            self.color_theme = (214, 255, 208)
+        elif self.THEME == "Jaune":
+            self.color_theme = (255, 242, 208)

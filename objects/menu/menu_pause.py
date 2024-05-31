@@ -32,7 +32,7 @@ class MenuPause:
         self.buttons.append(Button('REPRENDRE', start_x, start_y, self.assets.bouton, self.assets.bouton_click, self.reprendre, self.assets))
         self.buttons.append(Button('OPTIONS', start_x, start_y + button_height + spacing, self.assets.bouton, self.assets.bouton_click, lambda: self.change_menu_callback("son"), self.assets))
         self.buttons.append(Button('RETOUR', start_x, start_y + 2 * (button_height + spacing), self.assets.bouton, self.assets.bouton_click, lambda: self.change_menu_callback("main"), self.assets))
-        self.buttons.append(Button('BUREAU', start_x, start_y + 3 * (button_height + spacing), self.assets.bouton_jouer, self.assets.bouton_jouer_click, self.quit_game,self.assets, self.assets.JAUNE))
+        self.buttons.append(Button('BUREAU', start_x, start_y + 3 * (button_height + spacing), self.assets.bouton_jouer, self.assets.bouton_jouer_click, self.quit_game,self.assets, self.assets.color_theme))
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:

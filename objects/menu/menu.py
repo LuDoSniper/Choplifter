@@ -30,7 +30,7 @@ class Menu:
         start_y = ((self.assets.SCREEN_HEIGHT - total_height) // 2) + 30
         start_x = (self.assets.SCREEN_WIDTH - button_width) // 2
 
-        self.buttons.append(Button('Jouer', start_x, start_y, self.assets.bouton_jouer, self.assets.bouton_jouer_click, lambda: self.change_menu_callback("play"), self.assets, self.assets.JAUNE))
+        self.buttons.append(Button('Jouer', start_x, start_y, self.assets.bouton_jouer, self.assets.bouton_jouer_click, lambda: self.change_menu_callback("play"), self.assets, self.assets.color_theme))
         self.buttons.append(Button('Options', start_x, start_y + button_height + spacing, self.assets.bouton, self.assets.bouton_click, lambda: self.change_menu_callback("options"), self.assets))
         self.buttons.append(Button('Credits', start_x, start_y + 2 * (button_height + spacing), self.assets.bouton, self.assets.bouton_click, lambda: self.change_menu_callback("credits"), self.assets))
         self.buttons.append(Button('Quitter', start_x, start_y + 3 * (button_height + spacing), self.assets.bouton, self.assets.bouton_click, self.quit_callback, self.assets))
