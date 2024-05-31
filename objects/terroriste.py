@@ -99,6 +99,7 @@ class Terroriste(pygame.sprite.Sprite):
                 self.gun_rect = self.rect
             
         if self.__exploding:
+            self.explode_civils(civils)
             self.__exploding_timer += 1
             if self.__exploding_timer >= self.__exploding_delay and self.__state != "blood":
                 self.__state = "blood"
@@ -218,6 +219,11 @@ class Terroriste(pygame.sprite.Sprite):
                 elif self.__type == "kamikaze":
                     self.__state = "scream"
                     self.__exploding = True
+    
+    def explode_civils(self, civils: list) -> None:
+        for civil in civils:
+            if self.__explosion != None and self.__explosion.rect.colliderect(civil.rect):
+                civil.hit()
     
     def shoot(self, screen: pygame.Surface) -> None:
         # x
