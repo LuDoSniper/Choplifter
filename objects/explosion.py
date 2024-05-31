@@ -16,6 +16,8 @@ class Explosion(pygame.sprite.Sprite):
         self.__frame_speed = 3
         self.__frame_timer = 0
         
+        self.__exploded = False
+        
     # Geter / Seter
     
     def get_pos(self) -> tuple:
@@ -43,6 +45,9 @@ class Explosion(pygame.sprite.Sprite):
     def set_frame_timer(self, frame_timer: int) -> None:
         self.__frame_timer = frame_timer
     
+    def get_exploded(self) -> bool:
+        return self.__exploded
+    
     # Méthodes
     
     def explode(self) -> bool:
@@ -51,6 +56,7 @@ class Explosion(pygame.sprite.Sprite):
             self.__frame_timer = 0
             self.__frame += 1
         if self.__frame == 7:
+            self.__exploded = True
             return True
         self.image = pygame.image.load(f"assets/tir/explosion/explo-{self.__frame}.png")
         size = (self.image.get_rect().width * self.get_size(),

@@ -170,7 +170,7 @@ class Enemis:
         for terroriste in self.__terroristes:
             terroriste.afficher_gun(screen)
 
-    def afficher_explosion(self, screen: pygame.Surface) -> None:
+    def afficher_terroristes_explosion(self, screen: pygame.Surface) -> None:
         for terroriste in self.__terroristes:
             terroriste.afficher_explosion(screen)
     

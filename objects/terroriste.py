@@ -73,7 +73,6 @@ class Terroriste(pygame.sprite.Sprite):
     # Méthodes
     
     def handle(self, map_size: int, screen: pygame.Surface, civils: list) -> None:
-        print(self.__state)
         self.animate()
         self.sync_side()
         if self.__state not in ("death", "blood"):
@@ -93,23 +92,23 @@ class Terroriste(pygame.sprite.Sprite):
                     self.__state = "run"
                     self.__dir = random.choice([-1, 1])
             
-            if self.__exploding:
-                self.__exploding_timer += 1
-                if self.__exploding_timer >= self.__exploding_delay and self.__state != "blood":
-                    self.__state = "blood"
-                    self.__frame = random.randint(0, 3)
-                    self.explode()
-                if self.__explosion is not None and not self.__explosion.explode():
-                    self.__explosion = None
-            
             if self.__state in ("run", "scream"):
                 self.move(map_size)
             
             if self.__type == "classique":
                 self.gun_rect = self.rect
+            
+        if self.__exploding:
+            self.__exploding_timer += 1
+            if self.__exploding_timer >= self.__exploding_delay and self.__state != "blood":
+                self.__state = "blood"
+                self.__frame = random.randint(0, 3)
+                self.explode()
+            if self.__explosion != None and self.__explosion.explode():
+                self.__explosion = None
     
     def explode(self) -> None:
-        self.__explosion = explosion.Explosion(self.__explosion_group, self.rect.width / 2, self.rect.height / 2, (self.__pos[0] + self.rect.width, self.__pos[1] + self.rect.height / 2))
+        self.__explosion = explosion.Explosion(self.__explosion_group, self.rect.x + self.rect.width / 2, self.rect.y + self.rect.height / 2, (self.__pos[0] + self.rect.width / 2, self.__pos[1] + self.rect.height / 2))
     
     def move(self, map_size: int) -> None:
         self.rect.x += self.__speed * self.__dir
