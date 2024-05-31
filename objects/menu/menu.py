@@ -3,10 +3,11 @@ import sys
 from objects.menu.button import Button
 
 class Menu:
-    def __init__(self, screen, change_menu_callback, assets):
+    def __init__(self, screen, change_menu_callback, quit_callback, assets):
         self.assets = assets
         self.screen = screen
         self.change_menu_callback = change_menu_callback
+        self.quit_callback = quit_callback
         self.buttons = []
         self.create_buttons()
 
@@ -32,7 +33,7 @@ class Menu:
         self.buttons.append(Button('Jouer', start_x, start_y, self.assets.bouton_jouer, self.assets.bouton_jouer_click, lambda: self.change_menu_callback("play"), self.assets, self.assets.JAUNE))
         self.buttons.append(Button('Options', start_x, start_y + button_height + spacing, self.assets.bouton, self.assets.bouton_click, lambda: self.change_menu_callback("options"), self.assets))
         self.buttons.append(Button('Credits', start_x, start_y + 2 * (button_height + spacing), self.assets.bouton, self.assets.bouton_click, lambda: self.change_menu_callback("credits"), self.assets))
-        self.buttons.append(Button('Quitter', start_x, start_y + 3 * (button_height + spacing), self.assets.bouton, self.assets.bouton_click, self.quit_game, self.assets))
+        self.buttons.append(Button('Quitter', start_x, start_y + 3 * (button_height + spacing), self.assets.bouton, self.assets.bouton_click, self.quit_callback, self.assets))
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONUP and event.button == 1:

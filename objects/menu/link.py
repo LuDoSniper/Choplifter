@@ -7,10 +7,11 @@ import pygame
 
 class Link:
     def __init__(self, assets):
+        self.stop = False
         self.assets = assets
         self.current_menu = "main"
         self.menus = {
-            "main": Menu(self.assets.screen, self.change_menu, self.assets),
+            "main": Menu(self.assets.screen, self.change_menu, self.quit_game, self.assets),
             "play": MenuJouer(self.assets.screen, self.change_menu, self.assets),
             "options": MenuOptions(self.assets.screen, self.change_menu, self.update_theme, self.assets),
             "credits": MenuCredits(self.assets.screen, self.change_menu, self.assets),
@@ -37,6 +38,9 @@ class Link:
         for menu_name in self.menus:
             if hasattr(self.menus[menu_name], 'buttons'):
                 self.menus[menu_name].create_buttons()
+
+    def quit_game(self) -> None:
+        self.stop = True
 
     def get_data(self) -> dict:
         # Récupérer le volume
