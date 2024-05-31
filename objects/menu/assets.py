@@ -22,7 +22,7 @@ class Assets:
 
         self.bouton = pygame.image.load(f'assets/menu/bouton_{self.THEME}.png').convert_alpha()
         self.bouton_click = pygame.image.load(f'assets/menu/button-on-{self.THEME}.png').convert_alpha()
-        self.background_menu = pygame.image.load(f'assets/menu/background.png')
+        self.background_menu = pygame.image.load(f'assets/menu/background-{self.THEME}.png')
 
         self.bouton_jouer = pygame.image.load('assets/menu/bouton_jouer.png').convert_alpha()
         self.bouton_jouer_click = pygame.image.load('assets/menu/button-on-Jaune.png').convert_alpha()
