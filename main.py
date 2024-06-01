@@ -9,6 +9,7 @@ import objects.music as music
 def save(data: dict) -> None:
     with open('save.json', 'w') as file:
         json.dump(data, file, indent=4)
+        
 def load() -> dict:
     if os.path.exists('save.json'):
         with open('save.json') as file:
