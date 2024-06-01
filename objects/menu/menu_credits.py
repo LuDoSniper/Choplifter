@@ -6,6 +6,7 @@ class MenuCredits:
         self.screen = screen
         self.change_menu_callback = change_menu_callback
         self.assets = assets
+        self.clicked_element = None
         self.create_elements()
 
     def create_elements(self):
@@ -38,19 +39,23 @@ class MenuCredits:
             name_surf = self.assets.custom_font_16.render(name, True, self.assets.GRIS_CLAIR)
             self.screen.blit(name_surf, (bg_x + 135, bg_y + 240 + i * 20))
 
+    def variable_exists(self, var_name):
+        return hasattr(self, var_name)
+
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             for element in self.elements:
                 if element.is_hovered(event.pos):
                     self.clicked_element = element
                     element.on_click()
-        elif event.type == pygame.MOUSEBUTTONUP:
-            for element in self.elements:
-                if element == self.clicked_element:
-                    element.image = element.image_default
-                    if element.is_hovered(event.pos):
-                        element.up_click()
-            self.clicked_element = None 
+        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+            if self.variable_exists('clicked_element') and self.clicked_element is not None:
+                for element in self.elements:
+                    if element == self.clicked_element:
+                        element.image = element.image_default
+                        if element.is_hovered(event.pos):
+                            element.up_click()
+                self.clicked_element = None 
 
     def continuer(self):
         self.change_menu_callback("main")

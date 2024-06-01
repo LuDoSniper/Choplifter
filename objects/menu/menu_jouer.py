@@ -7,6 +7,7 @@ class MenuJouer:
         self.screen = screen
         self.change_menu_callback = change_menu_callback
         self.buttons = []
+        self.clicked_element = None
         self.create_buttons()
 
     def draw(self):
@@ -33,6 +34,9 @@ class MenuJouer:
         self.buttons.append(Button('SANDBOX', start_x, start_y + 2 * (button_height + spacing), self.assets.bouton, self.assets.bouton_click, self.start_entrainement, self.assets))
         self.buttons.append(Button('RETOUR', start_x, start_y + 3 * (button_height + spacing), self.assets.bouton_jouer, self.assets.bouton_jouer_click, lambda: self.change_menu_callback("main"),self.assets, self.assets.color_theme))
 
+    def variable_exists(self, var_name):
+        return hasattr(self, var_name)
+
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             for button in self.buttons:
@@ -40,14 +44,15 @@ class MenuJouer:
                     self.clicked_element = button
                     button.on_click()
         if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-            for button in self.buttons:
-                if button == self.clicked_element:
-                    button.image = button.image_default
-                    if button.is_hovered(event.pos):
-                        response = button.up_click()
-                        if response is not None:
-                            return response
-            self.clicked_element = None 
+            if self.variable_exists('clicked_element') and self.clicked_element is not None:
+                for button in self.buttons:
+                    if button == self.clicked_element:
+                        button.image = button.image_default
+                        if button.is_hovered(event.pos):
+                            response = button.up_click()
+                            if response is not None:
+                                return response
+                self.clicked_element = None 
 
 
     def start_solo(self):
