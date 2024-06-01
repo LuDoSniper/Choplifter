@@ -56,6 +56,14 @@ class MenuOptions:
     def update_theme(self, value):
         print(f"Theme: {value}")
         self.update_theme_callback(value)
+        for element in self.elements:
+            if isinstance(element, Dropdown):
+                element.options = [self.assets.theme for self.assets.theme in self.assets.THEMES if self.assets.theme != self.assets.THEME]
+
+    def update_dropdown(self):
+        for element in self.elements:
+            if isinstance(element, Dropdown):
+                element.options = [self.assets.theme for self.assets.theme in self.assets.THEMES if self.assets.theme != self.assets.THEME]
 
     def confirm(self):
         print("Options confirmées")

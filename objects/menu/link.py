@@ -2,6 +2,7 @@ from objects.menu.menu import Menu
 from objects.menu.menu_jouer import MenuJouer
 from objects.menu.menu_options import MenuOptions
 from objects.menu.menu_credits import MenuCredits
+from objects.menu.dropdown import Dropdown
 
 import pygame
 
@@ -29,7 +30,7 @@ class Link:
 
     def update_theme(self, new_theme):
         self.assets.THEME = new_theme
-        self.retire_theme = [self.assets.theme for self.assets.theme in self.assets.THEMES if self.assets.theme != self.assets.THEME]
+        self.assets.retire_theme = [self.assets.theme for self.assets.theme in self.assets.THEMES if self.assets.theme != self.assets.THEME]
         
         self.assets.bouton = pygame.image.load(f'assets/menu/bouton_{self.assets.THEME.lower()}.png').convert_alpha()
         self.assets.bouton = pygame.transform.scale(self.assets.bouton, (self.assets.new_button_width, self.assets.new_button_height))
@@ -46,6 +47,7 @@ class Link:
 
         self.menus["options"].update_sound(self.assets.click_sound.get_volume())
         self.menus["options"].update_music(pygame.mixer.music.get_volume())
+        self.menus["options"].update_dropdown()
 
         for menu_name in self.menus:
             if hasattr(self.menus[menu_name], 'buttons'):

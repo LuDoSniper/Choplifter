@@ -298,5 +298,4 @@ class Game:
         self.__hud.update(self.__assets.THEME)
     
     def quit(self) -> None:
-        # Sauvegarde surement mais a voir (juste au cas où)
         self.__running = False
