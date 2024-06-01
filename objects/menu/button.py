@@ -25,7 +25,6 @@ class Button:
         self.assets.click_sound.play()
 
     def up_click(self):
-        self.image = self.image_default
         return self.callback()
 
     def update(self, mouse_pos):

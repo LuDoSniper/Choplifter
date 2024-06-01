@@ -42,9 +42,11 @@ class MenuJouer:
         if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             for button in self.buttons:
                 if button == self.clicked_element:
-                    response = button.up_click()
-                    if response is not None:
-                        return response
+                    button.image = button.image_default
+                    if button.is_hovered(event.pos):
+                        response = button.up_click()
+                        if response is not None:
+                            return response
             self.clicked_element = None 
 
 

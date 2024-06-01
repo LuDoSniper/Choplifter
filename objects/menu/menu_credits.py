@@ -47,7 +47,9 @@ class MenuCredits:
         elif event.type == pygame.MOUSEBUTTONUP:
             for element in self.elements:
                 if element == self.clicked_element:
-                    element.up_click()
+                    element.image = element.image_default
+                    if element.is_hovered(event.pos):
+                        element.up_click()
             self.clicked_element = None 
 
     def continuer(self):

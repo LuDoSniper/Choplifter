@@ -34,7 +34,9 @@ class MenuSon:
         elif event.type == pygame.MOUSEBUTTONUP:
             for element in self.elements:
                 if isinstance(element, Button) and element == self.clicked_element:
-                    element.up_click()
+                    element.image = element.image_default
+                    if element.is_hovered(event.pos):
+                        element.up_click()
                 elif isinstance(element, Slider):
                     element.handle_event(event)
             self.clicked_element = None 
