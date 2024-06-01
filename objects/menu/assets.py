@@ -56,10 +56,9 @@ class Assets:
         self.bouton_leave = pygame.transform.scale(self.bouton_leave, (int(self.bouton_leave.get_width() * 0.7), int(self.bouton_leave.get_height() * 0.7)))
 
         self.click_sound = pygame.mixer.Sound('assets/menu/click_sound.mp3')
+        self.up_click_sound = pygame.mixer.Sound('assets/menu/up_click_sound.ogg')
         self.background_music = 'assets/menu/background_music.ogg'
-        # pygame.mixer.music.load(self.background_music)
         pygame.mixer.music.set_volume(0.5)
-        # pygame.mixer.music.play(-1)
 
     def get_color_theme(self):
         return self.color_theme
