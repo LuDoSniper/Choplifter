@@ -3,6 +3,8 @@ from objects.menu.menu_jouer import MenuJouer
 from objects.menu.menu_options import MenuOptions
 from objects.menu.menu_credits import MenuCredits
 from objects.menu.dropdown import Dropdown
+from objects.menu.menu_pause import MenuPause
+from objects.menu.menu_son import MenuSon
 
 import pygame
 
@@ -16,6 +18,8 @@ class Link:
             "play": MenuJouer(self.assets.screen, self.change_menu, self.assets),
             "options": MenuOptions(self.assets.screen, self.change_menu, self.update_theme, self.assets),
             "credits": MenuCredits(self.assets.screen, self.change_menu, self.assets),
+            "pause": MenuPause(self.assets.screen, self.change_menu, self.quit_game, assets),
+            "son": MenuSon(self.assets.screen, self.change_menu, assets)
         }
         self.update_theme(self.assets.THEME) 
 

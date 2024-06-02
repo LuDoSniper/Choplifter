@@ -58,6 +58,7 @@ class Game:
         self.__paused = False
         self.__response = None
         self.__running = True
+        self.__tmp = None
     
     # Geter / Seter
     def get_screen(self) -> pygame.Surface:
@@ -135,6 +136,9 @@ class Game:
                     self.__response = self.__link.handle_event(event)
                     if self.__response == "solo":
                         self.quit()
+                    elif self.__response == "continue":
+                        self.__mode = self.__tmp
+                        self.__paused = False
                 else:
                     # Touche pressée
                     if event.type == pygame.KEYDOWN:
@@ -152,8 +156,14 @@ class Game:
                                 else:
                                     self.__egg = []
                         
-                        if event.key == pygame.K_ESCAPE:
-                            self.__paused = not self.__paused
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    self.__paused = not self.__paused
+                    if self.__paused:
+                        self.__tmp = self.__mode
+                        self.__link.current_menu = "pause"
+                        self.__mode = "menu"
+                    else:
+                        self.__mode = self.__tmp
             
             if not self.__paused and self.__mode != "menu":
                 # Etat des touches

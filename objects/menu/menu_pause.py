@@ -3,10 +3,11 @@ import pygame
 import sys
 
 class MenuPause:
-    def __init__(self, screen, change_menu_callback, assets):
+    def __init__(self, screen, change_menu_callback, quit_callback, assets):
         self.assets = assets
         self.screen = screen
         self.change_menu_callback = change_menu_callback
+        self.quit_callback = quit_callback
         self.buttons = []
         self.create_buttons()
 
@@ -32,7 +33,7 @@ class MenuPause:
         self.buttons.append(Button('REPRENDRE', start_x, start_y, self.assets.bouton, self.assets.bouton_click, self.reprendre, self.assets))
         self.buttons.append(Button('OPTIONS', start_x, start_y + button_height + spacing, self.assets.bouton, self.assets.bouton_click, lambda: self.change_menu_callback("son"), self.assets))
         self.buttons.append(Button('RETOUR', start_x, start_y + 2 * (button_height + spacing), self.assets.bouton, self.assets.bouton_click, lambda: self.change_menu_callback("main"), self.assets))
-        self.buttons.append(Button('BUREAU', start_x, start_y + 3 * (button_height + spacing), self.assets.bouton_jouer, self.assets.bouton_jouer_click, self.quit_game,self.assets, self.assets.color_theme))
+        self.buttons.append(Button('BUREAU', start_x, start_y + 3 * (button_height + spacing), self.assets.bouton_jouer, self.assets.bouton_jouer_click, self.quit_callback, self.assets, self.assets.color_theme))
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -55,6 +56,7 @@ class MenuPause:
 
     def reprendre(self):
         print("Reprendre le jeu")
+        return "continue"
 
     def quit_game(self):
         pygame.quit()
