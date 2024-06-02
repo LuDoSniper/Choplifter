@@ -13,6 +13,12 @@ class Civil(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = local_x
         self.rect.y = local_y
+        self.hitbox = pygame.Rect(
+            self.rect.x + 24,
+            self.rect.y + 19,
+            18,
+            29
+        )
         
         self.__aboard = False
         self.__saved = False
@@ -82,11 +88,11 @@ class Civil(pygame.sprite.Sprite):
                 elif self.rect.x > base_porte.x:
                     self.__dir = -1
                 self.__state = "run"
-                if self.rect.colliderect(base_porte):
+                if self.hitbox.colliderect(base_porte):
                     self.__base = False
                     self.__saved = True
             
-            elif self.rect.colliderect(player.get_heli().get_rect()) and player.get_storage() < player.get_max_storage() and not self.__aboard and player.get_landed():
+            elif self.hitbox.colliderect(player.get_heli().hitbox) and player.get_storage() < player.get_max_storage() and not self.__aboard and player.get_landed():
                 player.set_storage(player.get_storage() + 1)
                 self.__aboard = True
             
@@ -161,6 +167,7 @@ class Civil(pygame.sprite.Sprite):
     
     def move(self, map_size: int) -> None:
         self.rect.x += self.__speed * self.__dir
+        self.hitbox.x += self.__speed * self.__dir
         self.__pos = (self.__pos[0] + (self.__speed * self.__dir), self.__pos[1])
         
         # Empecher de sortir de la map
@@ -168,10 +175,12 @@ class Civil(pygame.sprite.Sprite):
             tmp = self.__pos[0]
             self.__pos = (0, self.__pos[1])
             self.rect.x -= tmp
+            self.hitbox.x -= tmp
         elif self.__pos[0] > map_size:
             tmp = self.__pos[0]
             self.__pos = (map_size - self.rect.width, self.__pos[1])
             self.rect.x -= map_size - tmp - self.rect.width
+            self.hitbox.x -= map_size - tmp - self.rect.width
     
     def hit(self) -> None:
         if self.__state != "death":
@@ -186,3 +195,4 @@ class Civil(pygame.sprite.Sprite):
         # Bouge de la même manière que la map
         if not left and not right:
             self.rect.x -= velocity
+            self.hitbox.x -= velocity

@@ -14,6 +14,12 @@ class Heli:
         self.__rect = self.__image.get_rect()
         self.__rect.x = screen.get_width() / 2 - self.__rect.width / 2
         self.__rect.y = 5
+        self.hitbox = pygame.Rect(
+            self.__rect.x,
+            self.__rect.y,
+            self.__rect.width,
+            self.__rect.height
+        )
         self.__center = self.__image.get_rect().center
         
         # Pour la gestion du changement d'image
@@ -89,6 +95,8 @@ class Heli:
     def sync_vel(self, velocity: float, vertical_velocity: float, left_border: bool, right_border: bool, top_limit: int, bottom_limit: int) -> None:
         self.__rect.x += velocity
         self.__rect.y -= vertical_velocity
+        self.hitbox.x += velocity
+        self.hitbox.y -= vertical_velocity
         
         # Bride le mouvement de l'helico
         if left_border:
@@ -102,17 +110,21 @@ class Heli:
         
         if self.__rect.x < limit_left:
             self.__rect.x = limit_left
+            self.hitbox.x = limit_left
             self.set_limited(True)
         elif self.__rect.x > limit_right:
             self.__rect.x = limit_right
+            self.hitbox.x = limit_right
             self.set_limited(True)
         else:
             self.set_limited(False)
     
         if self.__rect.y < top_limit:
             self.__rect.y = top_limit
+            self.hitbox.y = top_limit
         elif self.__rect.y > bottom_limit:
             self.__rect.y = bottom_limit
+            self.hitbox.y = bottom_limit
     
     # Fait tourner l'image de l'helico
     def sync_side(self, dir: int) -> None:

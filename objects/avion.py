@@ -21,6 +21,12 @@ class Avion(pygame.sprite.Sprite):
         elif dir == -1:
             self.__pos = (screen.get_width() + self.rect.width, pos[1])
         self.rect.x, self.rect.y = self.__pos
+        self.hitbox = pygame.Rect(
+            self.rect.x,
+            self.rect.y,
+            self.rect.width,
+            self.rect.height
+        )
         
         self.__group = group
         
@@ -146,8 +152,10 @@ class Avion(pygame.sprite.Sprite):
                 
                 if self.__dir > 0:
                     self.rect.x = 0 - (self.image.get_rect().width + 20)
+                    self.hitbox.x = 0 - (self.image.get_rect().width + 20)
                 elif self.__dir < 0:
                     self.rect.x = self.__screen.get_width() + self.image.get_rect().width + 20
+                    self.hitbox.x = self.__screen.get_width() + self.image.get_rect().width + 20
                     
                 self.rect.y = random.randint(0, 30)
             
@@ -165,6 +173,7 @@ class Avion(pygame.sprite.Sprite):
             
             self.__velocity = self.__max_speed * self.get_dir()
             self.rect.y += 1 * dir_tmp
+            self.hitbox.y += 1 * dir_tmp
             self.__done += 1 * dir_tmp
             
             if self.__rotated == 0 and dir_tmp == 1: # Monter
@@ -188,6 +197,7 @@ class Avion(pygame.sprite.Sprite):
             
             # Appliquer la velocité sur le rect
             self.rect.x += self.get_velocity()
+            self.hitbox.x += self.get_velocity()
             self.set_pos((self.get_pos()[0] + self.get_velocity(), self.get_pos()[1] + self.__done))
             
             if self.__dir < 0 and self.rect.x < 0 - self.image.get_rect().width:
@@ -207,8 +217,10 @@ class Avion(pygame.sprite.Sprite):
             # Garder l'avion en dehors de l'écran
             if self.__dir > 0:
                 self.rect.x = 0 - (self.image.get_rect().width + 20)
+                self.hitbox.x = 0 - (self.image.get_rect().width + 20)
             elif self.__dir < 0:
                 self.rect.x = self.__screen.get_width() + self.image.get_rect().width + 20
+                self.hitbox.x = self.__screen.get_width() + self.image.get_rect().width + 20
 
     def shoot(self):
         self.__delay += 1
@@ -233,3 +245,4 @@ class Avion(pygame.sprite.Sprite):
         # Bouge de la même manière que la map
         if not left and not right:
             self.rect.x -= velocity
+            self.hitbox.x -= velocity

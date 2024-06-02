@@ -16,6 +16,12 @@ class Tank(pygame.sprite.Sprite):
         self.image = pygame.image.load(f"assets/tanks/tank-{type}-{tmp}.png")
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = pos
+        self.hitbox = pygame.Rect(
+            self.rect.x,
+            self.rect.y,
+            self.rect.width,
+            self.rect.height
+        )
         
         self.__group = group
         
@@ -157,6 +163,7 @@ class Tank(pygame.sprite.Sprite):
         
         # Appliquer la velocité sur le rect
         self.rect.x += self.get_velocity()
+        self.hitbox.x += self.get_velocity()
         
         # Réduire le décalage de la pos - /!\ BUG /!\
         # if self.rect.x < 0:
@@ -187,6 +194,7 @@ class Tank(pygame.sprite.Sprite):
         # Bouge de la même manière que la map
         if not left and not right:
             self.rect.x -= velocity
+            self.hitbox.x -= velocity
         # Syncroniser la velocité de la bullet
         if self.__bullet is not None:
             self.__bullet.sync_vel(velocity, left, right)

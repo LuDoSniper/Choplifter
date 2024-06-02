@@ -13,6 +13,12 @@ class Terroriste(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = local_x
         self.rect.y = local_y
+        self.hitbox = pygame.Rect(
+            self.rect.x + 10,
+            self.rect.y + 13,
+            12,
+            18
+        )
         if type == "classique":
             self.gun_image = pygame.image.load(f"assets/terroriste/{type}/gun/idle/0.png")
             self.gun_image = pygame.transform.scale(self.gun_image, (self.gun_image.get_rect().width * 1.75, self.gun_image.get_rect().height * 1.75))
@@ -113,6 +119,7 @@ class Terroriste(pygame.sprite.Sprite):
     
     def move(self, map_size: int) -> None:
         self.rect.x += self.__speed * self.__dir
+        self.hitbox.x += self.__speed * self.__dir
         self.__pos = (self.__pos[0] + self.__speed * self.__dir, self.__pos[1])
         
         if self.__state == "scream":
@@ -125,10 +132,12 @@ class Terroriste(pygame.sprite.Sprite):
             tmp = self.__pos[0]
             self.__pos = (0, self.__pos[1])
             self.rect.x -= tmp
+            self.hitbox.x -= tmp
         elif self.__pos[0] > map_size:
             tmp = self.__pos[0]
             self.__pos = (map_size - self.rect.width, self.__pos[1])
             self.rect.x -= map_size - tmp - self.rect.width
+            self.hitbox.x -= map_size - tmp - self.rect.width
     
     def animate(self) -> None:
         if self.__state != "blood":
@@ -222,7 +231,7 @@ class Terroriste(pygame.sprite.Sprite):
     
     def explode_civils(self, civils: list) -> None:
         for civil in civils:
-            if self.__explosion != None and self.__explosion.rect.colliderect(civil.rect):
+            if self.__explosion != None and self.__explosion.hitbox.colliderect(civil.hitbox):
                 civil.hit()
     
     def shoot(self, screen: pygame.Surface) -> None:
@@ -263,6 +272,7 @@ class Terroriste(pygame.sprite.Sprite):
         # Bouge de la même manière que la map
         if not left and not right:
             self.rect.x -= velocity
+            self.hitbox.x -= velocity
             self.gun_rect = self.rect
         # Pour les balles
         for bullet in self.__bullets:

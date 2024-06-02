@@ -11,6 +11,12 @@ class Bomb(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = local_pos[0]
         self.rect.y = local_pos[1]
+        self.hitbox = pygame.Rect(
+            self.rect.x,
+            self.rect.y,
+            self.rect.width,
+            self.rect.height
+        )
         
         self.__screen = screen
         
@@ -43,13 +49,14 @@ class Bomb(pygame.sprite.Sprite):
     # Méthodes
     def fall(self, targets: list) -> None:
         self.rect.y += self.get_speed()
+        self.hitbox.y += self.get_speed()
         
         # Explosion
         if self.rect.y > 110: # Touche le sol
             self.set_exploded(True)
         
         for target in targets:
-            if self.rect.colliderect(target.rect): # Collision
+            if self.hitbox.colliderect(target.hitbox): # Collision
                 if type(target) == tank.Tank and target.hit(3):
                     target.set_exploded(True)
                 elif type(target) in (civil.Civil, terroriste.Terroriste):
@@ -62,3 +69,4 @@ class Bomb(pygame.sprite.Sprite):
         # Bouge de la même manière que la map
         if not left and not right:
             self.rect.x -= velocity
+            self.hitbox.x -= velocity

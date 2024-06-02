@@ -28,6 +28,12 @@ class Structure(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = local_x
         self.rect.y = local_y
+        self.hitbox = pygame.Rect(
+            self.rect.x,
+            self.rect.y,
+            self.rect.width,
+            self.rect.height
+        )
         
         self.__pos_tmp = []
         
@@ -83,6 +89,7 @@ class Structure(pygame.sprite.Sprite):
         # Bouge de la même manière que la map
         if not left and not right:
             self.rect.x -= velocity
+            self.hitbox.x -= velocity
         # Synchrnise également les civils
         for civil in self.__civils_list:
             civil.sync_vel(velocity, left, right)
@@ -149,6 +156,7 @@ class Structure(pygame.sprite.Sprite):
                     self.__civils_group.add(civil)
                     civil.set_base(True)
                     civil.rect.x = random.randint(civil.rect.x - 10, civil.rect.x + 10)
+                    civil.hitbox.x = random.randint(civil.hitbox.x - 10, civil.hitbox.x + 10)
                     player.set_storage(player.get_storage() - 1)
         
         # Ne plus gérer les civils sauvés

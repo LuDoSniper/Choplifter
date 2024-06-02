@@ -24,6 +24,12 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = local_x
         self.rect.y = local_y + 10
+        self.hitbox = pygame.Rect(
+            self.rect.x,
+            self.rect.y,
+            self.rect.width,
+            self.rect.height
+        )
         self.__screen = screen
         
         self.__origine = origine
@@ -51,6 +57,7 @@ class Bullet(pygame.sprite.Sprite):
         if type(self.__origine) == player.Player:
             if dir != 1:
                 self.rect.x += 8 * self.SPEED + self.__boost
+                self.hitbox.x += 8 * self.SPEED + self.__boost
             for i in range(0, 8):
                 self.move()
     
@@ -105,10 +112,12 @@ class Bullet(pygame.sprite.Sprite):
         # angle = (abs(self.get_angle()) - 90) * tmp
         self.rect.x += (self.SPEED + self.__boost) * math.sin(math.radians(self.get_angle()))
         self.rect.y -= (self.SPEED + self.__boost) * math.cos(math.radians(self.get_angle()))
+        self.hitbox.x += (self.SPEED + self.__boost) * math.sin(math.radians(self.get_angle()))
+        self.hitbox.y -= (self.SPEED + self.__boost) * math.cos(math.radians(self.get_angle()))
         
         # Explosion
         for target in targets:
-            if type(target) != player.Player and self.rect.colliderect(target.rect): # Collision
+            if type(target) != player.Player and self.hitbox.colliderect(target.hitbox): # Collision
                 self.set_exploded(True)
                 if type(target) in (tank.Tank, avion.Avion, structure.Structure):
                     if target.hit():
@@ -117,7 +126,7 @@ class Bullet(pygame.sprite.Sprite):
                     target.hit()
                 else:
                     target.set_exploded(True)
-            elif type(target) == player.Player and self.rect.colliderect(target.get_heli().get_rect()):
+            elif type(target) == player.Player and self.hitbox.colliderect(target.get_heli().hitbox):
                 self.set_exploded(True)
                 if type(self.__origine) == avion.Avion:
                     damage = 10
@@ -131,3 +140,4 @@ class Bullet(pygame.sprite.Sprite):
         # Bouge de la même manière que la map
         if not left and not right:
             self.rect.x -= velocity
+            self.hitbox.x -= velocity
