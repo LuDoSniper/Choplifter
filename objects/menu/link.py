@@ -10,6 +10,7 @@ import pygame
 class Link:
     def __init__(self, assets):
         self.stop = False
+        self.restart = False
         self.assets = assets
         self.current_menu = "main"
         self.menus = {
@@ -17,7 +18,7 @@ class Link:
             "play": MenuJouer(self.assets.screen, self.change_menu, self.assets),
             "options": MenuOptions(self.assets.screen, self.change_menu, self.update_theme, self.assets),
             "credits": MenuCredits(self.assets.screen, self.change_menu, self.assets),
-            "pause": MenuPause(self.assets.screen, self.change_menu, self.quit_game, assets),
+            "pause": MenuPause(self.assets.screen, self.change_menu, self.restart_game, self.quit_game, assets),
             "son": MenuSon(self.assets.screen, self.change_menu, assets)
         }
         self.update_theme(self.assets.THEME) 
@@ -61,6 +62,9 @@ class Link:
 
     def quit_game(self) -> None:
         self.stop = True
+
+    def restart_game(self) -> None:
+        self.restart = True
 
     def get_data(self) -> dict:
         # Récupérer le volume

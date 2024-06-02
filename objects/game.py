@@ -121,9 +121,13 @@ class Game:
                 self.__hud.afficher(self.get_player().get_health(), self.get_player().get_fuel(), self.__player.get_storage(), self.__player.get_max_storage(), len(self.get_civils_saved()), self.__civil_numbers, len(self.get_civils_dead()))
             
             # Events uniques
-            if self.__mode == "menu" and self.__link.stop:
-                self.__response = "exit"
-                self.quit()
+            if self.__mode == "menu":
+                if self.__link.stop:
+                    self.__response = "exit"
+                    self.quit()
+                elif self.__link.restart:
+                    self.__response = "restart"
+                    self.quit()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.__response = "exit"
