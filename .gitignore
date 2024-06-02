@@ -2,3 +2,5 @@ ancienne_version
 test.py
 assets_rendu
 ArtstationPictures
+objects/__pycache__
+objects/menu/__pycache__

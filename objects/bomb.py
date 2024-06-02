@@ -2,6 +2,7 @@ import pygame
 import objects.tank as tank
 import objects.structure as structure
 import objects.civil as civil
+import objects.terroriste as terroriste
 
 class Bomb(pygame.sprite.Sprite):
     def __init__(self, group: pygame.sprite.Group, pos: tuple, local_pos: tuple, screen: pygame.Surface) -> None:
@@ -51,7 +52,7 @@ class Bomb(pygame.sprite.Sprite):
             if self.rect.colliderect(target.rect): # Collision
                 if type(target) == tank.Tank and target.hit(3):
                     target.set_exploded(True)
-                elif type(target) == civil.Civil:
+                elif type(target) in (civil.Civil, terroriste.Terroriste):
                     target.hit()
                 elif type(target) == structure.Structure:
                     target.hit(True)
