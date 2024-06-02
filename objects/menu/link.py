@@ -2,7 +2,6 @@ from objects.menu.menu import Menu
 from objects.menu.menu_jouer import MenuJouer
 from objects.menu.menu_options import MenuOptions
 from objects.menu.menu_credits import MenuCredits
-from objects.menu.dropdown import Dropdown
 from objects.menu.menu_pause import MenuPause
 from objects.menu.menu_son import MenuSon
 
@@ -53,6 +52,9 @@ class Link:
         self.menus["options"].update_music(pygame.mixer.music.get_volume())
         self.menus["options"].update_dropdown()
 
+        self.menus["son"].update_sound(self.assets.click_sound.get_volume())
+        self.menus["son"].update_music(pygame.mixer.music.get_volume())
+
         for menu_name in self.menus:
             if hasattr(self.menus[menu_name], 'buttons'):
                 self.menus[menu_name].create_buttons()
@@ -69,3 +71,4 @@ class Link:
     
     def set_volume(self, data: dict) -> None:
         self.menus["options"].set_volume(data)
+        self.menus["son"].set_volume(data)
