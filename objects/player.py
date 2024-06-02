@@ -207,6 +207,13 @@ class Player:
             # rect = self.get_heli().get_rect(center=self.get_heli().get_center())
         screen.blit(image, rect)
     
+    def respawn(self) -> None:
+        self.__try -= 1
+        self.__health = 100
+        self.__heli.set_rect(pygame.Rect(self.__screen.get_width() / 2 - 13 / 2, 0, self.__heli.get_rect().width, self.__heli.get_rect().height))
+        self.__heli.hitbox.x = self.__heli.get_rect().x
+        self.__heli.hitbox.y = self.__heli.get_rect().y
+    
     def move(self) -> None:
         # Consommer du carburant
         if not self.__refueling:

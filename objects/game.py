@@ -31,10 +31,10 @@ class Game:
 
         # Class contenant tout les enemis
         self.__enemis = enemis.Enemis(self.__screen)
-        # self.get_enemis().add_tank(self.get_screen(), self.__map().get_map_size(), type=1)
-        # self.get_enemis().add_tank(self.get_screen(), self.__map.get_map_size(), (50, 100), 2)
-        # self.get_enemis().add_avion(self.get_screen(), self.__map.get_map_size(), type=2)
-        # self.get_enemis().add_terroriste(10, 75, (10, 75), "classique")
+        self.get_enemis().add_tank(self.get_screen(), self.__map.get_map_size(), type=1)
+        self.get_enemis().add_tank(self.get_screen(), self.__map.get_map_size(), (50, 100), 2)
+        self.get_enemis().add_avion(self.get_screen(), self.__map.get_map_size(), type=2)
+        self.get_enemis().add_terroriste(10, 75, (10, 75), "classique")
         self.get_enemis().add_terroriste(30, 75, (30, 75), "kamikaze")
         
         # Structures
@@ -44,7 +44,7 @@ class Game:
         self.__civil_numbers = self.get_civils_number()
     
         # HUD
-        self.__hud = hud.HUD(self.__screen, self.__player.get_try(), self.__assets.THEME)
+        self.__hud = hud.HUD(self.__screen, self.__assets.THEME, self.__player.get_try())
     
         # Base
         self.__base_group = pygame.sprite.Group()
@@ -199,6 +199,11 @@ class Game:
                     self.sync_vel_structures(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
                     self.__base.sync_vel(self.get_player().get_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border())
                 self.get_player().get_heli().sync_vel(self.get_player().get_velocity(), self.get_player().get_vertical_velocity(), self.get_map().get_left_border(), self.get_map().get_right_border(), self.get_player().get_max_height(), self.get_player().get_min_height())
+                
+                # Gestion du player
+                if self.__player.get_health() <= 0:
+                    self.__player.respawn()
+                    self.__hud.update_try(self.__player.get_try())
                 
                 # Gestion des bombes
                 if self.get_player().get_bombs_list() != []:

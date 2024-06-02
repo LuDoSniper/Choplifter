@@ -104,11 +104,18 @@ class Dead():
         self.__screen.blit(font_surface, font_rect)
 
 class Try():
-    def __init__(self, screen: pygame.Surface, nb_try: int, color: str) -> None:
+    def __init__(self, screen: pygame.Surface, color: str, nb_try: int) -> None:
         self.__screen = screen
         self.__color = color
         self.__items = pygame.sprite.Group()
         self.__background = Civil_Background(self.__items, (10, 60), (75, 20), self.__color)
+        self.__logos = []
+        self.update_try(nb_try)
+    
+    def update_try(self, nb_try: int) -> None:
+        if self.__logos != []:
+            for logo in self.__logos:
+                self.__items.remove(logo)
         self.__logos = []
         for i in range(nb_try):
             self.__logos.append(Logo(self.__items, "helico-icon", (((self.__background.rect.width / 4) * (i + 1) - 15 / 2) + 10, 62), (15, 15)))
@@ -144,7 +151,7 @@ class Stored():
         self.__screen.blit(font_surface, font_rect)
         
 class HUD():
-    def __init__(self, screen: pygame.Surface, nb_try: int, color: str) -> None:
+    def __init__(self, screen: pygame.Surface, color: str, nb_try: int) -> None:
         self.__screen = screen
         self.__color = color
         self.__items = pygame.sprite.Group()
@@ -153,7 +160,7 @@ class HUD():
         self.__stored = Stored(self.__screen, self.__color)
         self.__saved = Saved(self.__screen, self.__color)
         self.__dead = Dead(self.__screen, self.__color)
-        self.__try = Try(self.__screen, nb_try, self.__color)
+        self.__try = Try(self.__screen, self.__color, nb_try)
     
     # Geter / Seter
     
@@ -168,6 +175,9 @@ class HUD():
         self.__color = color
         for item in [self.__stored, self.__saved, self.__dead, self.__try]:
             item.update(self.__color)
+    
+    def update_try(self, nb_int: int) -> None:
+        self.__try.update_try(nb_int)
     
     def afficher(self, health: int, fuel: int, stored: int, max_storage: int, saved: int, max_civil: int, dead: int) -> None:
         self.__health.afficher(health)
