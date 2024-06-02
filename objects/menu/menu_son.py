@@ -7,11 +7,12 @@ class MenuSon:
         self.assets = assets
         self.screen = screen
         self.change_menu_callback = change_menu_callback
+        self.clicked_element = None 
         self.create_elements()
 
     def create_elements(self):
         self.elements = []
-        self.elements.append(Button("", 215, 325, self.assets.bouton_confirm, self.assets.bouton_confirm_click, self.confirm, self.assets))
+        self.elements.append(Button("", 215, 475, self.assets.bouton_confirm, self.assets.bouton_confirm_click, self.confirm, self.assets))
         self.elements.append(Slider("Son", ((self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2), 200, 350, 8, self.update_sound, self.assets))
         self.elements.append(Slider("Musique", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, 260, 350, 8, self.update_music, self.assets))
 
@@ -40,7 +41,7 @@ class MenuSon:
                 elif isinstance(element, Slider):
                     element.handle_event(event)
             self.clicked_element = None 
-
+            
     def update_sound(self, value):
         self.assets.click_sound.set_volume(value)
         print(f"Son volume: {value}")
@@ -51,4 +52,27 @@ class MenuSon:
 
     def confirm(self):
         print("Options confirmées")
-        self.change_menu_callback("pause")
+        self.change_menu_callback("main")
+    
+    def get_sliders(self) -> list:
+        sliders = []
+        for element in self.elements:
+            if type(element) == Slider:
+                sliders.append(element)
+        return sliders
+    
+    def get_volume(self) -> dict:
+        data = {}
+        for slider in self.get_sliders():
+            if slider.label == "Son":
+                data["sfx"] = slider.value
+            elif slider.label == "Musique":
+                data["music"] = slider.value
+        return data
+
+    def set_volume(self, data: dict) -> None:
+        for slider in self.get_sliders():
+            if slider.label == "Son":
+                slider.value = data["sfx"]
+            elif slider.label == "Musique":
+                slider.value = data["music"]

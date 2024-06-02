@@ -9,6 +9,7 @@ class MenuPause:
         self.change_menu_callback = change_menu_callback
         self.quit_callback = quit_callback
         self.buttons = []
+        self.clicked_element = None 
         self.create_buttons()
 
     def draw(self):

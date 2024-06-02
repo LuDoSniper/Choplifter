@@ -1,12 +1,12 @@
 import pygame
 
 class Slider:
-    def __init__(self, label, x, y, width, height, callback, assets):
+    def __init__(self, label, x, y, width, height, callback, assets, value=0.5):
         self.assets = assets
         self.label = label
         self.rect = pygame.Rect(x, y, width, height)
         self.callback = callback
-        self.value = 0.5
+        self.value = value
         self.dragging = False
         self.cursor_img = pygame.image.load('assets/menu/cursor.png').convert_alpha()
 

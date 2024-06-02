@@ -9,7 +9,7 @@ class MenuOptions:
         self.screen = screen
         self.change_menu_callback = change_menu_callback
         self.update_theme_callback = update_theme_callback
-        self.clicked_element = None  # Ajout de cette ligne pour stocker l'élément cliqué
+        self.clicked_element = None 
         self.create_elements()
 
     def create_elements(self):
