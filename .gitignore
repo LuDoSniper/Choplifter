@@ -4,3 +4,5 @@ assets_rendu
 ArtstationPictures
 objects/__pycache__
 objects/menu/__pycache__
+index.php
+save.json
