@@ -16,18 +16,24 @@ current_game.set_data(data)
 current_game.handle()
 data = current_game.get_data()
 
-while current_game.get_response() != "exit":
-    if current_game.get_response() == "solo":
+response = current_game.get_response()
+while response != "exit":
+    response = current_game.get_response()
+    if response == "solo":
         musique = "mission1"
         mode = "solo"
-    if current_game.get_response() == "restart":
+    elif response == "restart":
         musique = "main_background_layer2" # Lancera le layer 1 car le changement de musique à l'air d'être detecté comme un SONG_END donc la loop se met en place et donc interverti layer1 avec layer2
         mode = "menu"
         
-    music_manager.switch(musique)
-    current_game = game.Game(music_manager, mode)
-    current_game.set_data(data)
-    current_game.handle()
+    # Antibug
+    if response is None:
+        current_game.change_menu(current_game.get_current_menu())
+    else:  
+        music_manager.switch(musique)
+        current_game = game.Game(music_manager, mode)
+        current_game.set_data(data)
+        current_game.handle()
 
 save_manager.save(current_game.get_data())
 

@@ -316,5 +316,11 @@ class Game:
     def update_hud(self) -> None:
         self.__hud.update(self.__assets.THEME)
     
+    def get_current_menu(self) -> str:
+        return self.__link.current_menu
+    
+    def change_menu(self, target: str) -> None:
+        self.__link.change_menu(target)
+    
     def quit(self) -> None:
         self.__running = False
