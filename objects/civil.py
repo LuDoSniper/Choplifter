@@ -82,6 +82,7 @@ class Civil(pygame.sprite.Sprite):
         if self.__state not in ("death", "damage"):
             if self.__aboard:
                 self.rect.x = player.get_heli().get_rect().x
+                self.hitbox.x = player.get_heli().get_rect().x + 24
             elif self.__base:
                 if self.rect.x < base_porte.x:
                     self.__dir = 1

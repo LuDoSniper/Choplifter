@@ -158,6 +158,7 @@ class Avion(pygame.sprite.Sprite):
                     self.hitbox.x = self.__screen.get_width() + self.image.get_rect().width + 20
                     
                 self.rect.y = random.randint(0, 30)
+                self.hitbox.y = self.rect.y
             
             if (self.__target > 0 and self.__done >= self.__target) or (self.__target < 0 and self.__done <= self.__target):
                 self.__target = 100

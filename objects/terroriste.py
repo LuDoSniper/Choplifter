@@ -14,10 +14,10 @@ class Terroriste(pygame.sprite.Sprite):
         self.rect.x = local_x
         self.rect.y = local_y
         self.hitbox = pygame.Rect(
-            self.rect.x + 10,
-            self.rect.y + 13,
-            12,
-            18
+            self.rect.x + 10 * 1.75,
+            self.rect.y + 13 * 1.75,
+            12 * 1.75,
+            18 * 1.75
         )
         if type == "classique":
             self.gun_image = pygame.image.load(f"assets/terroriste/{type}/gun/idle/0.png")
