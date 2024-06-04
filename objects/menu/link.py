@@ -4,8 +4,21 @@ from objects.menu.menu_options import MenuOptions
 from objects.menu.menu_credits import MenuCredits
 from objects.menu.menu_pause import MenuPause
 from objects.menu.menu_son import MenuSon
+from objects.menu.menu_survie import MenuSurvie
+from objects.menu.menu_mission import MenuMission
 
 import pygame
+
+classement = [("Joueur1", 1500), ("Joueur2", 1200), ("Joueur3", 1000), ("Joueur4", 900), ("Joueur5", 800)]
+positionnement = 10
+points_vous = 850
+
+missions = {
+    "Ile Alloca": [True, True, True, False],
+    "Foret Alloca": [True, True, False, False],
+    "Desert Alloca": [True, False, False, False],
+    "Montagne Alloca": [False, False, False, False]
+}
 
 class Link:
     def __init__(self, assets):
@@ -19,7 +32,9 @@ class Link:
             "options": MenuOptions(self.assets.screen, self.change_menu, self.update_theme, self.assets),
             "credits": MenuCredits(self.assets.screen, self.change_menu, self.assets),
             "pause": MenuPause(self.assets.screen, self.change_menu, self.restart_game, self.quit_game, assets),
-            "son": MenuSon(self.assets.screen, self.change_menu, assets)
+            "son": MenuSon(self.assets.screen, self.change_menu, assets),
+            "survie": MenuSurvie(self.assets.screen, self.change_menu, assets, classement, positionnement, points_vous),
+            "mission": MenuMission(self.assets.screen, self.change_menu, assets, missions, "Ile Alloca")
         }
         self.update_theme(self.assets.THEME) 
 
@@ -40,6 +55,7 @@ class Link:
         self.assets.bouton = pygame.transform.scale(self.assets.bouton, (self.assets.new_button_width, self.assets.new_button_height))
         self.assets.bouton_click = pygame.image.load(f'assets/menu/button-on-{self.assets.THEME.lower()}.png').convert_alpha()
         self.assets.bouton_click = pygame.transform.scale(self.assets.bouton_click, (self.assets.new_button_width, self.assets.new_button_height))
+
         
         self.assets.background_menu = pygame.image.load(f'assets/menu/background-{self.assets.THEME.lower()}.png')
         self.assets.background_menu = pygame.transform.scale(self.assets.background_menu, (int(self.assets.background_menu.get_width() * 0.7), int(self.assets.background_menu.get_height() * 0.7)))
@@ -48,6 +64,10 @@ class Link:
         self.assets.bouton_jouer_click = pygame.image.load(f'assets/menu/bouton_jouer_click_{self.assets.THEME.lower()}.png').convert_alpha()
         self.assets.bouton_jouer = pygame.transform.scale(self.assets.bouton_jouer, (self.assets.new_button_width, self.assets.new_button_height))
         self.assets.bouton_jouer_click = pygame.transform.scale(self.assets.bouton_jouer_click, (self.assets.new_button_width, self.assets.new_button_height))
+
+        self.assets.bouton_unlock = pygame.image.load(f'assets/menu/unlock_{self.assets.THEME.lower()}.png').convert_alpha()
+        self.assets.bouton_lock = pygame.image.load(f'assets/menu/lock_{self.assets.THEME.lower()}.png').convert_alpha()
+        self.assets.bouton_unlock_clicked = pygame.image.load(f'assets/menu/unlock_clicked_{self.assets.THEME.lower()}.png').convert_alpha()
 
         self.menus["options"].update_sound(self.assets.click_sound.get_volume())
         self.menus["options"].update_music(pygame.mixer.music.get_volume())
@@ -67,9 +87,7 @@ class Link:
         self.restart = True
 
     def get_data(self) -> dict:
-        # Récupérer le volume
         data = self.menus["options"].get_volume()
-        # Récupérer le theme
         data["theme"] = self.assets.THEME
         return data
     

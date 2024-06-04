@@ -33,6 +33,8 @@ class Assets:
         self.background_menu_options = pygame.image.load('assets/menu/background_option.png').convert()
         self.background_menu_credits = pygame.image.load('assets/menu/background_credits.png').convert()
         self.background_menu_pause = pygame.image.load('assets/menu/background_pause.png').convert()
+        self.background_menu_survie = pygame.image.load('assets/menu/background_survie.png').convert()
+        self.background_menu_mission = pygame.image.load('assets/menu/background_mission.png').convert()
         self.bouton_leave = pygame.image.load('assets/menu/leave.png').convert_alpha()
         self.bouton_cancel = pygame.image.load('assets/menu/cancel.png').convert_alpha()
         self.bouton_confirm = pygame.image.load('assets/menu/confirm.png').convert_alpha()
@@ -52,6 +54,7 @@ class Assets:
         self.background_menu_options = pygame.transform.scale(self.background_menu_options, (int(self.background_menu_options.get_width() * 0.9), int(self.background_menu_options.get_height() * 0.9)))
         self.background_menu_credits = pygame.transform.scale(self.background_menu_credits, (int(self.background_menu_credits.get_width() * 0.9), int(self.background_menu_credits.get_height() * 0.9)))
         self.background_menu_pause = pygame.transform.scale(self.background_menu_pause, (int(self.background_menu_pause.get_width() * 0.9), int(self.background_menu_pause.get_height() * 0.9)))
+        self.background_menu_mission = pygame.transform.scale(self.background_menu_mission, (int(self.background_menu_mission.get_width() * 0.7), int(self.background_menu_mission.get_height() * 0.7)))
 
         self.bouton_leave = pygame.transform.scale(self.bouton_leave, (int(self.bouton_leave.get_width() * 0.7), int(self.bouton_leave.get_height() * 0.7)))
 
@@ -59,6 +62,12 @@ class Assets:
         self.up_click_sound = pygame.mixer.Sound('assets/menu/up_click_sound.ogg')
         self.background_music = 'assets/menu/background_music.ogg'
         pygame.mixer.music.set_volume(0.5)
+
+        self.bouton_unlock = pygame.image.load(f'assets/menu/unlock_{self.THEME}.png').convert_alpha()
+        self.bouton_lock = pygame.image.load(f'assets/menu/lock_{self.THEME}.png').convert_alpha()
+        self.bouton_unlock_clicked = pygame.image.load(f'assets/menu/unlock_clicked_{self.THEME}.png').convert_alpha()
+
+        self.map = pygame.image.load(f'assets/menu/map.png').convert_alpha()
 
     def get_color_theme(self):
         return self.color_theme
@@ -87,8 +96,8 @@ class Assets:
     def get_screen(self):
         return self.screen
 
-    def get_custom_font_32(self):
-        return self.custom_font_32
+    def get_custom_font(self, value):
+        return pygame.font.Font('assets/menu/police.ttf', value)
 
     def get_custom_font_16(self):
         return self.custom_font_16

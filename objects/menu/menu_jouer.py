@@ -29,8 +29,8 @@ class MenuJouer:
         start_y = ((self.assets.SCREEN_HEIGHT - total_height) // 2) + 30
         start_x = (self.assets.SCREEN_WIDTH - button_width) // 2
 
-        self.buttons.append(Button('SOLO', start_x, start_y, self.assets.bouton, self.assets.bouton_click, self.start_solo, self.assets))
-        self.buttons.append(Button('DUEL', start_x, start_y + button_height + spacing, self.assets.bouton, self.assets.bouton_click, self.start_duel, self.assets))
+        self.buttons.append(Button('SOLO', start_x, start_y, self.assets.bouton, self.assets.bouton_click, lambda: self.change_menu_callback("mission"), self.assets))
+        self.buttons.append(Button('SURVIE', start_x, start_y + button_height + spacing, self.assets.bouton, self.assets.bouton_click, lambda: self.change_menu_callback("survie"), self.assets))
         self.buttons.append(Button('SANDBOX', start_x, start_y + 2 * (button_height + spacing), self.assets.bouton, self.assets.bouton_click, self.start_entrainement, self.assets))
         self.buttons.append(Button('RETOUR', start_x, start_y + 3 * (button_height + spacing), self.assets.bouton_jouer, self.assets.bouton_jouer_click, lambda: self.change_menu_callback("main"),self.assets, self.assets.color_theme))
 
@@ -59,8 +59,9 @@ class MenuJouer:
         print("Lance solo")
         return "solo"
 
-    def start_duel(self):
+    def start_survival(self):
         print("Lance duel")
+        return "survie"
 
     def start_entrainement(self):
         print("Lance sandbox")

@@ -52,7 +52,7 @@ class MenuSon:
 
     def confirm(self):
         print("Options confirmées")
-        self.change_menu_callback("main")
+        self.change_menu_callback("pause")
     
     def get_sliders(self) -> list:
         sliders = []
