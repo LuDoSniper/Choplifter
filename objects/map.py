@@ -16,12 +16,12 @@ class Tile(pygame.sprite.Sprite):
         return self.__local_pos
 
 class Map:
-    def __init__(self, width: int, height: int, tile_size: int, screen: pygame.Surface) -> None:
+    def __init__(self, path: str, width: int, height: int, tile_size: int, screen: pygame.Surface) -> None:
         self.__width = width
         self.__height = height
         self.__tile_size = tile_size
         
-        self.__tmx_data = load_pygame("assets/tilesets/map_test.tmx")
+        self.__tmx_data = load_pygame(path) # "assets/tilesets/map_test.tmx"
         self.__tiles = []
         self.__group = pygame.sprite.Group()
         

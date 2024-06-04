@@ -1,4 +1,5 @@
 import pygame
+import objects.mission as mission
 import objects.map as map
 import objects.player as player
 import objects.enemis as enemis
@@ -23,32 +24,42 @@ class Game:
         # Pas besoin de geter / seter
         self.__clock = pygame.time.Clock()
         
+        # Gestionnaire de mission
+        self.__mission_manager = mission.Mission("map_test", self.__screen)
+        
         # La map pourrais changer de game en game
-        self.__map = map.Map(20, 4, 64, self.__screen)
+        # self.__map = map.Map(20, 4, 64, self.__screen)
+        self.__map = self.__mission_manager.get_map()
         
         # Il faudra rajouter un autre player pour le mode multi
-        self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size())
+        # self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size())
+        self.__player = self.__mission_manager.get_player()
 
         # Class contenant tout les enemis
-        self.__enemis = enemis.Enemis(self.__screen)
-        self.get_enemis().add_tank(self.get_screen(), self.__map.get_map_size(), type=1)
-        self.get_enemis().add_tank(self.get_screen(), self.__map.get_map_size(), (50, 100), 2)
-        self.get_enemis().add_avion(self.get_screen(), self.__map.get_map_size(), type=2)
-        self.get_enemis().add_terroriste(10, 75, (10, 75), "classique")
-        self.get_enemis().add_terroriste(30, 75, (30, 75), "kamikaze")
+        # self.__enemis = enemis.Enemis(self.__screen)
+        # self.get_enemis().add_tank(self.get_screen(), self.__map.get_map_size(), type=1)
+        # self.get_enemis().add_tank(self.get_screen(), self.__map.get_map_size(), (50, 100), 2)
+        # self.get_enemis().add_avion(self.get_screen(), self.__map.get_map_size(), type=2)
+        # self.get_enemis().add_terroriste(10, 75, (10, 75), "classique")
+        # self.get_enemis().add_terroriste(30, 75, (30, 75), "kamikaze")
+        self.__enemis = self.__mission_manager.get_enemis()
         
         # Structures
-        self.__structures_group = pygame.sprite.Group()
-        self.__structures_list = []
-        self.__structures_list.append(structure.Structure(self.__structures_group, 200, 72, (200, 72), "batiment", "brick"))
+        # self.__structures_group = pygame.sprite.Group()
+        # self.__structures_list = []
+        # self.__structures_list.append(structure.Structure(self.__structures_group, 200, 72, (200, 72), "batiment", "brick"))
+        self.__structures_group = self.__mission_manager.get_structures_group()
+        self.__structures_list = self.__mission_manager.get_structures_list()
         self.__civil_numbers = self.get_civils_number()
     
         # HUD
         self.__hud = hud.HUD(self.__screen, self.__assets.THEME, self.__player.get_try())
     
         # Base
-        self.__base_group = pygame.sprite.Group()
-        self.__base = base.Base(self.__base_group, 700, 30, (700, 30))
+        # self.__base_group = pygame.sprite.Group()
+        # self.__base = base.Base(self.__base_group, 700, 30, (700, 30))
+        self.__base_group = self.__mission_manager.get_base_group()
+        self.__base = self.__mission_manager.get_base()
     
         # Easter egg
         self.__egg = []

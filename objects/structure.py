@@ -11,7 +11,7 @@ class Structure(pygame.sprite.Sprite):
         
         if self.__type == "batiment":
             self.__civils_number = random.randint(3, 5)
-        elif self.__type == "garade":
+        elif self.__type == "garage":
             self.__civils_number = random.randint(1, 3)
         
         self.__state = 2
