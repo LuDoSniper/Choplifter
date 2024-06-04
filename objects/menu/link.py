@@ -73,7 +73,7 @@ class Link:
         self.menus["options"].update_music(pygame.mixer.music.get_volume())
         self.menus["options"].update_dropdown()
 
-        self.menus["son"].update_sound(pygame.mixer.music.get_volume())
+        self.menus["son"].update_sound(self.assets.click_sound.get_volume())
         self.menus["son"].update_music(pygame.mixer.music.get_volume())
 
         for menu_name in self.menus:

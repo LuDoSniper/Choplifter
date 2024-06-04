@@ -328,7 +328,8 @@ class Game:
     def set_data(self, data: dict) -> None:
         self.__link.set_volume(data)
         pygame.mixer.music.set_volume(data["music"])
-        pygame.mixer.music.set_volume(data["sfx"])
+        self.__assets.click_sound.set_volume(data["sfx"])
+        self.__assets.up_click_sound.set_volume(data["sfx"])
         self.__assets.THEME = data["theme"]
         self.update_hud()
         self.__link.update_theme(data["theme"])
