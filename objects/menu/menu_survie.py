@@ -19,7 +19,7 @@ class MenuSurvie:
         bg_y = (self.assets.SCREEN_HEIGHT - self.assets.background_menu_survie.get_height()) // 2
         self.screen.blit(self.assets.background_menu_survie, (bg_x, bg_y))
         
-        font = pygame.font.Font(None, 36)
+        font = self.assets.get_custom_font(20)
         y_start = 125
         spacing = 50
 
