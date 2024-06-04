@@ -111,6 +111,7 @@ class MenuMission:
                 if pygame.Rect(position[0] - 20, position[1] - 20, 40, 40).collidepoint(event.pos):
                     self.monde = monde
                     self.create_buttons()
+                    self.assets.up_click_sound.play()
                     break
 
     def start_mission(self, mission_number):

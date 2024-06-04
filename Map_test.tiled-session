@@ -3,16 +3,128 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "assets/tilesets/map_test.tmx",
+    "activeFile": "D:/_DOCUMENTS/Bureau/tilesets/Forest/map_forest.tmx",
     "expandedProjectPaths": [
     ],
     "fileStates": {
+        "D:/_DOCUMENTS/Bureau/tilesets/Desert/Assets.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Desert/BG1.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Desert/BG2.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Desert/Clouds.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Desert/desertFoliage.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Desert/map_desert.tmx": {
+            "scale": 1.3849218749999999,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 267.88514695097876,
+                "y": 58.12602245162746
+            }
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Desert/tilesetsand.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Forest/Background.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Forest/Textures&trees.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Forest/Tlayer1.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Forest/Tlayer2.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Forest/Tlayer3.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Forest/arbre.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Forest/bgcolor.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Forest/main.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Forest/map_forest.tmx": {
+            "scale": 1.3849218749999999,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 287.74186269532356,
+                "y": 158.8537259547583
+            }
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Island/Clouds.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Island/Sky.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Island/desertFoliage.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Island/map_island.tmx": {
+            "scale": 1.3849218749999999,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 319.87363908162695,
+                "y": 160.65888193151693
+            }
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Island/map_test_tileset.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Mountain/BG1.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Mountain/BG2.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Mountain/Clouds.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Mountain/MossyRockTileSet.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Mountain/Rock Mountain.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Mountain/Rock Mountains.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Mountain/Snow Background.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Mountain/Tile Set.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/_DOCUMENTS/Bureau/tilesets/Mountain/desert_mountain.tmx": {
+            "scale": 1.3849218749999999,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 319.87363908162695,
+                "y": 58.12602245162746
+            }
+        },
         "assets/tilesets/map_test.tmx": {
             "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 328,
-                "y": 58
+                "x": 320,
+                "y": 63.5
             }
         },
         "assets/tilesets/map_test_tileset.tsx": {
@@ -26,13 +138,16 @@
     "map.renderOrder": null,
     "map.width": 20,
     "openFiles": [
-        "assets/tilesets/map_test.tmx",
-        "assets/tilesets/map_test_tileset.tsx"
+        "D:/_DOCUMENTS/Bureau/tilesets/Forest/map_forest.tmx"
     ],
     "project": "Map_test.tiled-project",
     "recentFiles": [
+        "D:/_DOCUMENTS/Bureau/tilesets/Forest/map_forest.tmx",
+        "assets/tilesets/map_test.tmx",
         "assets/tilesets/map_test_tileset.tsx",
-        "assets/tilesets/map_test.tmx"
+        "D:/_DOCUMENTS/Bureau/tilesets/Desert/map_desert.tmx",
+        "D:/_DOCUMENTS/Bureau/tilesets/Mountain/desert_mountain.tmx",
+        "D:/_DOCUMENTS/Bureau/tilesets/Island/map_island.tmx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }
