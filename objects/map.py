@@ -65,6 +65,7 @@ class Map:
         return self.__group
     def set_group(self, group: pygame.sprite.Group) -> None:
         self.__group = group
+        super().__init__(group)
     
     def get_rect(self) -> pygame.Rect:
         return self.__rect

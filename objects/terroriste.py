@@ -8,6 +8,7 @@ class Terroriste(pygame.sprite.Sprite):
         super().__init__(group)
         self.__type = type
         
+        self.group = group
         self.image = pygame.image.load(f"assets/terroriste/{type}/idle 1/0.png")
         self.image = pygame.transform.scale(self.image, (self.image.get_rect().width * 1.75, self.image.get_rect().height * 1.75))
         self.rect = self.image.get_rect()
@@ -57,6 +58,12 @@ class Terroriste(pygame.sprite.Sprite):
         self.__exploding_delay = 60
         
     # Geter / Seter
+    
+    def get_group(self) -> pygame.sprite.Group:
+        return self.group
+    def set_group(self, group: pygame.sprite.Group) -> None:
+        self.group = group
+        super().__init__(group)
     
     def get_pos(self) -> tuple:
         return self.__pos
@@ -288,3 +295,14 @@ class Terroriste(pygame.sprite.Sprite):
     def afficher_explosion(self, screen: pygame.Surface) -> None:
         if self.__explosion is not None:
             self.__explosion_group.draw(screen)
+    
+    def get_data(self) -> dict:
+        data = {
+            "alive": self.__state not in ("death", "scream"),
+            "pos": self.__pos
+        }
+        return data
+    def set_data(self, data: dict) -> None:
+        if not data["alive"]:
+            self.hit()
+        self.__pos = data["pos"]

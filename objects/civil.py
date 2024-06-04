@@ -1,13 +1,14 @@
 import pygame
 import random
-import objects.player as player
 
 class Civil(pygame.sprite.Sprite):
     
     RANGE = 200
     
-    def __init__(self, group: pygame.sprite.Group, local_x: int, local_y: int, pos: tuple, gender: str, type: int, clothes: int, egged: bool = False) -> None:
+    def __init__(self, group: pygame.sprite.Group, origine, local_x: int, local_y: int, pos: tuple, gender: str, type: int, clothes: int, egged: bool = False) -> None:
         super().__init__(group)
+        self.group = group
+        self.origine = origine
         self.image = pygame.image.load(f"assets/civils/Exported_PNGs/{gender}/Character {type}/Clothes {clothes}/Character{type}{gender[0]}_{clothes}_idle_0.png")
         # self.image = pygame.image.load(f"assets/Update/otages/Female/character-1/clothes-1/Character1F_1_idle_0.png")
         self.rect = self.image.get_rect()
@@ -42,6 +43,12 @@ class Civil(pygame.sprite.Sprite):
         self.__reversed = False
         
     # Geter / Seter
+    
+    def get_group(self) -> pygame.sprite.Group:
+        return self.group
+    def set_group(self, group: pygame.sprite.Group) -> None:
+        self.group = group
+        super().__init__(group)
     
     def get_aboard(self) -> bool:
         return self.__aboard
@@ -197,3 +204,21 @@ class Civil(pygame.sprite.Sprite):
         if not left and not right:
             self.rect.x -= velocity
             self.hitbox.x -= velocity
+    
+    def get_data(self) -> dict:
+        if self.__base: # Sauve les civils marchant jusqu'à la porte
+            self.__base = False
+            self.__saved = True
+        if self.__aboard: # Tue les civils à bord du crash
+            self.hit()
+        data = {
+            "saved": self.__saved,
+            "alive": self.__state not in ("damage", "death"),
+            "pos": self.__pos
+        }
+        return data
+    def set_data(self, data: dict) -> None:
+        self.__saved = data["saved"]
+        if not data["alive"]:
+            self.hit()
+        self.__pos = data["pos"]

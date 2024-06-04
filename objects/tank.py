@@ -48,10 +48,12 @@ class Tank(pygame.sprite.Sprite):
         self.__timer = 0
     
     # Geter / Seter
+    
     def get_group(self) -> pygame.sprite.Group:
         return self.__group
     def set_group(self, group: pygame.sprite.Group) -> None:
         self.__group = group
+        super().__init__(group)
     
     def get_type(self) -> int:
         return self.__type
@@ -198,3 +200,13 @@ class Tank(pygame.sprite.Sprite):
         # Syncroniser la velocité de la bullet
         if self.__bullet is not None:
             self.__bullet.sync_vel(velocity, left, right)
+    
+    def get_data(self) -> dict:
+        data = {
+            "health": self.__health,
+            "pos": self.__pos
+        }
+        return data
+    def set_data(self, data: dict) -> None:
+        self.__health = data["health"]
+        self.__pos = data["pos"]

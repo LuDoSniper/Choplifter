@@ -21,6 +21,7 @@ class Enemis:
         return self.__group
     def set_group(self, group: pygame.sprite.Group) -> None:
         self.__group = group
+        super().__init__(group)
     
     def get_explosions(self) -> list:
         return self.__explosions

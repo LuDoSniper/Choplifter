@@ -59,7 +59,41 @@ class Mission():
     
     # Méthodes
     
-    def load(self, id: str) -> None:
+    def load(self, id: str, reload: bool = False) -> None:
+        if reload:
+            civils = []
+            for structure_tmp in self.__structures:
+                tmp = structure_tmp.get_civils_list()
+                for civil in tmp:
+                    if not civil.get_saved():
+                        civils.append(civil)
+            
+            terroristes = self.__enemis.get_terroristes()
+            tanks = self.__enemis.get_tanks()
+            avions = self.__enemis.get_avions()
+            
+            # Get data
+            civils_data = []
+            for civil in civils:
+                civils_data.append(civil.get_data())
+                civil.origine = self.__structures.index(civil.origine)
+            
+            terroristes_data = []
+            for terroriste in terroristes:
+                terroristes_data.append(terroriste.get_data())
+            
+            tanks_data = []
+            for tank in tanks:
+                tanks_data.append(tank.get_data())
+            
+            avions_data = []
+            for avion in avions:
+                avions_data.append(avion.get_data())
+            
+            structures_data = []
+            for structure_tmp in self.__structures:
+                structures_data.append(structure_tmp.get_data())
+        
         height = 4 # temporaire
         tile_size = 64 # temporaire
         
@@ -72,24 +106,26 @@ class Mission():
             width = 20
             self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
             self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
-            self.__base = base.Base(self.__base_group, 3 * tile_size, 30, (3 * tile_size, 30))
+            self.__base = base.Base(self.__base_group, 4 * tile_size, 30, (4 * tile_size, 30))
             self.__structures.append(structure.Structure(self.__structures_group, 2 * tile_size, 72, (2 * tile_size, 72), "batiment", "ville"))
             self.__structures.append(structure.Structure(self.__structures_group, 10 * tile_size, 72, (2 * tile_size, 72), "garage", "ville"))
             self.__structures.append(structure.Structure(self.__structures_group, 15 * tile_size, 72, (2 * tile_size, 72), "batiment", "ville"))
-            self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (5 * tile_size, 100))
-            self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100))
+            if not reload:
+                self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (5 * tile_size, 100))
+                self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100))
         else:
             if int(id[0]) == 1:
                 if int(id[-1]) == 1:
                     width = 20
                     self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
                     self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
-                    self.__base = base.Base(self.__base_group, 3 * tile_size, 30, (3 * tile_size, 30))
+                    self.__base = base.Base(self.__base_group, 4 * tile_size, 30, (4 * tile_size, 30))
                     self.__structures.append(structure.Structure(self.__structures_group, 2 * tile_size, 72, (2 * tile_size, 72), "batiment", "ville"))
                     self.__structures.append(structure.Structure(self.__structures_group, 10 * tile_size, 72, (2 * tile_size, 72), "garage", "ville"))
                     self.__structures.append(structure.Structure(self.__structures_group, 15 * tile_size, 72, (2 * tile_size, 72), "batiment", "ville"))
-                    self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (5 * tile_size, 100))
-                    self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100))
+                    if not reload:
+                        self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (5 * tile_size, 100))
+                        self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100))
                 elif int(id[-1]) == 2:
                     width = 30
                 elif int(id[-1]) == 3:
@@ -123,3 +159,50 @@ class Mission():
                     width = 40
                 elif int(id[-1]) == 4:
                     width = 50
+        
+        if reload:
+            # Set data
+            i = 0
+            for terroriste in terroristes:
+                terroriste.set_data(terroristes_data[i])
+                i += 1
+            
+            i = 0
+            for tank in tanks:
+                tank.set_data(tanks_data[i])
+                tank.set_group(self.__enemis.get_group())
+                tmp = self.__enemis.get_tanks()
+                tmp.append(tank)
+                self.__enemis.set_list(tmp)
+                i += 1
+            
+            i = 0
+            for avion in avions:
+                avion.set_data(avions_data[i])
+                i += 1
+            
+            i = 0
+            for structure_tmp in self.__structures:
+                structure_tmp.set_data(structures_data[i])
+                i += 1
+    
+            i = 0
+            for civil in civils:
+                civil.set_data(civils_data[i])
+                civil.set_group(self.__structures[civil.origine].get_civils_group())
+                tmp = self.__structures[civil.origine].get_civils_list()
+                tmp.append(civil)
+                self.__structures[civil.origine].set_civils_list(tmp)
+                civil.origine = self.__structures[civil.origine]
+                i += 1
+            
+    def reload(self, id: str) -> None:
+        player_try = self.__player.get_try() - 1
+        if player_try <= 0:
+            self.game_over()
+            return # Arreter la fonction
+        self.load(id, True)
+        self.__player.set_try(player_try)
+    
+    def game_over(self) -> None:
+        print("Game Over")

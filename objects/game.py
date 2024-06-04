@@ -217,7 +217,16 @@ class Game:
                 
                 # Gestion du player
                 if self.__player.get_health() <= 0:
-                    self.__player.respawn()
+                    self.__mission_manager.reload(self.__mission_manager.get_id())
+                    # Mise à jour de game
+                    self.__map = self.__mission_manager.get_map()
+                    self.__player = self.__mission_manager.get_player()
+                    self.__structures_list = self.__mission_manager.get_structures_list()
+                    self.__structures_group = self.__mission_manager.get_structures_group()
+                    self.__enemis = self.__mission_manager.get_enemis()
+                    self.__base = self.__mission_manager.get_base()
+                    self.__base_group = self.__mission_manager.get_base_group()
+                    # Mise à jour du HUD
                     self.__hud.update_try(self.__player.get_try())
                 
                 # Gestion des bombes

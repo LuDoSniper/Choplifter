@@ -76,6 +76,13 @@ class Structure(pygame.sprite.Sprite):
     def set_civils_list(self, list: list) -> None:
         self.__civils_list = list
     
+    def get_civils_group(self) -> pygame.sprite.Group:
+        return self.__civils_group
+    def set_civils_group(self, group: pygame.sprite.Group) -> None:
+        self.__civils_group = group
+        for civil in self.__civils_list:
+            civil.set_group(self.__civils_group)
+    
     def get_civils_playable(self) -> list:
         list = []
         for civil in self.__civils_list:
@@ -113,7 +120,7 @@ class Structure(pygame.sprite.Sprite):
                     x = random.randint(self.rect.x, self.rect.x + self.rect.width)
             self.__pos_tmp.append(x)
             y_offset = 10
-            self.__civils_list.append(civil.Civil(self.__civils_group, x, self.rect.y + y_offset, (x, self.rect.y + y_offset), gender, type, clothes, self.__egged))
+            self.__civils_list.append(civil.Civil(self.__civils_group, self, x, self.rect.y + y_offset, (x, self.rect.y + y_offset), gender, type, clothes, self.__egged))
     
     def hit(self, bomb: bool = False) -> None:
         if bomb:
@@ -122,18 +129,10 @@ class Structure(pygame.sprite.Sprite):
             damage = 1
         self.__state -= damage
         if self.__state == 1:
-            self.image = pygame.image.load(f"assets/structure/{self.__type}/{self.__theme}-fissure.png")
-            self.image = pygame.transform.scale(self.image, (
-                self.image.get_rect().width * 2,
-                self.image.get_rect().height * 2
-            ))
+            self.update_image()
         if not self.__destroyed and self.__state == 0:
             self.__destroyed = True
-            self.image = pygame.image.load(f"assets/structure/{self.__type}/{self.__theme}-decombres.png")
-            self.image = pygame.transform.scale(self.image, (
-                self.image.get_rect().width * 2,
-                self.image.get_rect().height * 2
-            ))
+            self.update_image()
             self.add_civils()
             # Tuer entre 2 et 3 civils
             if bomb:
@@ -164,6 +163,18 @@ class Structure(pygame.sprite.Sprite):
             if civil.get_saved():
                 self.__civils_group.remove(civil)
     
+    def update_image(self) -> None:
+        state = ""
+        if self.__state == 1:
+            state = "-fissure"
+        elif self.__state == 0:
+            state = "-decombres"
+        self.image = pygame.image.load(f"assets/structure/{self.__type}/{self.__theme}{state}.png")
+        self.image = pygame.transform.scale(self.image, (
+            self.image.get_rect().width * 2,
+            self.image.get_rect().height * 2
+        ))
+    
     def afficher_civils(self, screen: pygame.Surface, egged: bool = False) -> None:
         self.easter_egg(egged)
         for civil in self.__civils_list:
@@ -174,3 +185,16 @@ class Structure(pygame.sprite.Sprite):
     def easter_egg(self, egged: bool) -> None:
         for civil in self.get_civils_list():
             civil.set_egged(egged)
+    
+    def get_data(self) -> dict:
+        data = {
+            "destroyed": self.__destroyed,
+            "state": self.__state,
+            "pos": self.__pos
+        }
+        return data
+    def set_data(self, data: dict) -> None:
+        self.__destroyed = data["destroyed"]
+        self.__state = data["state"]
+        self.__pos = data["pos"]
+        self.update_image()

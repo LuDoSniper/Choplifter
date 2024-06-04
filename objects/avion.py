@@ -64,6 +64,7 @@ class Avion(pygame.sprite.Sprite):
         return self.__group
     def set_group(self, group: pygame.sprite.Group) -> None:
         self.__group = group
+        super().__init__(group)
     
     def get_type(self) -> int:
         return self.__type
@@ -247,3 +248,11 @@ class Avion(pygame.sprite.Sprite):
         if not left and not right:
             self.rect.x -= velocity
             self.hitbox.x -= velocity
+    
+    def get_data(self) -> dict:
+        data = {
+            "health": self.__health
+        }
+        return data
+    def set_data(self, data: dict) -> None:
+        self.__health = data["health"]
