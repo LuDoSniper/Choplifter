@@ -60,12 +60,36 @@ class Mission():
     # Méthodes
     
     def load(self, id: str) -> None:
+        height = 4 # temporaire
+        tile_size = 64 # temporaire
+        
+        self.__base_group = pygame.sprite.Group()
+        self.__structures = []
+        self.__enemis = enemis.Enemis(self.__screen)
+        self.__structures_group = pygame.sprite.Group()
+        
         if id == "map_test":
             width = 20
+            self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
+            self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
+            self.__base = base.Base(self.__base_group, 3 * tile_size, 30, (3 * tile_size, 30))
+            self.__structures.append(structure.Structure(self.__structures_group, 2 * tile_size, 72, (2 * tile_size, 72), "batiment", "ville"))
+            self.__structures.append(structure.Structure(self.__structures_group, 10 * tile_size, 72, (2 * tile_size, 72), "garage", "ville"))
+            self.__structures.append(structure.Structure(self.__structures_group, 15 * tile_size, 72, (2 * tile_size, 72), "batiment", "ville"))
+            self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (5 * tile_size, 100))
+            self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100))
         else:
             if int(id[0]) == 1:
                 if int(id[-1]) == 1:
                     width = 20
+                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
+                    self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
+                    self.__base = base.Base(self.__base_group, 3 * tile_size, 30, (3 * tile_size, 30))
+                    self.__structures.append(structure.Structure(self.__structures_group, 2 * tile_size, 72, (2 * tile_size, 72), "batiment", "ville"))
+                    self.__structures.append(structure.Structure(self.__structures_group, 10 * tile_size, 72, (2 * tile_size, 72), "garage", "ville"))
+                    self.__structures.append(structure.Structure(self.__structures_group, 15 * tile_size, 72, (2 * tile_size, 72), "batiment", "ville"))
+                    self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (5 * tile_size, 100))
+                    self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100))
                 elif int(id[-1]) == 2:
                     width = 30
                 elif int(id[-1]) == 3:
@@ -99,17 +123,3 @@ class Mission():
                     width = 40
                 elif int(id[-1]) == 4:
                     width = 50
-        height = 4 # temporaire
-        tile_size = 64 # temporaire
-        self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
-        self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
-        self.__base_group = pygame.sprite.Group()
-        self.__base = base.Base(self.__base_group, 3 * tile_size, 30, (3 * tile_size, 30))
-        self.__structures_group = pygame.sprite.Group()
-        self.__structures = []
-        self.__structures.append(structure.Structure(self.__structures_group, 2 * tile_size, 72, (2 * tile_size, 72), "batiment", "ville"))
-        self.__structures.append(structure.Structure(self.__structures_group, 10 * tile_size, 72, (2 * tile_size, 72), "garage", "ville"))
-        self.__structures.append(structure.Structure(self.__structures_group, 15 * tile_size, 72, (2 * tile_size, 72), "batiment", "ville"))
-        self.__enemis = enemis.Enemis(self.__screen)
-        self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (5 * tile_size, 100))
-        self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100))

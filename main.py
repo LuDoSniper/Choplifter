@@ -18,7 +18,6 @@ data = current_game.get_data()
 
 response = current_game.get_response()
 while response != "exit":
-    response = current_game.get_response()
     if response == "solo":
         musique = "mission1"
         mode = "solo"
@@ -34,6 +33,7 @@ while response != "exit":
         current_game = game.Game(music_manager, mode)
         current_game.set_data(data)
         current_game.handle()
+        response = current_game.get_response()
 
 save_manager.save(current_game.get_data())
 
