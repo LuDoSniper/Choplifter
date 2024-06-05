@@ -132,12 +132,12 @@ class Tank(pygame.sprite.Sprite):
     def scan(self, player) -> None:
         # Agis si l'helico se trouve à portée (Se base uniquement sur l'abscisse)
         marge = 10
-        heli_pos = round(player.get_pos()[0])
-        if abs(abs(self.get_pos()[0]) - abs(heli_pos)) <= self.RANGE:
+        heli_pos = round(player.get_heli().get_rect().x)
+        if abs(abs(self.rect.x) - abs(heli_pos)) <= self.RANGE:
             # Helico à portée
-            if self.get_pos()[0] > heli_pos + marge:
+            if self.rect.x > heli_pos + marge:
                 self.set_dir(-1)
-            elif self.get_pos()[0] < heli_pos - marge:
+            elif self.rect.x < heli_pos - marge:
                 self.set_dir(1)
             else:
                 self.set_dir(0)
