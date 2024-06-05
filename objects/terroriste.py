@@ -295,12 +295,14 @@ class Terroriste(pygame.sprite.Sprite):
             self.__explosion.sync_vel(velocity, left, right)
     
     def afficher_gun(self, screen: pygame.Surface) -> None:
-        if self.__type == "classique":
-            screen.blit(self.gun_image, self.gun_rect)
+        if not(self.gun_rect.x + self.gun_rect.width < 0 or self.gun_rect.x > screen.get_width()):
+            if self.__type == "classique":
+                screen.blit(self.gun_image, self.gun_rect)
     
     def afficher_explosion(self, screen: pygame.Surface) -> None:
-        if self.__explosion is not None:
-            self.__explosion_group.draw(screen)
+        if self.__explosion is not None and not(self.__explosion.rect.x + self.__explosion.rect.width < 0 or self.__explosion.rect.x > screen.get_width()):
+            if self.__explosion is not None:
+                self.__explosion_group.draw(screen)
     
     def get_data(self) -> dict:
         data = {

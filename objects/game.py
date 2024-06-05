@@ -134,7 +134,8 @@ class Game:
                 self.__link.draw()
             else:
                 self.get_map().afficher(self.get_screen())
-                self.__base_group.draw(self.__screen)
+                if not(self.__base.rect.x + self.__base.rect.width < 0 or self.__base.rect.x > self.__screen.get_width()):
+                    self.__base_group.draw(self.__screen)
                 self.afficher_structures(self.__egged)
                 self.get_player().afficher(self.get_screen())
                 self.get_player().afficher_bombs(self.get_screen())
@@ -307,7 +308,6 @@ class Game:
     def check_end_game(self) -> bool:
         dead = len(self.get_civils_dead())
         saved = len(self.get_civils_saved())
-        print(f"dead : {dead}\nsaved : {saved}\ntotal : {self.__civil_numbers}")
         if dead + saved == self.__civil_numbers:
             if saved >= self.__civil_numbers / 2:
                 self.__current_menu = "win"
@@ -345,7 +345,8 @@ class Game:
     
     def handle_structures(self, map_size: int, base_porte: pygame.Rect) -> None:
         for structure in self.__structures_list:
-            structure.handle(map_size, self.__player, base_porte)
+            if not(structure.rect.x + structure.rect.width < 0 or structure.rect.x > self.__screen.get_width()):
+                structure.handle(map_size, self.__player, base_porte)
     
     def get_intacts_structures(self) -> list:
         list = []
@@ -387,10 +388,16 @@ class Game:
         return list
         
     def afficher_structures(self, egged: bool = False) -> None:
-        self.__structures_group.draw(self.__screen)
+        out_of_screen = []
         for structure in self.__structures_list:
             structure.afficher_civils(self.__screen, egged)
-    
+            if structure.rect.x + structure.rect.width < 0 or structure.rect.x > self.__screen.get_width():
+                out_of_screen.append(structure)
+                self.__structures_group.remove(structure)
+        self.__structures_group.draw(self.__screen)
+        for structure in out_of_screen:
+            self.__structures_group.add(structure)
+        
     def sync_vel_structures(self, velocity: float, left: bool, right: bool) -> None:
         for structure in self.__structures_list:
             structure.sync_vel(velocity, left, right)

@@ -98,7 +98,14 @@ class Map:
             self.__tiles.append(Tile(tile[2], (tile[0] * self.get_tile_size(), tile[1] * self.get_tile_size()), (tile[:2]), self.get_group()))
     
     def afficher(self, screen: pygame.Surface) -> None:
+        out_of_screen = []
+        for tile in self.__tiles:
+            if tile.rect.x + tile.rect.width < 0 or tile.rect.x > screen.get_width():
+                out_of_screen.append(tile)
+                self.__group.remove(tile)
         self.get_group().draw(screen)
+        for tile in out_of_screen:
+            self.__group.add(tile)
     
     def sync_vel(self, velocity: float) -> None:
         self.__rect.x -= velocity

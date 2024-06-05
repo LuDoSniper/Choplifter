@@ -67,23 +67,24 @@ class Enemis:
     
     def handle_tanks(self, player: player.Player, civils: list, structures: list) -> None:
         for tank in self.get_tanks():
-            tank.scan(player)
-            tank.scan_civils(civils)
-            tank.sync_side()
-            
-            # Gestion des morts
-            if tank.get_exploded():
-                self.explode(tank.rect.x, tank.rect.y, tank.get_pos(), 2)
-                self.__group.remove(tank)
-                self.__tanks.pop(self.__tanks.index(tank))
-            
-            # Gestion des bullets
-            if tank.get_bullet() is not None:
-                tank.get_bullet().move([player] + structures)
-                if tank.get_bullet().get_exploded():
-                    self.explode(tank.get_bullet().rect.x, tank.get_bullet().rect.y, tank.get_bullet().get_pos())
-                    tank.get_bullet_group().remove(tank.get_bullet())
-                    tank.set_bullet(None)
+            if not(tank.rect.x + tank.rect.width < 0 or tank.rect.x > self.__screen.get_width()):
+                tank.scan(player)
+                tank.scan_civils(civils)
+                tank.sync_side()
+                
+                # Gestion des morts
+                if tank.get_exploded():
+                    self.explode(tank.rect.x, tank.rect.y, tank.get_pos(), 2)
+                    self.__group.remove(tank)
+                    self.__tanks.pop(self.__tanks.index(tank))
+                
+                # Gestion des bullets
+                if tank.get_bullet() is not None:
+                    tank.get_bullet().move([player] + structures)
+                    if tank.get_bullet().get_exploded():
+                        self.explode(tank.get_bullet().rect.x, tank.get_bullet().rect.y, tank.get_bullet().get_pos())
+                        tank.get_bullet_group().remove(tank.get_bullet())
+                        tank.set_bullet(None)
     
     def sync_vel_tanks(self, velocity: float, left: bool, right: bool) -> None:
         for tank in self.get_tanks():
@@ -91,7 +92,8 @@ class Enemis:
     
     def display_tanks_bullet(self, screen: pygame.Surface) -> None:
         for tank in self.get_tanks():
-            tank.get_bullet_group().draw(screen)
+            if not(tank.rect.x + tank.rect.width < 0 or tank.rect.x > screen.get_width()):
+                tank.get_bullet_group().draw(screen)
     
     # Explosion
     def explode(self, local_x: int, local_y: int, pos: tuple, size: float = 1) -> None:
@@ -134,7 +136,8 @@ class Enemis:
     
     def display_avions_bullets(self, screen: pygame.Surface) -> None:
         for avion in self.get_avions():
-            avion.get_bullets_group().draw(screen)
+            if not(avion.rect.x + avion.rect.width < 0 or avion.rect.x > screen.get_width()):
+                avion.get_bullets_group().draw(screen)
     
     def move_avions_bullets(self, targets: list = []) -> None:
         for avion in self.get_avions():
@@ -147,14 +150,15 @@ class Enemis:
     
     def handle_terroristes(self, map_size: int, screen: pygame.Surface, civils: list, player_var) -> None:
         for terroriste in self.__terroristes:
-            terroriste.handle(map_size, screen, civils, player_var)
-            
-            # Gestion des bullets
-            for bullet in terroriste.get_bullets_list():
-                if bullet.get_exploded():
-                    terroriste.get_bullets_group().remove(bullet)
-                    terroriste.get_bullets_list().pop(terroriste.get_bullets_list().index(bullet))
-                    self.explode(bullet.rect.x, bullet.rect.y, bullet.get_pos(), 0.5)
+            if not(terroriste.rect.x + terroriste.rect.width < 0 or terroriste.rect.x > self.__screen.get_width()):
+                terroriste.handle(map_size, screen, civils, player_var)
+                
+                # Gestion des bullets
+                for bullet in terroriste.get_bullets_list():
+                    if bullet.get_exploded():
+                        terroriste.get_bullets_group().remove(bullet)
+                        terroriste.get_bullets_list().pop(terroriste.get_bullets_list().index(bullet))
+                        self.explode(bullet.rect.x, bullet.rect.y, bullet.get_pos(), 0.5)
     
     def sync_vel_terroristes(self, velocity: float, left: bool, right: bool) -> None:
         for terroriste in self.__terroristes:
@@ -162,7 +166,8 @@ class Enemis:
     
     def display_terroristes_bullets(self, screen: pygame.Surface) -> None:
         for terroriste in self.__terroristes:
-            terroriste.get_bullets_group().draw(screen)
+            if not(terroriste.rect.x + terroriste.rect.width < 0 or terroriste.rect.x > screen.get_width()):
+                terroriste.get_bullets_group().draw(screen)
     
     def move_terroristes_bullets(self, targets: list = []) -> None:
         for terroriste in self.__terroristes:
@@ -178,4 +183,12 @@ class Enemis:
     
     # Affichage de touts le group
     def afficher(self, screen: pygame.Surface) -> None:
+        out_of_screen = []
+        enemis = self.__tanks + self.__avions + self.__terroristes + self.__explosions
+        for enemi in enemis:
+            if enemi.rect.x + enemi.rect.width < 0 or enemi.rect.x > screen.get_width():
+                out_of_screen.append(enemi)
+                self.__group.remove(enemi)
         self.get_group().draw(screen)
+        for enemi in out_of_screen:
+            self.__group.add(enemi)

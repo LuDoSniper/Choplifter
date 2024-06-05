@@ -293,7 +293,14 @@ class Player:
             bomb.sync_vel(velocity, left, right)
     
     def afficher_bombs(self, screen: pygame.Surface) -> None:
+        out_of_screen = []
+        for bomb in self.__bombs_list:
+            if bomb.rect.x + bomb.rect.width < 0 or bomb.rect.x > screen.get_width():
+                out_of_screen.append(bomb)
+                self.__bombs_group.remove(bomb)
         self.get_bombs_group().draw(screen)
+        for bomb in out_of_screen:
+            self.__bombs_group.add(bomb)
     
     # Bullets
     def shoot(self) -> None:
@@ -321,7 +328,14 @@ class Player:
             bullets.sync_vel(velocity, left, right)
     
     def afficher_bullets(self, screen: pygame.Surface) -> None:
+        out_of_screen = []
+        for bullet in self.__bullets_list:
+            if bullet.rect.x + bullet.rect.width < 0 or bullet.rect.x > screen.get_width():
+                out_of_screen.append(bullet)
+                self.__bullets_group.remove(bullet)
         self.get_bullets_group().draw(screen)
+        for bullet in out_of_screen:
+            self.__bullets_group.add(bullet)
     
     # Explosions
     def explode(self, local_x: int, local_y: int, pos: tuple, size: float = 1, origine = None) -> None:
@@ -347,4 +361,11 @@ class Player:
             explosion.sync_vel(velocity, left, right)
     
     def afficher_explosions(self, screen: pygame.Surface) -> None:
+        out_of_screen = []
+        for explo in self.__explosions_list:
+            if explo.rect.x + explo.rect.width < 0 or explo.rect.x > screen.get_width():
+                out_of_screen.append(explo)
+                self.__explosions_group.remove(explo)
         self.get_explosions_group().draw(screen)
+        for explo in out_of_screen:
+            self.__explosions_group.add(explo)

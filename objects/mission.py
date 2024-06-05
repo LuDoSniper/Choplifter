@@ -183,7 +183,7 @@ class Mission():
                     self.__structures.append(structure.Structure(self.__structures_group, structure1_pos[0], structure1_pos[1], (structure1_pos[0], structure1_pos[1]), "batiment", "ville"))
                     self.__structures.append(structure.Structure(self.__structures_group, structure2_pos[0], structure2_pos[1], (structure2_pos[0], structure2_pos[1]), "garage", "ville"))
                     self.__structures.append(structure.Structure(self.__structures_group, structure3_pos[0], structure3_pos[1], (structure3_pos[0], structure3_pos[1]), "batiment", "ville"))
-                    self.__structures.append(structure.Structure(self.__structures_group, structure4_pos[0], structure4_pos[1], (structure4_pos[0], structure4_pos[1]), "batiment", "ville"))
+                    self.__structures.append(structure.Structure(self.__structures_group, structure4_pos[0], structure4_pos[1], (structure4_pos[0], structure4_pos[1]), "garage", "ville"))
                     self.__structures.append(structure.Structure(self.__structures_group, structure5_pos[0], structure5_pos[1], (structure5_pos[0], structure5_pos[1]), "batiment", "ville"))
                     if not reload:
                         self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank1_pos[0], tank1_pos[1]))
@@ -193,8 +193,104 @@ class Mission():
                         self.__enemis.add_terroriste(terroriste2_pos[0], terroriste2_pos[1], (terroriste2_pos[0], terroriste2_pos[1]), "classique")
                 elif int(id[-1]) == 3:
                     width = 50
+                    if int(id[0]) == 1:
+                        id = f"Island/{id}"
+                    height = 10
+                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
+                    self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
+                    
+                    # Positions
+                    base_pos = (25 * tile_size, 4 * tile_size + 30)
+                    structure1_pos = (4 * tile_size, 4 * tile_size + 72)
+                    structure2_pos = (11 * tile_size, 4 * tile_size + 72)
+                    structure3_pos = (20 * tile_size, 4 * tile_size + 72)
+                    structure4_pos = (30 * tile_size, 4 * tile_size + 72)
+                    structure5_pos = (35 * tile_size, 4 * tile_size + 72)
+                    structure6_pos = (39 * tile_size, 4 * tile_size + 72)
+                    structure7_pos = (47 * tile_size, 4 * tile_size + 72)
+                    tank1_pos = (5 * tile_size, 4 * tile_size + 100)
+                    tank2_pos = (24 * tile_size, 4 * tile_size + 100)
+                    tank3_pos = (31 * tile_size, 4 * tile_size + 100)
+                    tank4_pos = (40 * tile_size, 4 * tile_size + 100)
+                    tank5_pos = (46 * tile_size, 4 * tile_size + 100)
+                    terroriste1_pos = (6 * tile_size, 4 * tile_size + 75)
+                    terroriste2_pos = (21 * tile_size, 4 * tile_size + 75)
+                    terroriste3_pos = (38 * tile_size, 4 * tile_size + 75)
+                    
+                    self.__base = base.Base(self.__base_group, base_pos[0], base_pos[1], (base_pos[0], base_pos[1]))
+                    self.__structures.append(structure.Structure(self.__structures_group, structure1_pos[0], structure1_pos[1], (structure1_pos[0], structure1_pos[1]), "batiment", "ville"))
+                    self.__structures.append(structure.Structure(self.__structures_group, structure2_pos[0], structure2_pos[1], (structure2_pos[0], structure2_pos[1]), "garage", "ville"))
+                    self.__structures.append(structure.Structure(self.__structures_group, structure3_pos[0], structure3_pos[1], (structure3_pos[0], structure3_pos[1]), "garage", "ville"))
+                    self.__structures.append(structure.Structure(self.__structures_group, structure4_pos[0], structure4_pos[1], (structure4_pos[0], structure4_pos[1]), "batiment", "ville"))
+                    self.__structures.append(structure.Structure(self.__structures_group, structure5_pos[0], structure5_pos[1], (structure5_pos[0], structure5_pos[1]), "batiment", "ville"))
+                    self.__structures.append(structure.Structure(self.__structures_group, structure6_pos[0], structure6_pos[1], (structure6_pos[0], structure6_pos[1]), "garage", "ville"))
+                    self.__structures.append(structure.Structure(self.__structures_group, structure7_pos[0], structure7_pos[1], (structure7_pos[0], structure7_pos[1]), "batiment", "ville"))
+                    if not reload:
+                        self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank1_pos[0], tank1_pos[1]))
+                        self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank2_pos[0], tank2_pos[1]))
+                        self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank3_pos[0], tank3_pos[1]))
+                        self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank4_pos[0], tank4_pos[1]))
+                        self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank5_pos[0], tank5_pos[1]))
+                        self.__enemis.add_terroriste(terroriste1_pos[0], terroriste1_pos[1], (terroriste1_pos[0], terroriste1_pos[1]), "classique")
+                        self.__enemis.add_terroriste(terroriste2_pos[0], terroriste2_pos[1], (terroriste2_pos[0], terroriste2_pos[1]), "classique")
+                        self.__enemis.add_terroriste(terroriste3_pos[0], terroriste3_pos[1], (terroriste3_pos[0], terroriste3_pos[1]), "classique")
                 elif int(id[-1]) == 4:
                     width = 60
+                    if int(id[0]) == 1:
+                        id = f"Island/{id}"
+                    height = 10
+                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
+                    self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
+                    
+                    # Positions
+                    base_pos = (30 * tile_size, 4 * tile_size + 30)
+                    structure1_pos = (4 * tile_size, 4 * tile_size + 72)
+                    structure2_pos = (11 * tile_size, 4 * tile_size + 72)
+                    structure3_pos = (20 * tile_size, 4 * tile_size + 72)
+                    structure4_pos = (33 * tile_size, 4 * tile_size + 72)
+                    structure5_pos = (35 * tile_size, 4 * tile_size + 72)
+                    structure6_pos = (39 * tile_size, 4 * tile_size + 72)
+                    structure7_pos = (47 * tile_size, 4 * tile_size + 72)
+                    structure8_pos = (49 * tile_size, 4 * tile_size + 72)
+                    structure9_pos = (55 * tile_size, 4 * tile_size + 72)
+                    structure10_pos = (58 * tile_size, 4 * tile_size + 72)
+                    tank1_pos = (5 * tile_size, 4 * tile_size + 100)
+                    tank2_pos = (24 * tile_size, 4 * tile_size + 100)
+                    tank3_pos = (31 * tile_size, 4 * tile_size + 100)
+                    tank4_pos = (40 * tile_size, 4 * tile_size + 100)
+                    tank5_pos = (46 * tile_size, 4 * tile_size + 100)
+                    tank6_pos = (56 * tile_size, 4 * tile_size + 100)
+                    tank7_pos = (57 * tile_size, 4 * tile_size + 100)
+                    terroriste1_pos = (5 * tile_size, 4 * tile_size + 75)
+                    terroriste2_pos = (21 * tile_size, 4 * tile_size + 75)
+                    terroriste3_pos = (38 * tile_size, 4 * tile_size + 75)
+                    terroriste4_pos = (50 * tile_size, 4 * tile_size + 75)
+                    terroriste5_pos = (48 * tile_size, 4 * tile_size + 75)
+                    
+                    self.__base = base.Base(self.__base_group, base_pos[0], base_pos[1], (base_pos[0], base_pos[1]))
+                    self.__structures.append(structure.Structure(self.__structures_group, structure1_pos[0], structure1_pos[1], (structure1_pos[0], structure1_pos[1]), "batiment", "ville"))
+                    self.__structures.append(structure.Structure(self.__structures_group, structure2_pos[0], structure2_pos[1], (structure2_pos[0], structure2_pos[1]), "garage", "ville"))
+                    self.__structures.append(structure.Structure(self.__structures_group, structure3_pos[0], structure3_pos[1], (structure3_pos[0], structure3_pos[1]), "garage", "ville"))
+                    self.__structures.append(structure.Structure(self.__structures_group, structure4_pos[0], structure4_pos[1], (structure4_pos[0], structure4_pos[1]), "batiment", "ville"))
+                    self.__structures.append(structure.Structure(self.__structures_group, structure5_pos[0], structure5_pos[1], (structure5_pos[0], structure5_pos[1]), "batiment", "ville"))
+                    self.__structures.append(structure.Structure(self.__structures_group, structure6_pos[0], structure6_pos[1], (structure6_pos[0], structure6_pos[1]), "garage", "ville"))
+                    self.__structures.append(structure.Structure(self.__structures_group, structure7_pos[0], structure7_pos[1], (structure7_pos[0], structure7_pos[1]), "batiment", "ville"))
+                    self.__structures.append(structure.Structure(self.__structures_group, structure8_pos[0], structure8_pos[1], (structure8_pos[0], structure8_pos[1]), "batiment", "ville"))
+                    self.__structures.append(structure.Structure(self.__structures_group, structure9_pos[0], structure9_pos[1], (structure9_pos[0], structure9_pos[1]), "batiment", "ville"))
+                    self.__structures.append(structure.Structure(self.__structures_group, structure10_pos[0], structure10_pos[1], (structure10_pos[0], structure10_pos[1]), "batiment", "ville"))
+                    if not reload:
+                        self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank1_pos[0], tank1_pos[1]))
+                        self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank2_pos[0], tank2_pos[1]))
+                        self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank3_pos[0], tank3_pos[1]))
+                        self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank4_pos[0], tank4_pos[1]))
+                        self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank5_pos[0], tank5_pos[1]))
+                        self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank6_pos[0], tank6_pos[1]))
+                        self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank7_pos[0], tank7_pos[1]))
+                        self.__enemis.add_terroriste(terroriste1_pos[0], terroriste1_pos[1], (terroriste1_pos[0], terroriste1_pos[1]), "classique")
+                        self.__enemis.add_terroriste(terroriste2_pos[0], terroriste2_pos[1], (terroriste2_pos[0], terroriste2_pos[1]), "classique")
+                        self.__enemis.add_terroriste(terroriste3_pos[0], terroriste3_pos[1], (terroriste3_pos[0], terroriste3_pos[1]), "classique")
+                        self.__enemis.add_terroriste(terroriste4_pos[0], terroriste4_pos[1], (terroriste4_pos[0], terroriste4_pos[1]), "classique")
+                        self.__enemis.add_terroriste(terroriste5_pos[0], terroriste5_pos[1], (terroriste5_pos[0], terroriste5_pos[1]), "classique")
             elif int(id[0]) == 2:
                 if int(id[-1]) == 1:
                     width = 20

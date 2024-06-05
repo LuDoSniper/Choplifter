@@ -130,7 +130,7 @@ class Structure(pygame.sprite.Sprite):
         self.__state -= damage
         if self.__state == 1:
             self.update_image()
-        if not self.__destroyed and self.__state == 0:
+        if not self.__destroyed and self.__state <= 0:
             self.__destroyed = True
             self.update_image()
             self.add_civils()
@@ -177,10 +177,16 @@ class Structure(pygame.sprite.Sprite):
     
     def afficher_civils(self, screen: pygame.Surface, egged: bool = False) -> None:
         self.easter_egg(egged)
+        out_of_screen = []
         for civil in self.__civils_list:
             if civil.get_aboard() or civil.get_saved():
                 self.__civils_group.remove(civil)
+            if civil.rect.x + civil.rect.width < 0 or civil.rect.x > screen.get_width():
+                out_of_screen.append(civil)
+                self.__civils_group.remove(civil)
         self.__civils_group.draw(screen)
+        for civil in out_of_screen:
+            self.__civils_group.add(civil)
     
     def easter_egg(self, egged: bool) -> None:
         for civil in self.get_civils_list():
