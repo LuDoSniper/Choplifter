@@ -65,7 +65,7 @@ class Enemis:
     def add_tank(self, screen: pygame.Surface, map_size: int, pos: tuple = (0, 40), type: int = 1) -> None:
         self.__tanks.append(tank.Tank(self.get_group(), screen, map_size, pos, type))
     
-    def handle_tanks(self, player: player.Player, civils: list) -> None:
+    def handle_tanks(self, player: player.Player, civils: list, structures: list) -> None:
         for tank in self.get_tanks():
             tank.scan(player)
             tank.scan_civils(civils)
@@ -79,7 +79,7 @@ class Enemis:
             
             # Gestion des bullets
             if tank.get_bullet() is not None:
-                tank.get_bullet().move([player])
+                tank.get_bullet().move([player] + structures)
                 if tank.get_bullet().get_exploded():
                     self.explode(tank.get_bullet().rect.x, tank.get_bullet().rect.y, tank.get_bullet().get_pos())
                     tank.get_bullet_group().remove(tank.get_bullet())

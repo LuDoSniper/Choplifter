@@ -120,4 +120,9 @@ class MenuMission:
 
     def start_mission(self, mission_number):
         print(f"Mission {mission_number} dans le {self.monde} démarrée")
-        return f"{mission_number}-{self.monde.split(' ')[0]}"
+        return f"{self.monde.split('-')[0]}-{mission_number}"
+        # return f"{mission_number}-{self.monde.split(' ')[0]}"
+
+    def set_missions(self, data_missions: dict) -> None:
+        self.missions = data_missions
+        self.create_buttons()

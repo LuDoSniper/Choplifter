@@ -10,10 +10,12 @@ import objects.base as base
 import objects.menu.assets as assets
 import objects.menu.link as link
 import objects.music as music
+import objects.saver as saver
 
 class Game:
     def __init__(self, music_manager: music.Music, mode: str, mission_id: int = None, monde_id: int = None, fullscreen: bool = False) -> None:
         self.__music_manager = music_manager
+        self.__save_manager = saver.Saver()
         self.__mode = mode
         self.__mission_id = mission_id
         self.__monde_id = monde_id
@@ -44,7 +46,7 @@ class Game:
             id = f"{self.__monde_id}-{self.__mission_id}"
         else:
             id = "map_test"
-        self.__mission_manager = mission.Mission(id, self.__screen)
+        self.__mission_manager = mission.Mission(id, self.__screen, self)
         
         # La map pourrais changer de game en game
         # self.__map = map.Map(20, 4, 64, self.__screen)
@@ -266,7 +268,7 @@ class Game:
                 self.get_enemis().move_terroristes_bullets(self.get_civils_playable())
                 
                 # Mouvements des tanks
-                self.get_enemis().handle_tanks(self.get_player(), self.get_civils_playable())
+                self.get_enemis().handle_tanks(self.get_player(), self.get_civils_playable(), self.__structures_list)
                 
                 # Mouvement des avions
                 self.get_enemis().handle_avions()
@@ -303,17 +305,41 @@ class Game:
     def check_end_game(self) -> bool:
         dead = len(self.get_civils_dead())
         saved = len(self.get_civils_saved())
+        print(f"dead : {dead}\nsaved : {saved}\ntotal : {self.__civil_numbers}")
         if dead + saved == self.__civil_numbers:
             if saved >= self.__civil_numbers / 2:
-                self.__mission_manager.win()
                 self.__current_menu = "win"
                 self.__link.current_menu = "win"
                 self.__mode = "menu"
+                self.win()
             else:
-                self.__mission_manager.game_over()
                 self.__current_menu = "lose"
                 self.__link.current_menu = "lose"
                 self.__mode = "menu"
+                self.game_over()
+    
+    def win(self) -> None:
+        data = self.get_data()
+        id_mission = self.__mission_id + 1
+        id_monde = self.__monde_id
+        if id_mission > 4:
+            id_mission = 0
+            id_monde = self.__monde_id + 1
+        if id_monde == 1:
+            monde = "Ile Alloca"
+        elif id_monde == 2:
+            monde = "Foret Alloca"
+        elif id_monde == 3:
+            monde = "Desert Alloca"
+        elif id_monde == 4:
+            monde = "Montagne Alloca"
+        data["missions"][monde][id_mission - 1] = True
+        self.__save_manager.save(data)
+        self.__link.set_missions(data["missions"])
+        print("win")
+    
+    def game_over(self) -> None:
+        print("game over")
     
     def handle_structures(self, map_size: int, base_porte: pygame.Rect) -> None:
         for structure in self.__structures_list:
@@ -378,6 +404,7 @@ class Game:
         self.__assets.THEME = data["theme"]
         self.update_hud()
         self.__link.update_theme(data["theme"])
+        self.__link.set_missions(data["missions"])
     
     def update_hud(self) -> None:
         self.__hud.update(self.__assets.THEME)

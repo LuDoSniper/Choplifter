@@ -23,14 +23,14 @@ while response != "exit":
     monde = None
     if "-" in response:
         tmp = response.split('-')
-        mission = int(tmp[0])
-        if tmp[1] == "Ile":
+        mission = int(tmp[1])
+        if tmp[0].split(' ')[0] == "Ile":
             monde = 1
-        elif tmp[1] == "Foret":
+        elif tmp[0].split(' ')[0] == "Foret":
             monde = 2
-        elif tmp[1] == "Desert":
+        elif tmp[0].split(' ')[0] == "Desert":
             monde = 3
-        elif tmp[1] == "Montagne":
+        elif tmp[0].split(' ')[0] == "Montagne":
             monde = 4
         mode = "solo"
         if mission in (1, 2):
@@ -50,7 +50,7 @@ while response != "exit":
         current_game.change_menu(current_game.get_current_menu())
     else:  
         music_manager.switch(musique)
-        current_game = game.Game(music_manager, mode, monde, mission)
+        current_game = game.Game(music_manager, mode, mission, monde)
         current_game.set_data(data)
         current_game.handle()
         save_manager.save(current_game.get_data())

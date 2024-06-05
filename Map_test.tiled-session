@@ -13,11 +13,27 @@
             "scaleInEditor": 1
         },
         "assets/tilesets/Island/1-1.tmx": {
-            "scale": 1.23203125,
+            "scale": 0.8213541666666667,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 320.60875079264423,
-                "y": 160.710209258085
+                "x": 480.91312618896643,
+                "y": 160.71020925808494
+            }
+        },
+        "assets/tilesets/Island/1-2.tmx": {
+            "scale": 0.616015625,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 641.2175015852885,
+                "y": 160.71020925808494
+            }
+        },
+        "assets/tilesets/Island/1-3.tmx": {
+            "scale": 0.49281250000000004,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 801.5218769816105,
+                "y": 160.30437539632203
             }
         },
         "assets/tilesets/Island/Clouds.tsx": {
@@ -43,8 +59,8 @@
             "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 327,
-                "y": 57
+                "x": 320,
+                "y": 63.5
             }
         },
         "assets/tilesets/map_test_tileset.tsx": {
@@ -53,10 +69,10 @@
         }
     },
     "last.imagePath": "C:/Users/lucie/OneDrive/Bureau/Hesias/B1/Major_Project/Choplifter/assets/tilesets",
-    "map.height": 4,
+    "map.height": 10,
     "map.lastUsedFormat": "tmx",
     "map.renderOrder": null,
-    "map.width": 20,
+    "map.width": 60,
     "openFiles": [
         "assets/tilesets/map_test.tmx",
         "assets/tilesets/map_test_tileset.tsx",

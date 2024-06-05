@@ -103,7 +103,7 @@ class Civil(pygame.sprite.Sprite):
             elif self.hitbox.colliderect(player.get_heli().hitbox) and player.get_storage() < player.get_max_storage() and not self.__aboard and player.get_landed():
                 player.set_storage(player.get_storage() + 1)
                 self.__aboard = True
-            elif self.hitbox.colliderect(player.get_heli().hitbox) and not player.get_landed():
+            elif self.hitbox.colliderect(player.get_heli().hitbox) and not player.get_landed() and not self.__saved and not self.__aboard:
                 self.hit()
             elif self.rect.x - self.RANGE <= player.get_heli().get_rect().x <= self.rect.x + self.RANGE and player.get_landed():
                 self.__state = "run"

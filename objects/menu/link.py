@@ -34,6 +34,7 @@ score = 1487
 
 class Link:
     def __init__(self, assets):
+        self.missions = save_manager.load()["missions"]
         self.stop = False
         self.restart = False
         self.assets = assets
@@ -104,9 +105,13 @@ class Link:
     def get_data(self) -> dict:
         data = self.menus["options"].get_volume()
         data["theme"] = self.assets.THEME
-        data["missions"] = missions
+        data["missions"] = self.missions
         return data
     
     def set_volume(self, data: dict) -> None:
         self.menus["options"].set_volume(data)
         self.menus["son"].set_volume(data)
+    
+    def set_missions(self, data_missions: dict) -> None:
+        self.menus["mission"].set_missions(data_missions)
+        self.missions = data_missions
