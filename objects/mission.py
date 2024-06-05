@@ -116,6 +116,23 @@ class Mission():
         elif id == "sandbox":
             width = 100
             self.__map = map.Map(f"assets/tilesets/sandbox/sandbox.tmx", width, height, tile_size, self.__screen)
+            self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
+                    
+            # Positions
+            base_pos = (14 * tile_size, 4 * tile_size + 30)
+            structure1_pos = (3 * tile_size, 4 * tile_size + 72)
+            structure2_pos = (10 * tile_size, 4 * tile_size + 72)
+            structure3_pos = (25 * tile_size, 4 * tile_size + 72)
+            tank1_pos = (5 * tile_size, 4 * tile_size + 100)
+            tank2_pos = (20 * tile_size, 4 * tile_size + 100)
+            
+            self.__base = base.Base(self.__base_group, base_pos[0], base_pos[1], (base_pos[0], base_pos[1]))
+            self.__structures.append(structure.Structure(self.__structures_group, structure1_pos[0], structure1_pos[1], (structure1_pos[0], structure1_pos[1]), "batiment", "ville"))
+            self.__structures.append(structure.Structure(self.__structures_group, structure2_pos[0], structure2_pos[1], (structure2_pos[0], structure2_pos[1]), "garage", "ville"))
+            self.__structures.append(structure.Structure(self.__structures_group, structure3_pos[0], structure3_pos[1], (structure3_pos[0], structure3_pos[1]), "batiment", "ville"))
+            if not reload:
+                self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank1_pos[0], tank1_pos[1]))
+                self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank2_pos[0], tank2_pos[1]))
         else:
             if int(id[0]) == 1:
                 if int(id[-1]) == 1:
