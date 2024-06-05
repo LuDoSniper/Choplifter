@@ -68,6 +68,16 @@ class Explosion(pygame.sprite.Sprite):
         size = (self.image.get_rect().width * self.get_size(),
                 self.image.get_rect().height * self.get_size())
         self.image = pygame.transform.scale(self.image, size)
+        new_rect = self.image.get_rect()
+        new_rect.x = self.rect.x
+        new_rect.y = self.rect.y
+        self.rect = new_rect
+        self.hitbox = pygame.Rect(
+            self.rect.x,
+            self.rect.y,
+            self.rect.width,
+            self.rect.height
+        )
         return False
 
     def sync_vel(self, velocity: float, left: bool, right: bool) -> None:

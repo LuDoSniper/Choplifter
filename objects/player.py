@@ -3,6 +3,10 @@ import objects.heli as heli
 import objects.bomb as bomb
 import objects.bullets as bullet
 import objects.explosion as explosion
+import objects.tank as tank
+import objects.terroriste as terroriste
+import objects.civil as civil
+import objects.structure as structure
 
 class Player:
     def __init__(self, screen: pygame.Surface, pos: tuple, map_size: int) -> None:
@@ -274,6 +278,7 @@ class Player:
             self.__bombs_list.append(bomb.Bomb(self.get_bombs_group(), (self.get_pos()[0] + self.get_heli().get_rect().width / 2, self.get_pos()[1] + self.get_heli().get_rect().height), (self.get_heli().get_rect().x + self.get_heli().get_rect().width / 2, self.get_heli().get_rect().y + self.get_heli().get_rect().height), self.get_screen(), self.__min_height + self.__heli.get_rect().height))
     
     def bombs_handle(self, targets: list) -> None:
+        # Gestion des bombes
         for bomb in self.get_bombs_list():
             bomb.fall(targets)
             if bomb.get_exploded():
@@ -319,11 +324,20 @@ class Player:
     def explode(self, local_x: int, local_y: int, pos: tuple, size: float = 1) -> None:
         self.__explosions_list.append(explosion.Explosion(self.get_explosions_group(), local_x, local_y, pos, size))
     
-    def explosions_handle(self) -> None:
+    def explosions_handle(self, targets: list) -> None:
         for explosion in self.get_explosions_list():
             if explosion.explode():
                 self.get_explosions_list().pop(self.get_explosions_list().index(explosion))
                 self.get_explosions_group().remove(explosion)
+            # Gestion des explosions (degats)
+            for target in targets:
+                if explosion.hitbox.colliderect(target.hitbox): # Collision
+                    if type(target) == tank.Tank and target.hit(3):
+                        target.set_exploded(True)
+                    elif type(target) in (civil.Civil, terroriste.Terroriste):
+                        target.hit()
+                    elif type(target) == structure.Structure:
+                        target.hit()
     
     def sync_vel_explosions(self, velocity: float, left: bool, right: bool) -> None:
         for explosion in self.get_explosions_list():

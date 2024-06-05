@@ -265,7 +265,7 @@ class Game:
                 self.get_enemis().handle_terroristes(self.__map.get_map_size(), self.__screen, self.get_civils_playable())
                 
                 # Gestion des explosions
-                self.get_player().explosions_handle()
+                self.get_player().explosions_handle(self.get_enemis().get_tanks() + self.get_intacts_structures() + self.get_civils_playable() + self.get_enemis().get_terroristes_playable())
                 self.get_enemis().handle_explosions()
                 
                 # Gestion des structures
