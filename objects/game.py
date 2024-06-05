@@ -284,6 +284,10 @@ class Game:
                 # Gestion de la base
                 self.__base.handle(self.__player, self.__structures_list)
                 
+                # Check de la win
+                if self.check_win():
+                    self.__mission_manager.win()
+                
                 # Easter egg
                 if self.__egg == ['e', 'g', 'g']:
                     self.__egged = True
@@ -295,6 +299,12 @@ class Game:
             self.__clock.tick(60)
         
         self.quit()
+    
+    def check_win(self) -> bool:
+        dead = len(self.get_civils_dead())
+        saved = len(self.get_civils_saved())
+        if dead + saved == self.__civil_numbers:
+            self.__mission_manager.win()
     
     def handle_structures(self, map_size: int, base_porte: pygame.Rect) -> None:
         for structure in self.__structures_list:

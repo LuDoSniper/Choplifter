@@ -208,3 +208,6 @@ class Mission():
     
     def game_over(self) -> None:
         print("Game Over")
+    
+    def win(self) -> None:
+        print("Win")
