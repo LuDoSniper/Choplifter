@@ -145,9 +145,9 @@ class Enemis:
     def add_terroriste(self, local_x: int, local_y: int, pos: tuple = (0, 40), type: str = "classique") -> None:
         self.__terroristes.append(terroriste.Terroriste(self.get_group(), local_x, local_y, pos, type)) # Remplir
     
-    def handle_terroristes(self, map_size: int, screen: pygame.Surface, civils: list) -> None:
+    def handle_terroristes(self, map_size: int, screen: pygame.Surface, civils: list, player_var) -> None:
         for terroriste in self.__terroristes:
-            terroriste.handle(map_size, screen, civils)
+            terroriste.handle(map_size, screen, civils, player_var)
             
             # Gestion des bullets
             for bullet in terroriste.get_bullets_list():

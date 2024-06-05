@@ -2,10 +2,12 @@ import pygame
 import random
 import objects.bullets as bullets
 import objects.explosion as explosion
+import objects.music as music
 
 class Terroriste(pygame.sprite.Sprite):
     def __init__(self, group: pygame.sprite.Group, local_x: int, local_y: int, pos: tuple, type: str):
         super().__init__(group)
+        self.__music_manager = music.Music()
         self.__type = type
         
         self.group = group
@@ -85,7 +87,7 @@ class Terroriste(pygame.sprite.Sprite):
     
     # Méthodes
     
-    def handle(self, map_size: int, screen: pygame.Surface, civils: list) -> None:
+    def handle(self, map_size: int, screen: pygame.Surface, civils: list, player) -> None:
         self.animate()
         self.sync_side()
         if self.__state not in ("death", "blood"):
@@ -120,6 +122,9 @@ class Terroriste(pygame.sprite.Sprite):
                 self.explode()
             if self.__explosion != None and self.__explosion.explode():
                 self.__explosion = None
+        
+        if self.hitbox.colliderect(player.get_heli().hitbox):
+            self.hit()
     
     def explode(self) -> None:
         self.__explosion = explosion.Explosion(self.__explosion_group, self.rect.x + self.rect.width / 2, self.rect.y + self.rect.height / 2, (self.__pos[0] + self.rect.width / 2, self.__pos[1] + self.rect.height / 2))
@@ -256,6 +261,7 @@ class Terroriste(pygame.sprite.Sprite):
         )
         
         self.__bullets.append(bullets.Bullet(self.__bullets_group, screen, self, self.__dir, self.__dir * 90, pos, x, y, size=0.5))
+        self.__music_manager.terroriste_shoot()
     
     def bullets_handle(self, target: list) -> None:
         for bullet in self.__bullets:

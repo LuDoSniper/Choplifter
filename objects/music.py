@@ -130,6 +130,11 @@ class Music():
         shoot.set_volume(self.__save_manager.load()["sfx"])
         shoot.play()
     
+    def terroriste_shoot(self) -> None:
+        shoot = pygame.mixer.Sound("assets/son/sfx/Machine_Gun_PGI_Single 3.wav")
+        shoot.set_volume(self.__save_manager.load()["sfx"])
+        shoot.play()
+    
     def bomb_explode(self) -> None:
         explosion = pygame.mixer.Sound("assets/son/sfx/ExplosionMediumBig1_Short.wav")
         explosion.set_volume(self.__save_manager.load()["sfx"])

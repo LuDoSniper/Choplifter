@@ -129,7 +129,9 @@ class Bullet(pygame.sprite.Sprite):
                     target.hit()
                 else:
                     target.set_exploded(True)
-                self.__music_manager.bullet_explode()
+                
+                if type(self.__origine) != terroriste.Terroriste:
+                    self.__music_manager.bullet_explode()
             elif type(target) == player.Player and self.hitbox.colliderect(target.get_heli().hitbox):
                 self.set_exploded(True)
                 if type(self.__origine) == avion.Avion:

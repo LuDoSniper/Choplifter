@@ -5,7 +5,7 @@
     "missions": {
         "Ile Alloca": [
             true,
-            false,
+            true,
             false,
             false
         ],
