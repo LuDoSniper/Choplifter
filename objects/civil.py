@@ -211,6 +211,7 @@ class Civil(pygame.sprite.Sprite):
             self.__saved = True
         if self.__aboard: # Tue les civils à bord du crash
             self.hit()
+            self.__aboard = False
         data = {
             "saved": self.__saved,
             "alive": self.__state not in ("damage", "death"),

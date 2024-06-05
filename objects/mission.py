@@ -65,8 +65,7 @@ class Mission():
             for structure_tmp in self.__structures:
                 tmp = structure_tmp.get_civils_list()
                 for civil in tmp:
-                    if not civil.get_saved():
-                        civils.append(civil)
+                    civils.append(civil)
             
             terroristes = self.__enemis.get_terroristes()
             tanks = self.__enemis.get_tanks()
