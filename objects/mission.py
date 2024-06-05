@@ -114,7 +114,8 @@ class Mission():
                 self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (5 * tile_size, 100 + 4 * tile_size))
                 self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100 + 4 * tile_size))
         elif id == "sandbox":
-            pass
+            width = 100
+            self.__map = map.Map(f"assets/tilesets/sandbox/sandbox.tmx", width, height, tile_size, self.__screen)
         else:
             if int(id[0]) == 1:
                 if int(id[-1]) == 1:

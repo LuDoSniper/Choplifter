@@ -36,6 +36,14 @@
                 "y": 160.30437539632203
             }
         },
+        "assets/tilesets/Island/1-4.tmx": {
+            "scale": 0.41067708333333336,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 961.8262523779329,
+                "y": 160.7102092580849
+            }
+        },
         "assets/tilesets/Island/Clouds.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
@@ -72,7 +80,7 @@
     "map.height": 10,
     "map.lastUsedFormat": "tmx",
     "map.renderOrder": null,
-    "map.width": 60,
+    "map.width": 100,
     "openFiles": [
         "assets/tilesets/map_test.tmx",
         "assets/tilesets/map_test_tileset.tsx",
