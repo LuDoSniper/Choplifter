@@ -285,7 +285,7 @@ class Game:
                 self.__base.handle(self.__player, self.__structures_list)
                 
                 # Check de la win
-                if self.check_win():
+                if self.check_end_game():
                     self.__mission_manager.win()
                 
                 # Easter egg
@@ -300,11 +300,20 @@ class Game:
         
         self.quit()
     
-    def check_win(self) -> bool:
+    def check_end_game(self) -> bool:
         dead = len(self.get_civils_dead())
         saved = len(self.get_civils_saved())
         if dead + saved == self.__civil_numbers:
-            self.__mission_manager.win()
+            if saved >= self.__civil_numbers / 2:
+                self.__mission_manager.win()
+                self.__current_menu = "win"
+                self.__link.current_menu = "win"
+                self.__mode = "menu"
+            else:
+                self.__mission_manager.game_over()
+                self.__current_menu = "lose"
+                self.__link.current_menu = "lose"
+                self.__mode = "menu"
     
     def handle_structures(self, map_size: int, base_porte: pygame.Rect) -> None:
         for structure in self.__structures_list:
