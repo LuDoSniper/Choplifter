@@ -62,7 +62,11 @@ class MenuMission:
         for i, mission_unlocked in enumerate(monde_missions):
             button_image = pygame.transform.scale(self.assets.bouton_unlock, (button_width, button_height))
             button_image_click = pygame.transform.scale(self.assets.bouton_unlock_clicked, (button_width, button_height))
-            action = lambda m=i+1: self.start_mission(m) if mission_unlocked else None
+            if mission_unlocked:
+                action = lambda m=i+1: self.start_mission(m)
+            else:
+                action = None
+            # action = lambda m=i+1: self.start_mission(m) if mission_unlocked else None
 
             button = Button(f'Mission {i + 1}', x_center - button_width // 2, y_start + i * (button_height + spacing), button_image, button_image_click, action, self.assets, (255,255,255), 20, text_offset_x)
             if not mission_unlocked:
@@ -115,4 +119,4 @@ class MenuMission:
 
     def start_mission(self, mission_number):
         print(f"Mission {mission_number} dans le {self.monde} démarrée")
-
+        return f"{mission_number}-{self.monde.split(' ')[0]}"

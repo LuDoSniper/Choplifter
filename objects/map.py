@@ -89,7 +89,12 @@ class Map:
     
     # Méthodes
     def __load_tiles(self) -> None:
-        for tile in self.get_tmx_data().get_layer_by_name("Background").tiles():
+        tiles = self.__tmx_data.get_layer_by_name("Background").tiles()
+        if tiles is not None:
+            for tile in tiles:
+                self.__tiles.append(Tile(tile[2], (tile[0] * self.get_tile_size(), tile[1] * self.get_tile_size()), (tile[:2]), self.get_group()))
+        tiles = self.__tmx_data.get_layer_by_name("Main").tiles()
+        for tile in tiles:
             self.__tiles.append(Tile(tile[2], (tile[0] * self.get_tile_size(), tile[1] * self.get_tile_size()), (tile[:2]), self.get_group()))
     
     def afficher(self, screen: pygame.Surface) -> None:

@@ -106,26 +106,29 @@ class Mission():
             width = 20
             self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
             self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
-            self.__base = base.Base(self.__base_group, 4 * tile_size, 30, (4 * tile_size, 30))
-            self.__structures.append(structure.Structure(self.__structures_group, 2 * tile_size, 72, (2 * tile_size, 72), "batiment", "ville"))
-            self.__structures.append(structure.Structure(self.__structures_group, 10 * tile_size, 72, (2 * tile_size, 72), "garage", "ville"))
-            self.__structures.append(structure.Structure(self.__structures_group, 15 * tile_size, 72, (2 * tile_size, 72), "batiment", "ville"))
+            self.__base = base.Base(self.__base_group, 4 * tile_size, 30, (4 * tile_size, 30 + 4 * tile_size))
+            self.__structures.append(structure.Structure(self.__structures_group, 2 * tile_size, 72 + 4 * tile_size, (2 * tile_size, 72 + 4 * tile_size), "batiment", "ville"))
+            self.__structures.append(structure.Structure(self.__structures_group, 10 * tile_size, 72 + 4 * tile_size, (2 * tile_size, 72 + 4 * tile_size), "garage", "ville"))
+            self.__structures.append(structure.Structure(self.__structures_group, 15 * tile_size, 72 + 4 * tile_size, (2 * tile_size, 72 + 4 * tile_size), "batiment", "ville"))
             if not reload:
-                self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (5 * tile_size, 100))
-                self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100))
+                self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (5 * tile_size, 100 + 4 * tile_size))
+                self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100 + 4 * tile_size))
         else:
             if int(id[0]) == 1:
                 if int(id[-1]) == 1:
                     width = 20
+                    if int(id[0]) == 1:
+                        id = f"Island/{id}"
+                    height = 10
                     self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
                     self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
-                    self.__base = base.Base(self.__base_group, 4 * tile_size, 30, (4 * tile_size, 30))
-                    self.__structures.append(structure.Structure(self.__structures_group, 2 * tile_size, 72, (2 * tile_size, 72), "batiment", "ville"))
-                    self.__structures.append(structure.Structure(self.__structures_group, 10 * tile_size, 72, (2 * tile_size, 72), "garage", "ville"))
-                    self.__structures.append(structure.Structure(self.__structures_group, 15 * tile_size, 72, (2 * tile_size, 72), "batiment", "ville"))
+                    self.__base = base.Base(self.__base_group, 4 * tile_size, 30 + (4 * tile_size), (4 * tile_size, 30 + (4 * tile_size)))
+                    self.__structures.append(structure.Structure(self.__structures_group, 2 * tile_size, 72 + (4 * tile_size), (2 * tile_size, 72 + (4 * tile_size)), "batiment", "ville"))
+                    self.__structures.append(structure.Structure(self.__structures_group, 10 * tile_size, 72 + (4 * tile_size), (2 * tile_size, 72 + (4 * tile_size)), "garage", "ville"))
+                    self.__structures.append(structure.Structure(self.__structures_group, 15 * tile_size, 72 + (4 * tile_size), (2 * tile_size, 72 + (4 * tile_size)), "batiment", "ville"))
                     if not reload:
-                        self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (5 * tile_size, 100))
-                        self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100))
+                        self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (5 * tile_size, 100 + (4 * tile_size)))
+                        self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100 + (4 * tile_size)))
                 elif int(id[-1]) == 2:
                     width = 30
                 elif int(id[-1]) == 3:

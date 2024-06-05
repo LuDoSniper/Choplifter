@@ -32,7 +32,7 @@ class Player:
         
         self.__pos = pos
         self.__max_height = 0
-        self.__min_height = 100
+        self.__min_height = 6 * 64 - self.__heli.get_rect().height + 5
         self.__landed = False
         self.__map_size = map_size
         
@@ -271,7 +271,7 @@ class Player:
     def bomber(self) -> None:
         if self.__bombs_timer >= self.__bombs_timer_delay:
             self.__bombs_timer = 0
-            self.__bombs_list.append(bomb.Bomb(self.get_bombs_group(), (self.get_pos()[0] + self.get_heli().get_rect().width / 2, self.get_pos()[1] + self.get_heli().get_rect().height), (self.get_heli().get_rect().x + self.get_heli().get_rect().width / 2, self.get_heli().get_rect().y + self.get_heli().get_rect().height), self.get_screen()))
+            self.__bombs_list.append(bomb.Bomb(self.get_bombs_group(), (self.get_pos()[0] + self.get_heli().get_rect().width / 2, self.get_pos()[1] + self.get_heli().get_rect().height), (self.get_heli().get_rect().x + self.get_heli().get_rect().width / 2, self.get_heli().get_rect().y + self.get_heli().get_rect().height), self.get_screen(), self.__min_height + self.__heli.get_rect().height))
     
     def bombs_handle(self, targets: list) -> None:
         for bomb in self.get_bombs_list():

@@ -6,13 +6,18 @@
     "activeFile": "assets/tilesets/map_test.tmx",
     "expandedProjectPaths": [
     ],
+    "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
     "fileStates": {
+        "assets/tilesets/Desert-tmp/tilesetsand.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "assets/tilesets/map_test.tmx": {
             "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 328,
-                "y": 58
+                "x": 327,
+                "y": 57
             }
         },
         "assets/tilesets/map_test_tileset.tsx": {
@@ -31,6 +36,7 @@
     ],
     "project": "Map_test.tiled-project",
     "recentFiles": [
+        "assets/tilesets/Desert-tmp/tilesetsand.tsx",
         "assets/tilesets/map_test_tileset.tsx",
         "assets/tilesets/map_test.tmx"
     ],

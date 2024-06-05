@@ -5,7 +5,7 @@ import objects.civil as civil
 import objects.terroriste as terroriste
 
 class Bomb(pygame.sprite.Sprite):
-    def __init__(self, group: pygame.sprite.Group, pos: tuple, local_pos: tuple, screen: pygame.Surface) -> None:
+    def __init__(self, group: pygame.sprite.Group, pos: tuple, local_pos: tuple, screen: pygame.Surface, min_height: int) -> None:
         super().__init__(group)
         self.image = pygame.image.load("assets/imgs/Bomb_tmp_7x20.png")
         self.rect = self.image.get_rect()
@@ -22,6 +22,7 @@ class Bomb(pygame.sprite.Sprite):
         
         self.__speed = 2
         self.__pos = pos
+        self.__min_height = min_height - self.rect.height * 1.5
         
         self.__expolded = False
     
@@ -35,6 +36,11 @@ class Bomb(pygame.sprite.Sprite):
         return self.__speed
     def set_speed(self, speed: float) -> None:
         self.__speed = speed
+    
+    def get_min_height(self) -> int:
+        return self.__min_height
+    def set_min_height(self, min_height: int) -> None:
+        self.__min_height = min_height
     
     def get_pos(self) -> tuple:
         return self.__pos
@@ -52,7 +58,7 @@ class Bomb(pygame.sprite.Sprite):
         self.hitbox.y += self.get_speed()
         
         # Explosion
-        if self.rect.y > 110: # Touche le sol
+        if self.rect.y > self.__min_height: # Touche le sol
             self.set_exploded(True)
         
         for target in targets:

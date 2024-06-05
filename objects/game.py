@@ -1,4 +1,5 @@
 import pygame
+import screeninfo
 import objects.mission as mission
 import objects.map as map
 import objects.player as player
@@ -11,13 +12,24 @@ import objects.menu.link as link
 import objects.music as music
 
 class Game:
-    def __init__(self, music_manager: music.Music, mode: str) -> None:
+    def __init__(self, music_manager: music.Music, mode: str, mission_id: int = None, monde_id: int = None, fullscreen: bool = False) -> None:
         self.__music_manager = music_manager
         self.__mode = mode
+        self.__mission_id = mission_id
+        self.__monde_id = monde_id
         self.__assets = assets.Assets()
         self.__link = link.Link(self.__assets)
         pygame.display.set_icon(pygame.image.load("assets/icon/Icon.png"))
-        self.__screen = pygame.display.set_mode((self.__assets.get_screen_width(), self.__assets.get_screen_height()))
+        fullscreen_int = 0
+        width = self.__assets.get_screen_width()
+        height = self.__assets.get_screen_height()
+        if fullscreen:
+            fullscreen_int = pygame.FULLSCREEN
+            monitor = screeninfo.get_monitors()[0]
+            width = monitor.width
+            height = monitor.height
+            print(f"test {fullscreen}")
+        self.__screen = pygame.display.set_mode((width, height), fullscreen_int)
         pygame.display.set_caption("Choplifter")
         
         # Clock pour les itérations max
@@ -25,7 +37,11 @@ class Game:
         self.__clock = pygame.time.Clock()
         
         # Gestionnaire de mission
-        self.__mission_manager = mission.Mission("map_test", self.__screen)
+        if self.__mission_id is not None and self.__monde_id is not None:
+            id = f"{self.__monde_id}-{self.__mission_id}"
+        else:
+            id = "map_test"
+        self.__mission_manager = mission.Mission(id, self.__screen)
         
         # La map pourrais changer de game en game
         # self.__map = map.Map(20, 4, 64, self.__screen)
@@ -149,7 +165,7 @@ class Game:
                 
                 if self.__mode == "menu" and self.__response != "exit":
                     self.__response = self.__link.handle_event(event)
-                    if self.__response == "solo":
+                    if self.__response == "solo" or (self.__response is not None and '-' in self.__response):
                         self.quit()
                     elif self.__response == "continue":
                         self.__mode = self.__tmp
@@ -193,7 +209,7 @@ class Game:
                     self.get_player().shoot()
                 
                 # Mouvements du player
-                if self.get_player().get_heli().get_rect().y < 80:
+                if self.get_player().get_heli().get_rect().y < self.__player.get_min_height() - (self.__player.get_heli().get_rect().height * 0.5):
                     dir = pressed[pygame.K_RIGHT] - pressed[pygame.K_LEFT]
                 else:
                     dir = 0
