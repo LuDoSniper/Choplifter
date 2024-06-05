@@ -26,5 +26,11 @@ class Saver():
             return {
                 "music" : 0.5,
                 "sfx" : 0.5,
-                "theme" : "Gris"
+                "theme" : "Gris",
+                "missions" : {
+                    "Ile Alloca": [True, False, False, False],
+                    "Foret Alloca": [False, False, False, False],
+                    "Desert Alloca": [False, False, False, False],
+                    "Montagne Alloca": [False, False, False, False]
+                }
             }

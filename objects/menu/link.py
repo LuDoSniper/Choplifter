@@ -7,6 +7,7 @@ from objects.menu.menu_son import MenuSon
 from objects.menu.menu_survie import MenuSurvie
 from objects.menu.menu_mission import MenuMission
 import objects.requester as requester
+import objects.saver as saver
 
 import pygame
 
@@ -23,12 +24,9 @@ else:
     positionnement = data["all"].index(data["self"]) + 1
     points_vous = data["self"]["score"]
 
-missions = {
-    "Ile Alloca": [True, True, True, False],
-    "Foret Alloca": [True, True, False, False],
-    "Desert Alloca": [True, False, False, False],
-    "Montagne Alloca": [False, False, False, False]
-}
+save_manager = saver.Saver()
+
+missions = save_manager.load()["missions"]
 
 class Link:
     def __init__(self, assets):
@@ -99,6 +97,7 @@ class Link:
     def get_data(self) -> dict:
         data = self.menus["options"].get_volume()
         data["theme"] = self.assets.THEME
+        data["missions"] = missions
         return data
     
     def set_volume(self, data: dict) -> None:
