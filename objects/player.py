@@ -282,7 +282,7 @@ class Player:
         for bomb in self.get_bombs_list():
             bomb.fall(targets)
             if bomb.get_exploded():
-                self.explode(bomb.rect.x - 30, bomb.rect.y - 10, bomb.get_pos(), 2)
+                self.explode(bomb.rect.x - 30, bomb.rect.y - 10, bomb.get_pos(), 2, "bomb")
                 self.get_bombs_group().remove(bomb)
                 self.__bombs_list.pop(self.__bombs_list.index(bomb))
     
@@ -309,7 +309,7 @@ class Player:
             bullet.move(targets)
             if bullet.rect.x < 0 or bullet.rect.x > self.get_map_size() or bullet.rect.y < 0 or bullet.rect.y > self.get_screen().get_height() or bullet.get_exploded():
                 if bullet.get_exploded():
-                    self.explode(bullet.rect.x, bullet.rect.y, bullet.get_pos(), 1)
+                    self.explode(bullet.rect.x, bullet.rect.y, bullet.get_pos(), 1, "bullet")
                 self.get_bullets_list().pop(self.get_bullets_list().index(bullet))
                 self.get_bullets_group().remove(bullet)
     
@@ -321,8 +321,8 @@ class Player:
         self.get_bullets_group().draw(screen)
     
     # Explosions
-    def explode(self, local_x: int, local_y: int, pos: tuple, size: float = 1) -> None:
-        self.__explosions_list.append(explosion.Explosion(self.get_explosions_group(), local_x, local_y, pos, size))
+    def explode(self, local_x: int, local_y: int, pos: tuple, size: float = 1, origine = None) -> None:
+        self.__explosions_list.append(explosion.Explosion(self.get_explosions_group(), local_x, local_y, pos, size, origine))
     
     def explosions_handle(self, targets: list) -> None:
         for explosion in self.get_explosions_list():
@@ -331,7 +331,7 @@ class Player:
                 self.get_explosions_group().remove(explosion)
             # Gestion des explosions (degats)
             for target in targets:
-                if explosion.hitbox.colliderect(target.hitbox): # Collision
+                if explosion.hitbox.colliderect(target.hitbox) and explosion.origine == "bomb": # Collision
                     if type(target) == tank.Tank and target.hit(3):
                         target.set_exploded(True)
                     elif type(target) in (civil.Civil, terroriste.Terroriste):

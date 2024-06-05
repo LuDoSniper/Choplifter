@@ -112,8 +112,8 @@ class Civil(pygame.sprite.Sprite):
                 else:
                     self.__dir = 1
             elif self.rect.x - self.RANGE <= player.get_heli().get_rect().x <= self.rect.x + self.RANGE:
-                self.__state = "talk"
-            elif self.__state == "talk":
+                self.__state = "help"
+            elif self.__state == "help":
                 self.__state = "idle"
             else:
                 self.__switch_animation_timer += 1
@@ -149,8 +149,8 @@ class Civil(pygame.sprite.Sprite):
         elif self.__state == "run":
             if self.__frame > 7:
                 self.__frame = 0
-        elif self.__state == "talk":
-            if self.__frame > 6:
+        elif self.__state == "help":
+            if self.__frame > 5:
                 self.__frame = 0
         elif self.__state == "death":
             if self.__gender == "Female":

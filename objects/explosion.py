@@ -2,8 +2,9 @@ import pygame
 import pygame.sprite
 
 class Explosion(pygame.sprite.Sprite):
-    def __init__(self, group: pygame.sprite.Group, local_x: int, local_y: int, pos: tuple, size: float = 1) -> None:
+    def __init__(self, group: pygame.sprite.Group, local_x: int, local_y: int, pos: tuple, size: float = 1, origine = None) -> None:
         super().__init__(group)
+        self.origine = origine
         self.image = pygame.image.load('assets/tir/explosion/explo-1.png')
         self.rect = self.image.get_rect()
         self.rect.x = local_x
