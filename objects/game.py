@@ -44,6 +44,8 @@ class Game:
         # Gestionnaire de mission
         if self.__mission_id is not None and self.__monde_id is not None:
             id = f"{self.__monde_id}-{self.__mission_id}"
+        elif self.__mode == "sandbox":
+            id = "sandbox"
         else:
             id = "map_test"
         self.__mission_manager = mission.Mission(id, self.__screen, self)

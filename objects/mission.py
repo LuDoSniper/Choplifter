@@ -113,6 +113,8 @@ class Mission():
             if not reload:
                 self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (5 * tile_size, 100 + 4 * tile_size))
                 self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100 + 4 * tile_size))
+        elif id == "sandbox":
+            pass
         else:
             if int(id[0]) == 1:
                 if int(id[-1]) == 1:

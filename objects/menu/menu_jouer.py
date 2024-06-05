@@ -65,3 +65,4 @@ class MenuJouer:
 
     def start_entrainement(self):
         print("Lance sandbox")
+        return "sandbox"
