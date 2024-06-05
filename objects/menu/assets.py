@@ -18,6 +18,8 @@ class Assets:
         self.color_theme = (255,255,255)
 
         self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
+        # self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+
         pygame.display.set_caption('Choplifter Menu')
 
         self.custom_font_32 = pygame.font.Font('assets/menu/police.ttf', 32)

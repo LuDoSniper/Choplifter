@@ -32,6 +32,8 @@ class MenuSon:
                 if isinstance(element, Button) and element.is_hovered(event.pos):
                     self.clicked_element = element
                     element.on_click()
+                elif isinstance(element, Slider):
+                    element.handle_event(event)
         elif event.type == pygame.MOUSEBUTTONUP:
             for element in self.elements:
                 if isinstance(element, Button) and element == self.clicked_element:
