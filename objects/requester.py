@@ -31,7 +31,7 @@ class Requester():
         data = {
             "download": {}
         }
-        if self_:
+        if self_ and "ID" in self.__save_manager.load():
             data["download"]["self"] = self.__save_manager.load()["ID"]
         if all:
             data["download"]["all"] = True

@@ -6,12 +6,22 @@ from objects.menu.menu_pause import MenuPause
 from objects.menu.menu_son import MenuSon
 from objects.menu.menu_survie import MenuSurvie
 from objects.menu.menu_mission import MenuMission
+import objects.requester as requester
 
 import pygame
 
-classement = [("Joueur1", 1500), ("Joueur2", 1200), ("Joueur3", 1000), ("Joueur4", 900), ("Joueur5", 800)]
-positionnement = 10
-points_vous = 850
+requests_manager = requester.Requester()
+data = requests_manager.download(True, True)
+
+classement = []
+for player in data["all"]:
+    classement.append((player["username"], player["score"]))
+if "ID" not in data:
+    positionnement = "Aucune données"
+    points_vous = "Aucune données"
+else:
+    positionnement = data["all"].index(data["self"]) + 1
+    points_vous = data["self"]["score"]
 
 missions = {
     "Ile Alloca": [True, True, True, False],
