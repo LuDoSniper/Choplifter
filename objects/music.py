@@ -2,8 +2,11 @@ import pygame
 
 class Music():
     def __init__(self):
-        self.__main_background_layer1 = "assets/menu/Stream Loops 2024-03-30_01_L01.ogg"
-        self.__main_background_layer2 = "assets/menu/Stream Loops 2024-03-30_01_L02.ogg"
+        self.__main_background_layer1 = "assets/son/music/Stream Loops 2024-03-30_01_L01.ogg"
+        self.__main_background_layer2 = "assets/son/music/Stream Loops 2024-03-30_01_L02.ogg"
+        self.__menu_missions_layer1 = "assets/son/music/Stream_Loops_2024-02-14_L01.ogg"
+        self.__menu_missions_layer2 = "assets/son/music/Stream_Loops_2024-02-14_L02.ogg"
+        self.__menu_missions_layer3 = "assets/son/music/Stream_Loops_2024-02-14_L03.ogg"
         self.__mission1 = "assets/son/music/Stream Loops 2024-04-24_01.ogg"
         self.__running = "main_background_layer1"
         self.END_EVENT = pygame.USEREVENT + 1
@@ -41,6 +44,12 @@ class Music():
             music = self.__main_background_layer1
         elif self.__running == "main_background_layer2":
             music = self.__main_background_layer2
+        elif self.__running == "menu_missions_layer1":
+            music = self.__menu_missions_layer1
+        elif self.__running == "menu_missions_layer2":
+            music = self.__menu_missions_layer2
+        elif self.__running == "menu_missions_layer3":
+            music = self.__menu_missions_layer3
         
         pygame.mixer.music.stop()
         pygame.mixer.music.load(music)
@@ -55,6 +64,18 @@ class Music():
         elif self.__running == "main_background_layer2":
             self.__running = "main_background_layer1"
             music = self.__main_background_layer1
+            loop = True
+        elif self.__running == "menu_missions_layer1":
+            self.__running = "menu_missions_layer2"
+            music = self.__menu_missions_layer2
+            loop = True
+        elif self.__running == "menu_missions_layer2":
+            self.__running = "menu_missions_layer3"
+            music = self.__menu_missions_layer3
+            loop = True
+        elif self.__running == "menu_missions_layer3":
+            self.__running = "menu_missions_layer1"
+            music = self.__menu_missions_layer1
             loop = True
         
         if loop:

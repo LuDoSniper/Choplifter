@@ -19,6 +19,7 @@ class Game:
         self.__monde_id = monde_id
         self.__assets = assets.Assets()
         self.__link = link.Link(self.__assets)
+        self.__current_menu = self.__link.current_menu
         pygame.display.set_icon(pygame.image.load("assets/icon/Icon.png"))
         fullscreen_int = 0
         width = self.__assets.get_screen_width()
@@ -164,6 +165,12 @@ class Game:
                     self.__music_manager.loop()
                 
                 if self.__mode == "menu" and self.__response != "exit":
+                    if self.__link.current_menu == "mission" and self.__current_menu != "mission":
+                        self.__music_manager.switch("menu_missions_layer1")
+                        self.__current_menu = self.__link.current_menu
+                    elif self.__link.current_menu != "mission" and self.__current_menu == "mission":
+                        self.__music_manager.switch("main_background_layer1")
+                        self.__current_menu = self.__link.current_menu
                     self.__response = self.__link.handle_event(event)
                     if self.__response == "solo" or (self.__response is not None and '-' in self.__response):
                         self.quit()
