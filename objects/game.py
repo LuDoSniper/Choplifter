@@ -266,7 +266,7 @@ class Game:
                 self.get_enemis().move_terroristes_bullets(self.get_civils_playable())
                 
                 # Mouvements des tanks
-                self.get_enemis().handle_tanks(self.get_player())
+                self.get_enemis().handle_tanks(self.get_player(), self.get_civils_playable())
                 
                 # Mouvement des avions
                 self.get_enemis().handle_avions()

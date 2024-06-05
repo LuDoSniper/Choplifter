@@ -155,6 +155,11 @@ class Tank(pygame.sprite.Sprite):
         self.__bullet = bullets.Bullet(self.__bullet_group, self.__screen, self, self.__dir, 65 * self.__dir, self.__pos, self.rect.x + (18 * self.__dir), self.rect.y - 5, boost=-3)
         self.__music_manager.tank_shoot()
     
+    def scan_civils(self, civils: list) -> None:
+        for civil in civils:
+            if self.hitbox.colliderect(civil.hitbox):
+                civil.hit()
+    
     def move(self) -> None:
         self.set_velocity(self.get_velocity() + (self.get_acceleration() * self.get_dir()))
         

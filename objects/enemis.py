@@ -65,9 +65,10 @@ class Enemis:
     def add_tank(self, screen: pygame.Surface, map_size: int, pos: tuple = (0, 40), type: int = 1) -> None:
         self.__tanks.append(tank.Tank(self.get_group(), screen, map_size, pos, type))
     
-    def handle_tanks(self, player: player.Player) -> None:
+    def handle_tanks(self, player: player.Player, civils: list) -> None:
         for tank in self.get_tanks():
             tank.scan(player)
+            tank.scan_civils(civils)
             tank.sync_side()
             
             # Gestion des morts
