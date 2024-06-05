@@ -35,7 +35,10 @@ class MenuSurvie:
                 text_rect = text_surface.get_rect(center=(self.assets.SCREEN_WIDTH // 2, bg_y + y_start + i * spacing))
                 self.screen.blit(text_surface, text_rect)
         
-            text = f"TOP {self.positionnement} : Vous - {self.points_vous} pts"
+            if self.positionnement == "Aucune données":
+                text = "Aucune données sur vous !"
+            else:
+                text = f"TOP {self.positionnement} : Vous - {self.points_vous} pts"
             text_surface = font.render(text, True, self.assets.GRIS_CLAIR)
             text_rect = text_surface.get_rect(center=(self.assets.SCREEN_WIDTH // 2, bg_y + y_start + len(self.classement) * spacing))
             self.screen.blit(text_surface, text_rect)
