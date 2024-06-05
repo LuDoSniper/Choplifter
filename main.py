@@ -11,7 +11,7 @@ music_manager = music.Music()
 save_manager = saver.Saver()
 
 data = save_manager.load()
-current_game = game.Game(music_manager, "menu", fullscreen=True)
+current_game = game.Game(music_manager, "menu")
 current_game.set_data(data)
 current_game.handle()
 data = current_game.get_data()
@@ -45,7 +45,7 @@ while response != "exit":
         current_game.change_menu(current_game.get_current_menu())
     else:  
         music_manager.switch(musique)
-        current_game = game.Game(music_manager, mode, monde, mission, fullscreen=True)
+        current_game = game.Game(music_manager, mode, monde, mission)
         current_game.set_data(data)
         current_game.handle()
         response = current_game.get_response()

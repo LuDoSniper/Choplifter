@@ -1,7 +1,7 @@
 import pygame
 
 class Slider:
-    def __init__(self, label, x, y, width, height, callback, assets, value=0.5):
+    def __init__(self, label, x, y, width, height, callback, assets, value=0):
         self.assets = assets
         self.label = label
         self.rect = pygame.Rect(x, y, width, height)

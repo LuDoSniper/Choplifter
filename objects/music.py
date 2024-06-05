@@ -7,6 +7,7 @@ class Music():
         self.__mission1 = "assets/son/music/Stream Loops 2024-04-24_01.ogg"
         self.__running = "main_background_layer1"
         self.END_EVENT = pygame.USEREVENT + 1
+        pygame.mixer.music.set_volume(0)
         pygame.mixer.music.set_endevent(self.END_EVENT)
         pygame.mixer.music.load(self.__main_background_layer1)
         pygame.mixer.music.play(0)

@@ -61,7 +61,7 @@ class Assets:
         self.click_sound = pygame.mixer.Sound('assets/menu/click_sound.mp3')
         self.up_click_sound = pygame.mixer.Sound('assets/menu/up_click_sound.ogg')
         self.background_music = 'assets/menu/background_music.ogg'
-        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.set_volume(0)
 
         self.bouton_unlock = pygame.image.load(f'assets/menu/unlock_{self.THEME}.png').convert_alpha()
         self.bouton_lock = pygame.image.load(f'assets/menu/lock_{self.THEME}.png').convert_alpha()
