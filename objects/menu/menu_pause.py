@@ -16,7 +16,7 @@ class MenuPause:
     def draw(self):
         bg_x = (self.assets.SCREEN_WIDTH - self.assets.background_menu_jouer.get_width()) // 2
         bg_y = (self.assets.SCREEN_HEIGHT - self.assets.background_menu_jouer.get_height()) // 2
-        self.screen.blit(self.assets.background_menu_jouer, (bg_x, bg_y))
+        self.screen .blit(self.assets.background_menu_jouer, (bg_x, bg_y))
 
         mouse_pos = pygame.mouse.get_pos()
         for button in self.buttons:

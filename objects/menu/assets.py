@@ -35,6 +35,7 @@ class Assets:
         self.background_menu_pause = pygame.image.load('assets/menu/background_pause.png').convert()
         self.background_menu_survie = pygame.image.load('assets/menu/background_survie.png').convert()
         self.background_menu_mission = pygame.image.load('assets/menu/background_mission.png').convert()
+        self.background_lose = pygame.image.load('assets/menu/background_lose.png').convert()
         self.bouton_leave = pygame.image.load('assets/menu/leave.png').convert_alpha()
         self.bouton_cancel = pygame.image.load('assets/menu/cancel.png').convert_alpha()
         self.bouton_confirm = pygame.image.load('assets/menu/confirm.png').convert_alpha()
@@ -55,6 +56,7 @@ class Assets:
         self.background_menu_credits = pygame.transform.scale(self.background_menu_credits, (int(self.background_menu_credits.get_width() * 0.9), int(self.background_menu_credits.get_height() * 0.9)))
         self.background_menu_pause = pygame.transform.scale(self.background_menu_pause, (int(self.background_menu_pause.get_width() * 0.9), int(self.background_menu_pause.get_height() * 0.9)))
         self.background_menu_mission = pygame.transform.scale(self.background_menu_mission, (int(self.background_menu_mission.get_width() * 0.7), int(self.background_menu_mission.get_height() * 0.7)))
+        self.background_lose = pygame.transform.scale(self.background_lose, (int(self.background_lose.get_width() * 0.8), int(self.background_lose.get_height() * 0.8)))
 
         self.bouton_leave = pygame.transform.scale(self.bouton_leave, (int(self.bouton_leave.get_width() * 0.7), int(self.bouton_leave.get_height() * 0.7)))
 

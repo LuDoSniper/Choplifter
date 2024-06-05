@@ -30,7 +30,7 @@ class MenuJouer:
         start_x = (self.assets.SCREEN_WIDTH - button_width) // 2
 
         self.buttons.append(Button('SOLO', start_x, start_y, self.assets.bouton, self.assets.bouton_click, lambda: self.change_menu_callback("mission"), self.assets))
-        self.buttons.append(Button('SURVIE', start_x, start_y + button_height + spacing, self.assets.bouton, self.assets.bouton_click, lambda: self.change_menu_callback("survie"), self.assets))
+        self.buttons.append(Button('SURVIE', start_x, start_y + button_height + spacing, self.assets.bouton, self.assets.bouton_click, lambda: self.change_menu_callback("win"), self.assets))
         self.buttons.append(Button('SANDBOX', start_x, start_y + 2 * (button_height + spacing), self.assets.bouton, self.assets.bouton_click, self.start_entrainement, self.assets))
         self.buttons.append(Button('RETOUR', start_x, start_y + 3 * (button_height + spacing), self.assets.bouton_jouer, self.assets.bouton_jouer_click, lambda: self.change_menu_callback("main"),self.assets, self.assets.color_theme))
 

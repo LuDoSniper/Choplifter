@@ -6,6 +6,8 @@ from objects.menu.menu_pause import MenuPause
 from objects.menu.menu_son import MenuSon
 from objects.menu.menu_survie import MenuSurvie
 from objects.menu.menu_mission import MenuMission
+from objects.menu.menu_lose import MenuLose
+from objects.menu.menu_win import MenuWin
 import objects.requester as requester
 import objects.saver as saver
 
@@ -28,6 +30,8 @@ save_manager = saver.Saver()
 
 missions = save_manager.load()["missions"]
 
+score = 1487
+
 class Link:
     def __init__(self, assets):
         self.stop = False
@@ -42,7 +46,9 @@ class Link:
             "pause": MenuPause(self.assets.screen, self.change_menu, self.restart_game, self.quit_game, assets),
             "son": MenuSon(self.assets.screen, self.change_menu, assets),
             "survie": MenuSurvie(self.assets.screen, self.change_menu, assets, classement, positionnement, points_vous),
-            "mission": MenuMission(self.assets.screen, self.change_menu, assets, missions, "Ile Alloca")
+            "mission": MenuMission(self.assets.screen, self.change_menu, assets, missions, "Ile Alloca"),
+            "lose": MenuLose(self.assets.screen, self.change_menu, assets, score),
+            "win": MenuWin(self.assets.screen, self.change_menu, assets, score)
         }
         self.update_theme(self.assets.THEME) 
 
