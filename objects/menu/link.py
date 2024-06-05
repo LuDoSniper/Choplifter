@@ -47,6 +47,7 @@ class Link:
         self.update_theme(self.assets.THEME) 
 
     def change_menu(self, menu_name):
+        save_manager.save(self.get_data())
         self.current_menu = menu_name
 
     def handle_event(self, event):

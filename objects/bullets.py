@@ -6,6 +6,7 @@ import objects.player as player
 import objects.structure as structure
 import objects.civil as civil
 import objects.terroriste as terroriste
+import objects.music as music
 
 class Bullet(pygame.sprite.Sprite):
     
@@ -13,6 +14,8 @@ class Bullet(pygame.sprite.Sprite):
     
     def __init__(self, group: pygame.sprite.Group, screen: pygame.Surface, origine, dir: int, angle: int, pos: tuple, local_x: int, local_y: int, boost: int = 0, name: str = "missile-joueur", size: int = 1) -> None:
         super().__init__(group)
+        self.__music_manager = music.Music()
+        
         self.image = pygame.image.load(f"assets/tir/missiles/{name}.png")
         if name == "balle-avion":
             self.image = pygame.transform.scale(self.image, (self.image.get_rect().width * 0.75,
@@ -126,6 +129,7 @@ class Bullet(pygame.sprite.Sprite):
                     target.hit()
                 else:
                     target.set_exploded(True)
+                self.__music_manager.bullet_explode()
             elif type(target) == player.Player and self.hitbox.colliderect(target.get_heli().hitbox):
                 self.set_exploded(True)
                 if type(self.__origine) == avion.Avion:
@@ -133,6 +137,7 @@ class Bullet(pygame.sprite.Sprite):
                 elif type(self.__origine) == tank.Tank:
                     damage = 30
                 target.set_health(target.get_health() - damage)
+                self.__music_manager.bullet_explode()
         if self.rect.x <= 0 - self.rect.width or self.rect.x >= self.__screen.get_width() + self.rect.width or self.rect.y < -100:
             self.set_exploded(True)
     

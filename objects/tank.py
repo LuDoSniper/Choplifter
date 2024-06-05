@@ -1,6 +1,7 @@
 import pygame
 import objects.bullets as bullets
 import objects.player as player
+import objects.music as music
 
 class Tank(pygame.sprite.Sprite):
     
@@ -8,6 +9,8 @@ class Tank(pygame.sprite.Sprite):
     
     def __init__(self, group: pygame.sprite.Group, screen: pygame.Surface, map_size: int, pos: tuple = (0, 40), type: int = 1) -> None:
         super().__init__(group)
+        self.__music_manager = music.Music()
+        
         # Image et Rect doivent être publiques pour Sprite
         if type == 1:
             tmp = 3
@@ -150,6 +153,7 @@ class Tank(pygame.sprite.Sprite):
     
     def shoot(self) -> None:
         self.__bullet = bullets.Bullet(self.__bullet_group, self.__screen, self, self.__dir, 65 * self.__dir, self.__pos, self.rect.x + (18 * self.__dir), self.rect.y - 5, boost=-3)
+        self.__music_manager.tank_shoot()
     
     def move(self) -> None:
         self.set_velocity(self.get_velocity() + (self.get_acceleration() * self.get_dir()))

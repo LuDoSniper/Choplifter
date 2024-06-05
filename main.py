@@ -7,7 +7,7 @@ pygame.init()
 pygame.font.init()
 pygame.mixer.init()
 
-music_manager = music.Music()
+music_manager = music.Music(main=True)
 save_manager = saver.Saver()
 
 data = save_manager.load()
@@ -15,6 +15,7 @@ current_game = game.Game(music_manager, "menu")
 current_game.set_data(data)
 current_game.handle()
 data = current_game.get_data()
+save_manager.save(data)
 
 response = current_game.get_response()
 while response != "exit":
@@ -31,8 +32,12 @@ while response != "exit":
             monde = 3
         elif tmp[1] == "Montagne":
             monde = 4
-        musique = "mission1"
         mode = "solo"
+        if mission in (1, 2):
+            intensity = "low"
+        elif mission in (3, 4):
+            intensity = "high"
+        musique = f"monde{monde}-{intensity}"
     elif response == "solo":
         musique = "mission1"
         mode = "solo"
@@ -48,6 +53,7 @@ while response != "exit":
         current_game = game.Game(music_manager, mode, monde, mission)
         current_game.set_data(data)
         current_game.handle()
+        save_manager.save(current_game.get_data())
         response = current_game.get_response()
 
 save_manager.save(current_game.get_data())

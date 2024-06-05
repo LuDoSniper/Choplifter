@@ -3,10 +3,13 @@ import objects.tank as tank
 import objects.structure as structure
 import objects.civil as civil
 import objects.terroriste as terroriste
+import objects.music as music
 
 class Bomb(pygame.sprite.Sprite):
     def __init__(self, group: pygame.sprite.Group, pos: tuple, local_pos: tuple, screen: pygame.Surface, min_height: int) -> None:
         super().__init__(group)
+        self.__music_manager = music.Music()
+        
         self.image = pygame.image.load("assets/imgs/Bomb_tmp_7x20.png")
         self.rect = self.image.get_rect()
         self.rect.x = local_pos[0]
@@ -60,6 +63,7 @@ class Bomb(pygame.sprite.Sprite):
         # Explosion
         if self.rect.y > self.__min_height: # Touche le sol
             self.set_exploded(True)
+            self.__music_manager.bomb_explode()
         
         for target in targets:
             if self.hitbox.colliderect(target.hitbox): # Collision
@@ -70,6 +74,7 @@ class Bomb(pygame.sprite.Sprite):
                 elif type(target) == structure.Structure:
                     target.hit(True)
                 self.set_exploded(True)
+                self.__music_manager.bomb_explode()
     
     def sync_vel(self, velocity: float, left: bool, right: bool) -> None:
         # Bouge de la même manière que la map

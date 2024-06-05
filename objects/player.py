@@ -7,10 +7,12 @@ import objects.tank as tank
 import objects.terroriste as terroriste
 import objects.civil as civil
 import objects.structure as structure
+import objects.music as music
 
 class Player:
     def __init__(self, screen: pygame.Surface, pos: tuple, map_size: int) -> None:
         self.__heli = heli.Heli(screen)
+        self.__music_manager = music.Music()
         
         # Accès plus simple a screen
         self.__screen = screen
@@ -303,6 +305,7 @@ class Player:
             else:
                 dir = 1
             self.__bullets_list.append(bullet.Bullet(self.get_bullets_group(), self.__screen, self, dir, self.get_angle(), self.get_pos(), self.get_heli().get_rect().x, self.get_heli().get_rect().y))
+            self.__music_manager.player_shoot()
     
     def bullets_handle(self, targets: list = []) -> None:
         for bullet in self.get_bullets_list():
