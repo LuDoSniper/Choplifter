@@ -1,7 +1,7 @@
 import pygame
 
 class Dropdown:
-    def __init__(self, label, x, y, width, height, options, callback, assets):
+    def __init__(self, label, x, y, width, height, options, callback, assets, placeholder = True):
         self.assets = assets
         self.label = label
         self.rect = pygame.Rect(x, y, width, height)
@@ -9,6 +9,7 @@ class Dropdown:
         self.callback = callback
         self.selected_index = 0
         self.expanded = False
+        self.placeholder = placeholder
         self.dropdown_img = pygame.image.load('assets/menu/dropdown_background.png').convert_alpha()
         self.dropdown_img = pygame.transform.scale(self.dropdown_img, (int(self.dropdown_img.get_width() * 0.7), int(self.dropdown_img.get_height() * 0.7)))
 
@@ -17,7 +18,11 @@ class Dropdown:
         label_surf = self.assets.custom_font_16.render(self.label, True, self.assets.GRIS_CLAIR)
         screen.blit(label_surf, (self.rect.x, self.rect.y - 20))
 
-        selected_option = self.assets.custom_font_16.render(self.assets.THEME, True, self.assets.GRIS_FONCE)
+        if self.placeholder:
+            selected_option = self.assets.custom_font_16.render(self.assets.THEME, True, self.assets.GRIS_FONCE)
+        else: 
+            selected_option = self.assets.custom_font_16.render(self.assets.RESOLUTION, True, self.assets.GRIS_FONCE)
+
         screen.blit(selected_option, (self.rect.x + 10, self.rect.y + (self.rect.height - selected_option.get_height()) // 2))
 
         if self.expanded:

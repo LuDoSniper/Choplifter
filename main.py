@@ -11,7 +11,10 @@ pygame.mixer.init()
 pygame.display.set_icon(pygame.image.load("assets/icon/Icon.png"))
 pygame.display.set_caption("Choplifter")
 assets_manager = assets.Assets()
-screen = pygame.display.set_mode((assets_manager.SCREEN_WIDTH, assets_manager.SCREEN_HEIGHT))
+
+screen = assets_manager.SCREEN
+#screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+print("Resolution : ", screen.get_size())
 
 music_manager = music.Music(main=True)
 save_manager = saver.Saver()

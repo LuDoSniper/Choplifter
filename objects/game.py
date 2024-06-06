@@ -469,6 +469,7 @@ class Game:
         self.update_hud()
         self.__link.update_theme(data["theme"])
         self.__link.set_missions(data["missions"])
+        self.__link.update_resolution(data["resolution"])
     
     def update_hud(self) -> None:
         self.__hud.update(self.__assets.THEME)

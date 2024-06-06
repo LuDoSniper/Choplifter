@@ -42,7 +42,7 @@ class Link:
         self.menus = {
             "main": Menu(self.assets.screen, self.change_menu, self.quit_game, self.assets),
             "play": MenuJouer(self.assets.screen, self.change_menu, self.assets),
-            "options": MenuOptions(self.assets.screen, self.change_menu, self.update_theme, self.assets),
+            "options": MenuOptions(self.assets.screen, self.change_menu, self.update_theme, self.update_resolution, self.assets),
             "credits": MenuCredits(self.assets.screen, self.change_menu, self.assets),
             "pause": MenuPause(self.assets.screen, self.change_menu, self.restart_game, self.quit_game, assets),
             "son": MenuSon(self.assets.screen, self.change_menu, assets),
@@ -51,7 +51,8 @@ class Link:
             "lose": MenuLose(self.assets.screen, self.change_menu, assets, score),
             "win": MenuWin(self.assets.screen, self.change_menu, assets, score)
         }
-        self.update_theme(self.assets.THEME) 
+        self.update_theme(self.assets.THEME)
+        self.update_resolution(self.assets.RESOLUTION)
 
     def change_menu(self, menu_name):
         save_manager.save(self.get_data())
@@ -96,6 +97,22 @@ class Link:
             if hasattr(self.menus[menu_name], 'buttons'):
                 self.menus[menu_name].create_buttons()
 
+    def update_resolution(self, new_resolution):
+        self.assets.RESOLUTION = new_resolution
+        self.assets.retire_resolution = [self.assets.resolution for self.assets.resolution in self.assets.RESOLUTIONS if self.assets.resolution != self.assets.RESOLUTION]
+        if new_resolution == "600x800":
+            self.assets.SCREEN_WIDTH = 800
+            self.assets.SCREEN_HEIGHT = 600
+            pygame.display.set_mode((self.assets.SCREEN_WIDTH, self.assets.SCREEN_HEIGHT))
+        elif new_resolution == "FULL":
+            pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+            self.assets.SCREEN_WIDTH, self.assets.SCREEN_HEIGHT = self.assets.screen.get_size()
+        print(self.assets.SCREEN_WIDTH, self.assets.SCREEN_HEIGHT)
+
+        for menu_name in self.menus:
+            if hasattr(self.menus[menu_name], 'elements'):
+                self.menus[menu_name].draw()
+
     def quit_game(self) -> None:
         self.stop = True
 
@@ -106,6 +123,7 @@ class Link:
         data = self.menus["options"].get_volume()
         data["theme"] = self.assets.THEME
         data["missions"] = self.missions
+        data["resolution"] = self.assets.RESOLUTION
         return data
     
     def set_volume(self, data: dict) -> None:
