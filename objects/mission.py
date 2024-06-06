@@ -41,7 +41,7 @@ class Mission():
     def get_structures_list(self) -> list:
         return self.__structures
     def set_structures_list(self, structures: list) -> None:
-        self.__structures = structure
+        self.__structures = structures
     
     def get_structures_group(self) -> pygame.sprite.Group:
         return self.__structures_group
@@ -115,7 +115,7 @@ class Mission():
                 self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100 + 4 * tile_size))
         elif id == "sandbox":
             width = 100
-            self.__map = map.Map(f"assets/tilesets/sandbox/sandbox.tmx", width, height, tile_size, self.__screen)
+            self.__map = map.Map(f"assets/tilesets/sandbox/sandbox.tmx", width, height, tile_size, self.__screen, pig=True)
             self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
                     
             # Positions

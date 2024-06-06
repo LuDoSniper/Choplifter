@@ -1,5 +1,6 @@
 import pygame
 from pytmx.util_pygame import load_pygame
+import objects.PIG as PIG
 # Typage
 from pytmx import TiledMap
 
@@ -16,24 +17,34 @@ class Tile(pygame.sprite.Sprite):
         return self.__local_pos
 
 class Map:
-    def __init__(self, path: str, width: int, height: int, tile_size: int, screen: pygame.Surface) -> None:
+    def __init__(self, path: str, width: int, height: int, tile_size: int, screen: pygame.Surface, pig: bool = False) -> None:
+        self.__pig = pig
+        
         self.__width = width
         self.__height = height
         self.__tile_size = tile_size
         
-        self.__tmx_data = load_pygame(path) # "assets/tilesets/map_test.tmx"
-        self.__tiles = []
-        self.__group = pygame.sprite.Group()
-        
-        self.__load_tiles()
-        self.__rect = pygame.Rect((0, 0), (self.__width * self.__tile_size, self.__height * self.__tile_size))
-
         # Indique si la map touche le bord droit, gauche ou aucun
         self.__left_border = False
         self.__right_border = False
 
         # Pour acceder aux dimensions de l'écran plus facilement
         self.__screen = screen
+        
+        if not pig:
+            self.__tmx_data = load_pygame(path) # "assets/tilesets/map_test.tmx"
+            self.__tiles = []
+            self.__group = pygame.sprite.Group()
+            
+            self.__load_tiles()
+            self.__rect = pygame.Rect((0, 0), (self.__width * self.__tile_size, self.__height * self.__tile_size))
+        else:
+            path_cut = path[:-4]
+            PIG.generate_map_image(path, f"{path_cut}.png")
+            self.__image = pygame.image.load(f"{path_cut}.png")
+            size = self.__tile_size / 32
+            self.__image = pygame.transform.scale(self.__image, (self.__image.get_rect().width * size, self.__image.get_rect().height * size))
+            self.__rect = self.__image.get_rect()
     
     # Geter / Seter
     def get_width(self) -> int:
@@ -98,14 +109,17 @@ class Map:
             self.__tiles.append(Tile(tile[2], (tile[0] * self.get_tile_size(), tile[1] * self.get_tile_size()), (tile[:2]), self.get_group()))
     
     def afficher(self, screen: pygame.Surface) -> None:
-        out_of_screen = []
-        for tile in self.__tiles:
-            if tile.rect.x + tile.rect.width < 0 or tile.rect.x > screen.get_width():
-                out_of_screen.append(tile)
-                self.__group.remove(tile)
-        self.get_group().draw(screen)
-        for tile in out_of_screen:
-            self.__group.add(tile)
+        if not self.__pig:
+            out_of_screen = []
+            for tile in self.__tiles:
+                if tile.rect.x + tile.rect.width < 0 or tile.rect.x > screen.get_width():
+                    out_of_screen.append(tile)
+                    self.__group.remove(tile)
+            self.get_group().draw(screen)
+            for tile in out_of_screen:
+                self.__group.add(tile)
+        else:
+            screen.blit(self.__image, self.__rect)
     
     def sync_vel(self, velocity: float) -> None:
         if velocity != 0:
@@ -126,9 +140,10 @@ class Map:
             else:
                 self.set_right_border(False)
             
-            # Modifier les tuiles
-            for tuile in self.get_tiles():
-                tuile.rect.x = self.__rect.x + tuile.get_local_pos()[0] * self.get_tile_size()
+            if not self.__pig:
+                # Modifier les tuiles
+                for tuile in self.get_tiles():
+                    tuile.rect.x = self.__rect.x + tuile.get_local_pos()[0] * self.get_tile_size()
     
     def get_map_size(self) -> int:
         return self.__width * self.__tile_size

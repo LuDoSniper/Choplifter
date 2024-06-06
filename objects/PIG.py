@@ -1,4 +1,5 @@
 # PIG -> Python Image Generator
+# alias - le cochon
 
 import pytmx
 from PIL import Image
