@@ -45,7 +45,7 @@ class Avion(pygame.sprite.Sprite):
         self.__moving = False
         
         self.__timer = 0
-        self.__start = random.randint(60, 120)
+        self.__start = random.randint(60, 240)
         
         self.__target = 100
         self.__done = 0
@@ -149,7 +149,7 @@ class Avion(pygame.sprite.Sprite):
                     self.image = pygame.transform.flip(self.image, True, False)
                 self.__moving = True
                 self.__timer = 0
-                self.__start = random.randint(120, 240)
+                self.__start = random.randint(60, 240)
                 
                 if self.__dir > 0:
                     self.rect.x = 0 - (self.image.get_rect().width + 20)
@@ -158,7 +158,7 @@ class Avion(pygame.sprite.Sprite):
                     self.rect.x = self.__screen.get_width() + self.image.get_rect().width + 20
                     self.hitbox.x = self.__screen.get_width() + self.image.get_rect().width + 20
                     
-                self.rect.y = random.randint(0, 30)
+                self.rect.y = random.randint(0, 240)
                 self.hitbox.y = self.rect.y
             
             if (self.__target > 0 and self.__done >= self.__target) or (self.__target < 0 and self.__done <= self.__target):

@@ -147,7 +147,18 @@ class Mission():
                     self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (pos[0], pos[1]))
                 for pos in avion_positions:
                     self.__enemis.add_avion(self.__screen, self.__map.get_map_size(), (pos[0], pos[1]))
-
+        elif "/" in id and id.split("/")[0] == "survie":
+            tmp = id.split('/')[1]
+            monde = tmp.split('-')[0]
+            difficulte = tmp.split('-')[1]
+            if difficulte == 1:
+                width = 75
+            elif difficulte == 2:
+                width = 100
+            elif difficulte == 3:
+                width = 150
+            self.__map = map.Map(f"assets/tilesets/survival/{monde}-{difficulte}.tmx", width, height, tile_size, self.__screen, pig=True)
+            self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
         else:
             if int(id[0]) == 1:
                 if int(id[-1]) == 1:

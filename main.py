@@ -1,4 +1,5 @@
 import pygame
+import random
 import objects.game as game
 import objects.music as music
 import objects.saver as saver
@@ -61,6 +62,12 @@ while response != "exit":
             intensity = "low"
         elif mission in (3, 4):
             intensity = "high"
+        musique = f"monde{monde}-{intensity}"
+    elif response == "survie":
+        mode = "survie"
+        monde = random.randint(1, 4)
+        mission = 1
+        intensity = "low"
         musique = f"monde{monde}-{intensity}"
         
     # Antibug

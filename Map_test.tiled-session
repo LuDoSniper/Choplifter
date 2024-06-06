@@ -12,6 +12,14 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "assets/tilesets/Desert/map_desert.tmx": {
+            "scale": 1.11328125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 320.6736842105263,
+                "y": 159.43859649122808
+            }
+        },
         "assets/tilesets/Island/1-1.tmx": {
             "scale": 1,
             "selectedLayer": 0,
@@ -67,8 +75,8 @@
             "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 320,
-                "y": 63.5
+                "x": 323,
+                "y": 93.5
             }
         },
         "assets/tilesets/map_test_tileset.tsx": {
@@ -89,6 +97,14 @@
             "viewCenter": {
                 "x": 1202.2828154724164,
                 "y": 161.3189600507293
+            }
+        },
+        "assets/tilesets/survival/1-2.tmx": {
+            "scale": 0.24640625000000002,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1603.043753963221,
+                "y": 162.33354470513632
             }
         },
         "assets/tilesets/survival/1-3.tmx": {

@@ -55,6 +55,8 @@ class Game:
             id = f"{self.__monde_id}-{self.__mission_id}"
         elif self.__mode == "sandbox":
             id = "sandbox"
+        elif self.__mode == "survie":
+            id = f"survie/{self.__monde_id}-{self.__mission_id}"
         else:
             id = "map_test"
         self.__mission_manager = mission.Mission(id, self.__screen, self)
