@@ -4,7 +4,7 @@ import time
 import objects.civil as civil
 
 class Structure(pygame.sprite.Sprite):
-    def __init__(self, group: pygame.sprite.Group, local_x: int, local_y: int, pos: tuple, type: str, theme: str, game: str) -> None:
+    def __init__(self, group: pygame.sprite.Group, local_x: int, local_y: int, pos: tuple, type: str, theme: str, game) -> None:
         super().__init__(group)
         self.__pos = pos
         self.__type = type
