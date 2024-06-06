@@ -11,21 +11,21 @@
         ],
         "Foret Alloca": [
             true,
-            false,
-            false,
-            false
+            true,
+            true,
+            true
         ],
         "Desert Alloca": [
+            true,
             false,
-            false,
-            false,
-            false
+            true,
+            true
         ],
         "Montagne Alloca": [
-            false,
-            false,
-            false,
-            false
+            true,
+            true,
+            true,
+            true
         ]
     }
 }
