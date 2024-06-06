@@ -13,11 +13,11 @@
             "scaleInEditor": 1
         },
         "assets/tilesets/Island/1-1.tmx": {
-            "scale": 0.8213541666666667,
-            "selectedLayer": 1,
+            "scale": 1,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 480.91312618896643,
-                "y": 160.71020925808494
+                "x": 314,
+                "y": 121
             }
         },
         "assets/tilesets/Island/1-2.tmx": {
@@ -61,7 +61,7 @@
             "scaleInEditor": 1
         },
         "assets/tilesets/Mountain/MossyRockTileSet.tsx": {
-            "scaleInDock": 1
+            "scaleInDock": 0.5
         },
         "assets/tilesets/map_test.tmx": {
             "scale": 1,
@@ -74,13 +74,37 @@
         "assets/tilesets/map_test_tileset.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 8
+        },
+        "assets/tilesets/sandbox/sandbox.tmx": {
+            "scale": 0.25,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 1600,
+                "y": 308
+            }
+        },
+        "assets/tilesets/survival/1-1.tmx": {
+            "scale": 0.3285416666666666,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 1202.2828154724164,
+                "y": 161.3189600507293
+            }
+        },
+        "assets/tilesets/survival/1-3.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 2722,
+                "y": 242
+            }
         }
     },
     "last.imagePath": "C:/Users/lucie/OneDrive/Bureau/Hesias/B1/Major_Project/Choplifter/assets/tilesets",
     "map.height": 10,
     "map.lastUsedFormat": "tmx",
     "map.renderOrder": null,
-    "map.width": 100,
+    "map.width": 75,
     "openFiles": [
         "assets/tilesets/map_test.tmx",
         "assets/tilesets/map_test_tileset.tsx",
@@ -92,14 +116,18 @@
     ],
     "project": "Map_test.tiled-project",
     "recentFiles": [
+        "assets/tilesets/Island/1-1.tmx",
+        "assets/tilesets/survival/1-3.tmx",
+        "assets/tilesets/survival/1-1.tmx",
+        "assets/tilesets/sandbox/sandbox.tmx",
+        "assets/tilesets/Island/1-4.tmx",
+        "assets/tilesets/Island/1-3.tmx",
+        "assets/tilesets/Island/1-2.tmx",
         "assets/tilesets/map_test.tmx",
         "assets/tilesets/map_test_tileset.tsx",
         "assets/tilesets/Island/Sky.tsx",
         "assets/tilesets/Island/map_test_tileset.tsx",
-        "assets/tilesets/Island/desertFoliage.tsx",
-        "assets/tilesets/Island/Clouds.tsx",
-        "assets/tilesets/Island/1-1.tmx",
-        "assets/tilesets/Desert-tmp/tilesetsand.tsx"
+        "assets/tilesets/Island/desertFoliage.tsx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }

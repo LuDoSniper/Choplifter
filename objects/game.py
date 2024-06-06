@@ -13,29 +13,27 @@ import objects.music as music
 import objects.saver as saver
 
 class Game:
-    def __init__(self, music_manager: music.Music, mode: str, mission_id: int = None, monde_id: int = None, fullscreen: bool = False) -> None:
+    def __init__(self, screen: pygame.Surface, assets: assets.Assets, music_manager: music.Music, mode: str, mission_id: int = None, monde_id: int = None, fullscreen: bool = False) -> None:
         self.__music_manager = music_manager
         self.__save_manager = saver.Saver()
         self.__mode = mode
         self.__mission_id = mission_id
         self.__monde_id = monde_id
-        self.__assets = assets.Assets()
+        self.__assets = assets
         self.__link = link.Link(self.__assets)
         if mode != "menu":
             self.__link.current_menu = "pause"
         self.__current_menu = self.__link.current_menu
-        pygame.display.set_icon(pygame.image.load("assets/icon/Icon.png"))
-        fullscreen_int = 0
-        width = self.__assets.get_screen_width()
-        height = self.__assets.get_screen_height()
-        if fullscreen:
-            fullscreen_int = pygame.FULLSCREEN
-            monitor = screeninfo.get_monitors()[0]
-            width = monitor.width
-            height = monitor.height
-            print(f"test {fullscreen}")
-        self.__screen = pygame.display.set_mode((width, height), fullscreen_int)
-        pygame.display.set_caption("Choplifter")
+        # fullscreen_int = 0
+        # width = self.__assets.get_screen_width()
+        # height = self.__assets.get_screen_height()
+        # if fullscreen:
+        #     fullscreen_int = pygame.FULLSCREEN
+        #     monitor = screeninfo.get_monitors()[0]
+        #     width = monitor.width
+        #     height = monitor.height
+        #     print(f"test {fullscreen}")
+        self.__screen = screen
         
         # Clock pour les itérations max
         # Pas besoin de geter / seter

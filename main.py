@@ -2,16 +2,22 @@ import pygame
 import objects.game as game
 import objects.music as music
 import objects.saver as saver
+import objects.menu.assets as assets
 
 pygame.init()
 pygame.font.init()
 pygame.mixer.init()
 
+pygame.display.set_icon(pygame.image.load("assets/icon/Icon.png"))
+pygame.display.set_caption("Choplifter")
+assets_manager = assets.Assets()
+screen = pygame.display.set_mode((assets_manager.SCREEN_WIDTH, assets_manager.SCREEN_HEIGHT))
+
 music_manager = music.Music(main=True)
 save_manager = saver.Saver()
 
 data = save_manager.load()
-current_game = game.Game(music_manager, "menu")
+current_game = game.Game(screen, assets_manager, music_manager, "menu")
 current_game.set_data(data)
 current_game.handle()
 data = current_game.get_data()
@@ -62,7 +68,7 @@ while response != "exit":
         current_game.change_menu(current_game.get_current_menu())
     else:  
         music_manager.switch(musique)
-        current_game = game.Game(music_manager, mode, mission, monde)
+        current_game = game.Game(screen, assets_manager, music_manager, mode, mission, monde)
         current_game.set_data(data)
         current_game.handle()
         save_manager.save(current_game.get_data())
