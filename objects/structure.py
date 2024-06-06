@@ -4,13 +4,14 @@ import time
 import objects.civil as civil
 
 class Structure(pygame.sprite.Sprite):
-    def __init__(self, group: pygame.sprite.Group, local_x: int, local_y: int, pos: tuple, type: str, theme: str, game: str) -> None:
+    def __init__(self, group: pygame.sprite.Group, local_x: int, local_y: int, pos: tuple, type: str, theme: str, game, mode: str = "classique") -> None:
         super().__init__(group)
         self.__pos = pos
         self.__type = type
         self.__theme = theme
 
         self.__game = game
+        self.__mode = mode
 
         if self.__type == "batiment":
             self.__civils_number = random.randint(3, 5)
@@ -211,7 +212,7 @@ class Structure(pygame.sprite.Sprite):
         # Vérifier si la structure doit réapparaître
         if self.__destroyed and self.__time_of_destruction is not None:
             if time.time() - self.__time_of_destruction >= 5:  # Réapparaît après 5 secondes
-                if self.__game == "sandbox":
+                if self.__mode == "sandbox":
                     self.reapparaitre()
 
     def reapparaitre(self):

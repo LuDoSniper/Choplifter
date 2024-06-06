@@ -140,7 +140,7 @@ class Mission():
             
             self.__base = base.Base(self.__base_group, base_pos[0], base_pos[1], (base_pos[0], base_pos[1]))
             for pos in structure_positions:
-                self.__structures.append(structure.Structure(self.__structures_group, pos[0], pos[1], (pos[0], pos[1]), "batiment", "ville", "sandbox"))
+                self.__structures.append(structure.Structure(self.__structures_group, pos[0], pos[1], (pos[0], pos[1]), "batiment", "ville", self.__game, "sandbox"))
             
             if not reload:
                 for pos in tank_positions:
