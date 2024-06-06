@@ -333,7 +333,7 @@ class Game:
         id_mission = self.__mission_id + 1
         id_monde = self.__monde_id
         if id_mission > 4:
-            id_mission = 0
+            id_mission = 1
             id_monde = self.__monde_id + 1
         if id_monde == 1:
             monde = "Ile Alloca"
