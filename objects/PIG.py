@@ -38,4 +38,4 @@ def generate_map_image(tmx_file, output_image_file):
     map_image.save(output_image_file)
 
 # Exemple d'utilisation
-generate_map_image('assets/tilesets/sandbox/sandbox.tmx', 'output_map.png')
+# generate_map_image('assets/tilesets/sandbox/sandbox.tmx', 'output_map.png')
