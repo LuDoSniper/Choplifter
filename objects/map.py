@@ -108,26 +108,27 @@ class Map:
             self.__group.add(tile)
     
     def sync_vel(self, velocity: float) -> None:
-        self.__rect.x -= velocity
-        
-        # Brider le mouvement vers la droite
-        if self.__rect.x >= 0:
-            self.__rect.x = 0
-            self.set_left_border(True)
-        else:
-            self.set_left_border(False)
-        
-        # Brider le mouvement vers la gauche
-        limite = self.get_screen().get_width() + -self.get_rect().width
-        if self.__rect.x <= limite:
-            self.__rect.x = limite
-            self.set_right_border(True)
-        else:
-            self.set_right_border(False)
-        
-        # Modifier les tuiles
-        for tuile in self.get_tiles():
-            tuile.rect.x = self.__rect.x + tuile.get_local_pos()[0] * self.get_tile_size()
+        if velocity != 0:
+            self.__rect.x -= velocity
+            
+            # Brider le mouvement vers la droite
+            if self.__rect.x >= 0:
+                self.__rect.x = 0
+                self.set_left_border(True)
+            else:
+                self.set_left_border(False)
+            
+            # Brider le mouvement vers la gauche
+            limite = self.get_screen().get_width() + -self.get_rect().width
+            if self.__rect.x <= limite:
+                self.__rect.x = limite
+                self.set_right_border(True)
+            else:
+                self.set_right_border(False)
+            
+            # Modifier les tuiles
+            for tuile in self.get_tiles():
+                tuile.rect.x = self.__rect.x + tuile.get_local_pos()[0] * self.get_tile_size()
     
     def get_map_size(self) -> int:
         return self.__width * self.__tile_size
