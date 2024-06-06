@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
- <tileset firstgid="1" source="Textures&amp;trees.tsx"/>
- <tileset firstgid="57" source="main.tsx"/>
- <tileset firstgid="77" source="Background.tsx"/>
- <tileset firstgid="112" source="bgcolor.tsx"/>
+ <tileset firstgid="1" source="../Forest/Textures&amp;trees.tsx"/>
+ <tileset firstgid="57" source="../Forest/main.tsx"/>
+ <tileset firstgid="77" source="../Forest/Background.tsx"/>
+ <tileset firstgid="112" source="../Forest/bgcolor.tsx"/>
  <layer id="2" name="Background" width="50" height="10">
   <data encoding="csv">
 118,112,113,114,115,116,117,118,112,113,114,115,116,117,118,112,113,114,115,116,117,118,112,113,114,115,116,117,118,112,113,114,115,116,117,118,112,113,114,115,116,117,118,112,113,114,115,116,117,118,

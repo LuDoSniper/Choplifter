@@ -4,20 +4,22 @@ from objects.menu.dropdown import Dropdown
 import pygame
 
 class MenuOptions:
-    def __init__(self, screen, change_menu_callback, update_theme_callback, assets):
+    def __init__(self, screen, change_menu_callback, update_theme_callback, update_resolution_callback, assets):
         self.assets = assets
         self.screen = screen
         self.change_menu_callback = change_menu_callback
         self.update_theme_callback = update_theme_callback
+        self.update_resolution_callback = update_resolution_callback
         self.clicked_element = None 
+        self.elements = []
         self.create_elements()
 
     def create_elements(self):
-        self.elements = []
         self.elements.append(Button("", 215, 475, self.assets.bouton_confirm, self.assets.bouton_confirm_click, self.confirm, self.assets))
         self.elements.append(Slider("Son", ((self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2), 200, 350, 8, self.update_sound, self.assets))
         self.elements.append(Slider("Musique", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, 260, 350, 8, self.update_music, self.assets))
         self.elements.append(Dropdown("Thème", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, 325, 133, 30, self.assets.retire_theme, self.update_theme, self.assets))
+        self.elements.append(Dropdown("Résolution", ((self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2) + 150, 325, 133, 30, self.assets.retire_resolution, self.update_resolution, self.assets, False))
 
     def draw(self):
         bg_x = (self.assets.SCREEN_WIDTH - self.assets.background_menu_options.get_width()) // 2
@@ -60,13 +62,25 @@ class MenuOptions:
         print(f"Theme: {value}")
         self.update_theme_callback(value)
         for element in self.elements:
-            if isinstance(element, Dropdown):
+            if isinstance(element, Dropdown) and element.label == "Thème":
                 element.options = [self.assets.theme for self.assets.theme in self.assets.THEMES if self.assets.theme != self.assets.THEME]
+
+    def update_resolution(self, value):
+        self.update_resolution_callback(value)
+        print(f"Resolution: {value}")
+        for element in self.elements:
+            if isinstance(element, Dropdown) and element.label == "Résolution":
+                element.options = [self.assets.resolution for self.assets.resolution in self.assets.RESOLUTIONS if self.assets.resolution != self.assets.RESOLUTION]
 
     def update_dropdown(self):
         for element in self.elements:
-            if isinstance(element, Dropdown):
+            if isinstance(element, Dropdown) and element.label == "Thème":
                 element.options = [self.assets.theme for self.assets.theme in self.assets.THEMES if self.assets.theme != self.assets.THEME]
+            elif isinstance(element, Dropdown) and element.label == "Résolution":
+                element.options = [self.assets.resolution for self.assets.resolution in self.assets.RESOLUTIONS if self.assets.resolution != self.assets.RESOLUTION]
+            
+    def update_elements(self):
+        self.create_elements()
 
     def confirm(self):
         print("Options confirmées")

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="180" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="1">
- <tileset firstgid="1" source="BG1.tsx"/>
- <tileset firstgid="2665" source="MossyRockTileSet.tsx"/>
- <tileset firstgid="2690" source="BG2.tsx"/>
- <tileset firstgid="5354" source="Rock Mountain.tsx"/>
- <tileset firstgid="5754" source="Clouds.tsx"/>
+ <tileset firstgid="1" source="../Mountain/BG1.tsx"/>
+ <tileset firstgid="2665" source="../Mountain/MossyRockTileSet.tsx"/>
+ <tileset firstgid="2690" source="../Mountain/BG2.tsx"/>
+ <tileset firstgid="5354" source="../Mountain/Rock Mountain.tsx"/>
+ <tileset firstgid="5754" source="../Mountain/Clouds.tsx"/>
  <tileset firstgid="5854" source="../Desert/stone.tsx"/>
  <layer id="1" name="Back" width="180" height="10">
   <data encoding="csv">

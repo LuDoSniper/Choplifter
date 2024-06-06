@@ -9,8 +9,19 @@ class Assets:
         self.GRIS_FONCE = (153, 153, 153)
         self.GRIS_CLAIR = (198, 198, 198)
 
-        self.SCREEN_WIDTH = 800
-        self.SCREEN_HEIGHT = 600
+
+        self.RESOLUTION = "600x800"
+        self.RESOLUTIONS = ["600x800", "FULL"]
+        self.retire_resolution = [self.resolution for self.resolution in self.RESOLUTIONS if self.resolution != self.RESOLUTION]
+
+        if self.RESOLUTION == "600x800":
+            self.SCREEN_WIDTH = 800
+            self.SCREEN_HEIGHT = 600
+            self.SCREEN = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
+
+        elif self.RESOLUTION == "FULL":
+            self.SCREEN = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+            self.SCREEN_WIDTH, self.SCREEN_HEIGHT = self.screen.get_size()
 
         self.THEME = 'Gris'
         self.THEMES = ["Gris", "Orange", "Bleu", "Vert", "Jaune"]
