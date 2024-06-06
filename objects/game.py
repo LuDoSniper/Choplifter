@@ -51,12 +51,12 @@ class Game:
         pygame.display.flip()
         
         # Gestionnaire de mission
-        if self.__mission_id is not None and self.__monde_id is not None:
+        if self.__mode == "survie":
+            id = f"survie/{self.__monde_id}-{self.__mission_id}"
+        elif self.__mission_id is not None and self.__monde_id is not None:
             id = f"{self.__monde_id}-{self.__mission_id}"
         elif self.__mode == "sandbox":
             id = "sandbox"
-        elif self.__mode == "survie":
-            id = f"survie/{self.__monde_id}-{self.__mission_id}"
         else:
             id = "map_test"
         self.__mission_manager = mission.Mission(id, self.__screen, self)
@@ -209,7 +209,7 @@ class Game:
                         self.__music_manager.switch("main_background_layer1")
                         self.__current_menu = self.__link.current_menu
                     self.__response = self.__link.handle_event(event)
-                    if self.__response in ("solo", "sandbox", "new_try") or (self.__response is not None and '-' in self.__response):
+                    if self.__response in ("solo", "sandbox", "new_try", "survie") or (self.__response is not None and '-' in self.__response):
                         self.quit()
                     elif self.__response == "continue":
                         self.__mode = self.__tmp

@@ -150,7 +150,7 @@ class Mission():
         elif "/" in id and id.split("/")[0] == "survie":
             tmp = id.split('/')[1]
             monde = tmp.split('-')[0]
-            difficulte = tmp.split('-')[1]
+            difficulte = int(tmp.split('-')[1])
             if difficulte == 1:
                 width = 75
             elif difficulte == 2:
@@ -159,6 +159,13 @@ class Mission():
                 width = 150
             self.__map = map.Map(f"assets/tilesets/survival/{monde}-{difficulte}.tmx", width, height, tile_size, self.__screen, pig=True)
             self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
+            self.__base = base.Base(self.__base_group, 4 * tile_size, 30, (4 * tile_size, 30 + 4 * tile_size))
+            self.__structures.append(structure.Structure(self.__structures_group, 2 * tile_size, 72 + 4 * tile_size, (2 * tile_size, 72 + 4 * tile_size), "batiment", "ville", self.__game))
+            self.__structures.append(structure.Structure(self.__structures_group, 10 * tile_size, 72 + 4 * tile_size, (2 * tile_size, 72 + 4 * tile_size), "garage", "ville", self.__game))
+            self.__structures.append(structure.Structure(self.__structures_group, 15 * tile_size, 72 + 4 * tile_size, (2 * tile_size, 72 + 4 * tile_size), "batiment", "ville", self.__game))
+            if not reload:
+                self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (5 * tile_size, 100 + 4 * tile_size))
+                self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100 + 4 * tile_size))
         else:
             if int(id[0]) == 1:
                 if int(id[-1]) == 1:
