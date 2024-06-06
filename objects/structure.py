@@ -1,31 +1,33 @@
 import pygame
 import random
+import time
 import objects.civil as civil
 
 class Structure(pygame.sprite.Sprite):
-    def __init__(self, group: pygame.sprite.Group, local_x: int, local_y: int, pos: tuple, type: str, theme: str, game) -> None:
+    def __init__(self, group: pygame.sprite.Group, local_x: int, local_y: int, pos: tuple, type: str, theme: str, game, mode: str = "classique") -> None:
         super().__init__(group)
         self.__pos = pos
         self.__type = type
         self.__theme = theme
-        
+
         self.__game = game
-        
+        self.__mode = mode
+
         if self.__type == "batiment":
             self.__civils_number = random.randint(3, 5)
         elif self.__type == "garage":
             self.__civils_number = random.randint(1, 3)
-        
+
         self.__state = 2
         self.__despawn = False
         self.__destroyed = False
         self.__unloading = False
         self.__civils_group = pygame.sprite.Group()
         self.__civils_list = []
-        
+
         self.__despawn_timer = 0
         self.__despawn_timer_delay = 300
-        
+
         self.image = pygame.image.load(f"assets/structure/{self.__type}/{self.__theme}.png")
         self.image = pygame.transform.scale(self.image, (
             self.image.get_rect().width * 2,
@@ -40,14 +42,15 @@ class Structure(pygame.sprite.Sprite):
             self.rect.width,
             self.rect.height
         )
-        
+
         self.__pos_tmp = []
-        
+
         self.__egged = False
         self.__civils_saved = 0
         self.__civils_dead = 0
+        self.__time_of_destruction = None  # Ajouter cet attribut pour la gestion de la réapparition
 
-    # Geter / Seter
+    # Getters / Setters
     
     def get_despawn(self) -> bool:
         return self.__despawn
@@ -171,6 +174,7 @@ class Structure(pygame.sprite.Sprite):
             self.__destroyed = True
             self.update_image()
             self.add_civils()
+            self.__time_of_destruction = time.time()  # Enregistrer le temps de destruction
             # Tuer entre 2 et 3 civils
             if bomb:
                 kill = random.randint(2, 3)
@@ -178,7 +182,7 @@ class Structure(pygame.sprite.Sprite):
                     if kill > 0:
                         civil.hit()
                         kill -= 1
-    
+
     def handle(self, map_size: int, player, base_porte: pygame.Rect) -> None:
         # Gérer les civils
         for civil in self.__civils_list:
@@ -204,6 +208,18 @@ class Structure(pygame.sprite.Sprite):
                 self.__civils_list.pop(self.__civils_list.index(civil))
                 self.__civils_saved += 1
                 self.add_civils_saved()
+        
+        # Vérifier si la structure doit réapparaître
+        if self.__destroyed and self.__time_of_destruction is not None:
+            if time.time() - self.__time_of_destruction >= 5:  # Réapparaît après 5 secondes
+                if self.__mode == "sandbox":
+                    self.reapparaitre()
+
+    def reapparaitre(self):
+        self.__destroyed = False
+        self.__state = 2
+        self.__time_of_destruction = None
+        self.update_image()
     
     def update_image(self) -> None:
         state = ""
@@ -216,7 +232,7 @@ class Structure(pygame.sprite.Sprite):
             self.image.get_rect().width * 2,
             self.image.get_rect().height * 2
         ))
-    
+
     def afficher_civils(self, screen: pygame.Surface, egged: bool = False) -> None:
         self.easter_egg(egged)
         out_of_screen = []
@@ -241,6 +257,7 @@ class Structure(pygame.sprite.Sprite):
             "pos": self.__pos
         }
         return data
+
     def set_data(self, data: dict) -> None:
         self.__destroyed = data["destroyed"]
         self.__state = data["state"]

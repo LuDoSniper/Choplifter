@@ -11,21 +11,21 @@
         ],
         "Foret Alloca": [
             true,
-            true,
+            false,
             false,
             false
         ],
         "Desert Alloca": [
+            true,
             false,
-            false,
-            false,
-            false
+            true,
+            true
         ],
         "Montagne Alloca": [
-            false,
-            false,
-            false,
-            false
+            true,
+            true,
+            true,
+            true
         ]
     },
     "resolution": "600x800"
