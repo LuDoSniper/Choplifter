@@ -3,11 +3,13 @@ import random
 import objects.civil as civil
 
 class Structure(pygame.sprite.Sprite):
-    def __init__(self, group: pygame.sprite.Group, local_x: int, local_y: int, pos: tuple, type: str, theme: str) -> None:
+    def __init__(self, group: pygame.sprite.Group, local_x: int, local_y: int, pos: tuple, type: str, theme: str, game) -> None:
         super().__init__(group)
         self.__pos = pos
         self.__type = type
         self.__theme = theme
+        
+        self.__game = game
         
         if self.__type == "batiment":
             self.__civils_number = random.randint(3, 5)
@@ -15,10 +17,14 @@ class Structure(pygame.sprite.Sprite):
             self.__civils_number = random.randint(1, 3)
         
         self.__state = 2
+        self.__despawn = False
         self.__destroyed = False
         self.__unloading = False
         self.__civils_group = pygame.sprite.Group()
         self.__civils_list = []
+        
+        self.__despawn_timer = 0
+        self.__despawn_timer_delay = 300
         
         self.image = pygame.image.load(f"assets/structure/{self.__type}/{self.__theme}.png")
         self.image = pygame.transform.scale(self.image, (
@@ -38,8 +44,15 @@ class Structure(pygame.sprite.Sprite):
         self.__pos_tmp = []
         
         self.__egged = False
+        self.__civils_saved = 0
+        self.__civils_dead = 0
 
     # Geter / Seter
+    
+    def get_despawn(self) -> bool:
+        return self.__despawn
+    def set_despawn(self, despawn: bool) -> None:
+        self.__despawn = despawn
     
     def get_pos(self) -> tuple:
         return self.__pos
@@ -83,6 +96,20 @@ class Structure(pygame.sprite.Sprite):
         for civil in self.__civils_list:
             civil.set_group(self.__civils_group)
     
+    def get_civils_saved(self) -> int:
+        return self.__civils_saved
+    def set_civils_saved(self, saved: int) -> None:
+        self.__civils_saved = saved
+    def add_civils_saved(self) -> None:
+        self.__game.add_saved()
+    
+    def get_civils_dead(self) -> int:
+        return self.__civils_dead
+    def set_civils_dead(self, dead: int) -> None:
+        self.__civils_dead = dead
+    def add_civils_dead(self) -> None:
+        self.__game.add_dead()
+    
     def get_civils_playable(self) -> list:
         list = []
         for civil in self.__civils_list:
@@ -91,6 +118,12 @@ class Structure(pygame.sprite.Sprite):
         return list
     
     # Méthodes
+    
+    def despawn(self) -> None:
+        if self.__destroyed and self.__civils_list == []:
+            self.__despawn_timer += 1
+            if self.__despawn_timer >= self.__despawn_timer_delay:
+                self.__despawn = True
     
     def sync_vel(self, velocity: float, left: bool, right: bool) -> None:
         # Bouge de la même manière que la map
@@ -168,6 +201,9 @@ class Structure(pygame.sprite.Sprite):
         for civil in self.__civils_list:
             if civil.get_saved():
                 self.__civils_group.remove(civil)
+                self.__civils_list.pop(self.__civils_list.index(civil))
+                self.__civils_saved += 1
+                self.add_civils_saved()
     
     def update_image(self) -> None:
         state = ""

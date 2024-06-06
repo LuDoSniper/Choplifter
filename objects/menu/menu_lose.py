@@ -64,6 +64,7 @@ class MenuLose:
 
     def restar_game(self):
         print("Restart de la partie")
+        return "new_try"
 
     def quit_game(self):
         pygame.quit()

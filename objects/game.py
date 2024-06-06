@@ -73,7 +73,6 @@ class Game:
         # self.__structures_list.append(structure.Structure(self.__structures_group, 200, 72, (200, 72), "batiment", "brick"))
         self.__structures_group = self.__mission_manager.get_structures_group()
         self.__structures_list = self.__mission_manager.get_structures_list()
-        self.__civil_numbers = self.get_civils_number()
     
         # HUD
         self.__hud = hud.HUD(self.__screen, self.__assets.THEME, self.__player.get_try())
@@ -93,8 +92,17 @@ class Game:
         self.__response = None
         self.__running = True
         self.__tmp = None
+        self.__civil_numbers = self.get_civils_number()
+        self.__civil_dead = 0
+        self.__civil_saved = 0
     
     # Geter / Seter
+    def get_monde_id(self) -> int:
+        return self.__monde_id
+    
+    def get_mission_id(self) -> int:
+        return self.__mission_id
+    
     def get_screen(self) -> pygame.Surface:
         return self.__screen
     def set_screen(self, screen: pygame.Surface) -> None:
@@ -153,7 +161,7 @@ class Game:
                 self.get_player().get_heli().sync_side(self.get_player().get_dir())
             
             if self.__mode != "menu":
-                self.__hud.afficher(self.get_player().get_health(), self.get_player().get_fuel(), self.__player.get_storage(), self.__player.get_max_storage(), len(self.get_civils_saved()), self.__civil_numbers, len(self.get_civils_dead()))
+                self.__hud.afficher(self.get_player().get_health(), self.get_player().get_fuel(), self.__player.get_storage(), self.__player.get_max_storage(), self.__civil_saved, self.__civil_numbers, self.__civil_dead)
             
             # Events uniques
             if self.__mode == "menu":
@@ -179,7 +187,7 @@ class Game:
                         self.__music_manager.switch("main_background_layer1")
                         self.__current_menu = self.__link.current_menu
                     self.__response = self.__link.handle_event(event)
-                    if self.__response in ("solo", "sandbox") or (self.__response is not None and '-' in self.__response):
+                    if self.__response in ("solo", "sandbox", "new_try") or (self.__response is not None and '-' in self.__response):
                         self.quit()
                     elif self.__response == "continue":
                         self.__mode = self.__tmp
@@ -309,21 +317,18 @@ class Game:
         self.quit()
     
     def check_end_game(self) -> bool:
-        dead = len(self.get_civils_dead())
-        saved = len(self.get_civils_saved())
+        dead = self.__civil_dead
+        saved = self.__civil_saved
         if dead + saved == self.__civil_numbers:
             if saved >= self.__civil_numbers / 2:
-                self.__current_menu = "win"
-                self.__link.current_menu = "win"
-                self.__mode = "menu"
                 self.win()
             else:
-                self.__current_menu = "lose"
-                self.__link.current_menu = "lose"
-                self.__mode = "menu"
                 self.game_over()
     
     def win(self) -> None:
+        self.__current_menu = "win"
+        self.__link.current_menu = "win"
+        self.__mode = "menu"
         data = self.get_data()
         id_mission = self.__mission_id + 1
         id_monde = self.__monde_id
@@ -345,6 +350,9 @@ class Game:
     
     def game_over(self) -> None:
         print("game over")
+        self.__current_menu = "lose"
+        self.__link.current_menu = "lose"
+        self.__mode = "menu"
     
     def despawn_civils(self) -> None:
         for structure in self.__structures_list:
@@ -355,6 +363,10 @@ class Game:
     
     def handle_structures(self, map_size: int, base_porte: pygame.Rect) -> None:
         for structure in self.__structures_list:
+            structure.despawn()
+            if structure.get_despawn():
+                self.__structures_list.pop(self.__structures_list.index(structure))
+                self.__structures_group.remove(structure)
             structure.handle(map_size, self.__player, base_porte)
     
     def get_intacts_structures(self) -> list:
@@ -376,19 +388,32 @@ class Game:
             list += structure.get_civils_list()
         return list
     
-    def get_civils_dead(self) -> list:
-        list = []
-        for civil in self.get_civils():
-            if civil.get_state() in ("death", "damage"):
-                list.append(civil)
-        return list
+    def add_dead(self) -> None:
+        self.__civil_dead += 1
+    def add_saved(self) -> None:
+        self.__civil_saved += 1
     
-    def get_civils_saved(self) -> list:
-        list = []
-        for civil in self.get_civils():
-            if civil.get_saved():
-                list.append(civil)
-        return list
+    def get_civils_dead(self) -> list:
+        # list = []
+        # for civil in self.get_civils():
+        #     if civil.get_state() in ("death", "damage"):
+        #         list.append(civil)
+        # return list
+        s = 0
+        for structure in self.__structures_list:
+            s += structure.get_civils_dead()
+        return s
+    
+    def get_civils_saved(self) -> int:
+        # list = []
+        # for civil in self.get_civils():
+        #     if civil.get_saved():
+        #         list.append(civil)
+        # return list
+        s = 0
+        for structure in self.__structures_list:
+            s += structure.get_civils_saved()
+        return s
     
     def get_civils_playable(self) -> list:
         list = []

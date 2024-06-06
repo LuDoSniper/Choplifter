@@ -47,6 +47,15 @@ while response != "exit":
     elif response == "restart":
         musique = "main_background_layer2" # Lancera le layer 1 car le changement de musique à l'air d'être detecté comme un SONG_END donc la loop se met en place et donc interverti layer1 avec layer2
         mode = "menu"
+    elif response == "new_try":
+        mode = "solo"
+        monde = current_game.get_monde_id()
+        mission = current_game.get_mission_id()
+        if mission in (1, 2):
+            intensity = "low"
+        elif mission in (3, 4):
+            intensity = "high"
+        musique = f"monde{monde}-{intensity}"
         
     # Antibug
     if response is None:

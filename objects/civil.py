@@ -208,6 +208,7 @@ class Civil(pygame.sprite.Sprite):
     def hit(self) -> None:
         if self.__state != "death":
             self.__state = "damage"
+        self.origine.add_civils_dead()
     
     def sync_side(self) -> None:
         if (self.__dir == -1 and not self.__reversed) or (self.__dir == 1 and self.__reversed):

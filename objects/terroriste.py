@@ -29,6 +29,7 @@ class Terroriste(pygame.sprite.Sprite):
             self.gun_rect.x = self.rect.x
             self.gun_rect.y = self.rect.y
         
+        self.__despawn = False
         self.__speed = 1
         self.__range = 150
         self.__shooting = False
@@ -58,6 +59,8 @@ class Terroriste(pygame.sprite.Sprite):
         self.__shooting_timer = self.__shooting_delay
         self.__exploding_timer = 0
         self.__exploding_delay = 60
+        self.__despawn_timer = 0
+        self.__despawn_timer_delay = 300
         
     # Geter / Seter
     
@@ -66,6 +69,11 @@ class Terroriste(pygame.sprite.Sprite):
     def set_group(self, group: pygame.sprite.Group) -> None:
         self.group = group
         super().__init__(group)
+    
+    def get_despawn(self) -> bool:
+        return self.__despawn
+    def set_despawn(self, despawn: bool) -> None:
+        self.__despawn = despawn
     
     def get_pos(self) -> tuple:
         return self.__pos
@@ -86,6 +94,12 @@ class Terroriste(pygame.sprite.Sprite):
         return self.__state
     
     # Méthodes
+    
+    def despawn(self) -> None:
+        if self.__state in ("blood", "death"):
+            self.__despawn_timer += 1
+            if self.__despawn_timer >= self.__despawn_timer_delay:
+                self.__despawn = True
     
     def handle(self, map_size: int, screen: pygame.Surface, civils: list, player) -> None:
         self.animate()

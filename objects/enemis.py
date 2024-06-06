@@ -61,6 +61,11 @@ class Enemis:
         self.__screen = screen
 
     # Methodes
+    
+    def remove_terroriste(self, terroriste) -> None:
+        self.__terroristes.pop(self.__terroristes.index(terroriste))
+        self.__group.remove(terroriste)
+    
     # Tanks
     def add_tank(self, screen: pygame.Surface, map_size: int, pos: tuple = (0, 40), type: int = 1) -> None:
         self.__tanks.append(tank.Tank(self.get_group(), screen, map_size, pos, type))
@@ -151,6 +156,9 @@ class Enemis:
     
     def handle_terroristes(self, map_size: int, screen: pygame.Surface, civils: list, player_var) -> None:
         for terroriste in self.__terroristes:
+            terroriste.despawn()
+            if terroriste.get_despawn():
+                self.remove_terroriste(terroriste)
             if not(terroriste.rect.x + terroriste.rect.width < 0 or terroriste.rect.x > self.__screen.get_width()):
                 terroriste.handle(map_size, screen, civils, player_var)
                 
