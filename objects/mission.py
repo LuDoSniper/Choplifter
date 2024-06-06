@@ -114,25 +114,40 @@ class Mission():
                 self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (5 * tile_size, 100 + 4 * tile_size))
                 self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100 + 4 * tile_size))
         elif id == "sandbox":
-            width = 100
-            self.__map = map.Map(f"assets/tilesets/sandbox/sandbox.tmx", width, height, tile_size, self.__screen, pig=True)
-            self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
-                    
+            width = 60
+            self.__map = map.Map(f"assets/tilesets/sandbox/sandbox.tmx", width, height, tile_size, self.__screen)
+            self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size())
+                            
             # Positions
             base_pos = (14 * tile_size, 4 * tile_size + 30)
-            structure1_pos = (3 * tile_size, 4 * tile_size + 72)
-            structure2_pos = (10 * tile_size, 4 * tile_size + 72)
-            structure3_pos = (25 * tile_size, 4 * tile_size + 72)
-            tank1_pos = (5 * tile_size, 4 * tile_size + 100)
-            tank2_pos = (20 * tile_size, 4 * tile_size + 100)
+            tank_positions = [(5 * tile_size, 4 * tile_size + 100), 
+                            (20 * tile_size, 4 * tile_size + 100),
+                            (10 * tile_size, 4 * tile_size + 100),  # Nouvelle position
+                            (25 * tile_size, 4 * tile_size + 100),  # Nouvelle position
+                            (5 * tile_size, 4 * tile_size + 100),   # Nouvelle position
+                            (20 * tile_size, 4 * tile_size + 100)]  # Nouvelle position
+            avion_positions = [(10 * tile_size, 4 * tile_size + 20), 
+                            (15 * tile_size, 4 * tile_size + 20),
+                            (5 * tile_size, 4 * tile_size + 20),  # Nouvelle position
+                            (20 * tile_size, 4 * tile_size + 20), # Nouvelle position
+                            (15 * tile_size, 4 * tile_size + 20)] # Nouvelle position
+            
+            structure_positions = [
+                (3 * tile_size, 4 * tile_size + 72),
+                (10 * tile_size, 4 * tile_size + 72),
+                (25 * tile_size, 4 * tile_size + 72)
+            ]
             
             self.__base = base.Base(self.__base_group, base_pos[0], base_pos[1], (base_pos[0], base_pos[1]))
-            self.__structures.append(structure.Structure(self.__structures_group, structure1_pos[0], structure1_pos[1], (structure1_pos[0], structure1_pos[1]), "batiment", "ville", self.__game))
-            self.__structures.append(structure.Structure(self.__structures_group, structure2_pos[0], structure2_pos[1], (structure2_pos[0], structure2_pos[1]), "garage", "ville", self.__game))
-            self.__structures.append(structure.Structure(self.__structures_group, structure3_pos[0], structure3_pos[1], (structure3_pos[0], structure3_pos[1]), "batiment", "ville", self.__game))
+            for pos in structure_positions:
+                self.__structures.append(structure.Structure(self.__structures_group, pos[0], pos[1], (pos[0], pos[1]), "batiment", "ville", self.__game))
+            
             if not reload:
-                self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank1_pos[0], tank1_pos[1]))
-                self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank2_pos[0], tank2_pos[1]))
+                for pos in tank_positions:
+                    self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (pos[0], pos[1]))
+                for pos in avion_positions:
+                    self.__enemis.add_avion(self.__screen, self.__map.get_map_size(), (pos[0], pos[1]))
+
         else:
             if int(id[0]) == 1:
                 if int(id[-1]) == 1:
