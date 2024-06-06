@@ -104,7 +104,7 @@ class Mission():
         
         if id == "map_test":
             width = 20
-            self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
+            self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen, pig=True)
             self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
             self.__base = base.Base(self.__base_group, 4 * tile_size, 30, (4 * tile_size, 30 + 4 * tile_size))
             self.__structures.append(structure.Structure(self.__structures_group, 2 * tile_size, 72 + 4 * tile_size, (2 * tile_size, 72 + 4 * tile_size), "batiment", "ville", self.__game))
