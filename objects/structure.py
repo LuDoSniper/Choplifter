@@ -122,6 +122,10 @@ class Structure(pygame.sprite.Sprite):
             y_offset = 10
             self.__civils_list.append(civil.Civil(self.__civils_group, self, x, self.rect.y + y_offset, (x, self.rect.y + y_offset), gender, type, clothes, self.__egged))
     
+    def remove_civil(self, civil) -> None:
+        self.__civils_group.remove(civil)
+        self.__civils_list.pop(self.__civils_list.index(civil))
+    
     def hit(self, bomb: bool = False) -> None:
         if bomb:
             damage = 2
@@ -151,6 +155,8 @@ class Structure(pygame.sprite.Sprite):
         if self.__unloading:
             for civil in self.__civils_list:
                 if civil.get_aboard():
+                    civil.rect.x = player.get_heli().get_rect().x
+                    civil.hitbox.x = civil.rect.x + 24
                     civil.set_aboard(False)
                     self.__civils_group.add(civil)
                     civil.set_base(True)

@@ -286,6 +286,9 @@ class Game:
                 # Gestion des structures
                 self.handle_structures(self.__map.get_map_size(), self.__base.porte)
                 
+                # Gestion du despawn des civils
+                self.despawn_civils()
+                
                 # Gestion de la base
                 self.__base.handle(self.__player, self.__structures_list)
                 
@@ -343,10 +346,16 @@ class Game:
     def game_over(self) -> None:
         print("game over")
     
+    def despawn_civils(self) -> None:
+        for structure in self.__structures_list:
+            for civil in structure.get_civils_list():
+                civil.despawn()
+                if civil.get_despawn():
+                    structure.remove_civil(civil)
+    
     def handle_structures(self, map_size: int, base_porte: pygame.Rect) -> None:
         for structure in self.__structures_list:
-            if not(structure.rect.x + structure.rect.width < 0 or structure.rect.x > self.__screen.get_width()):
-                structure.handle(map_size, self.__player, base_porte)
+            structure.handle(map_size, self.__player, base_porte)
     
     def get_intacts_structures(self) -> list:
         list = []
@@ -390,11 +399,12 @@ class Game:
     def afficher_structures(self, egged: bool = False) -> None:
         out_of_screen = []
         for structure in self.__structures_list:
-            structure.afficher_civils(self.__screen, egged)
             if structure.rect.x + structure.rect.width < 0 or structure.rect.x > self.__screen.get_width():
                 out_of_screen.append(structure)
                 self.__structures_group.remove(structure)
         self.__structures_group.draw(self.__screen)
+        for structure in self.__structures_list:
+            structure.afficher_civils(self.__screen, egged)
         for structure in out_of_screen:
             self.__structures_group.add(structure)
         

@@ -101,9 +101,10 @@ class Enemis:
         
     def handle_explosions(self) -> None:
         for explosion in self.get_explosions():
-            if explosion.explode():
-                self.__group.remove(explosion)
-                self.__explosions.pop(self.__explosions.index(explosion))
+            if not(explosion.rect.x + explosion.rect.width < 0 or explosion.rect.x > self.__screen.get_width()):
+                if explosion.explode():
+                    self.__group.remove(explosion)
+                    self.__explosions.pop(self.__explosions.index(explosion))
                 
     def sync_vel_explosions(self, velocity: float, left: bool, right: bool) -> None:
         for explosion in self.get_explosions():

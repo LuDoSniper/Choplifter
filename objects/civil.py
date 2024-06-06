@@ -21,6 +21,7 @@ class Civil(pygame.sprite.Sprite):
             29
         )
         
+        self.__despawn = False
         self.__aboard = False
         self.__saved = False
         self.__base = False
@@ -37,6 +38,8 @@ class Civil(pygame.sprite.Sprite):
         self.__animation_timer_speed = 5
         self.__switch_animation_timer = 0
         self.__switch_animation_timer_target = random.randint(150, 250)
+        self.__despawn_timer = 0
+        self.__despawn_timer_delay = 300
         
         self.__speed = 1
         self.__dir = 0
@@ -49,6 +52,11 @@ class Civil(pygame.sprite.Sprite):
     def set_group(self, group: pygame.sprite.Group) -> None:
         self.group = group
         super().__init__(group)
+    
+    def get_despawn(self) -> bool:
+        return self.__despawn
+    def set_despawn(self, despawn: bool) -> None:
+        self.__despawn = despawn
     
     def get_aboard(self) -> bool:
         return self.__aboard
@@ -87,10 +95,10 @@ class Civil(pygame.sprite.Sprite):
         self.sync_side()
         
         if self.__state not in ("death", "damage"):
-            if self.__aboard:
-                self.rect.x = player.get_heli().get_rect().x
-                self.hitbox.x = player.get_heli().get_rect().x + 24
-            elif self.__base:
+            # if self.__aboard:
+            #     self.rect.x = player.get_heli().get_rect().x
+            #     self.hitbox.x = player.get_heli().get_rect().x + 24
+            if self.__base:
                 if self.rect.x < base_porte.x:
                     self.__dir = 1
                 elif self.rect.x > base_porte.x:
@@ -131,6 +139,12 @@ class Civil(pygame.sprite.Sprite):
         
         if self.__state in ("walk", "run"):
             self.move(map_size)
+    
+    def despawn(self) -> None:
+        if self.__state == "death" and self.__frame >= 6:
+            self.__despawn_timer += 1
+            if self.__despawn_timer >= self.__despawn_timer_delay:
+                self.__despawn = True
     
     def animate(self) -> None:
         self.__animation_timer += 1
