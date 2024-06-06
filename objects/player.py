@@ -227,6 +227,8 @@ class Player:
             if self.__fuel_timer >= self.__fuel_timer_delay:
                 self.__fuel_timer = 0
                 self.__fuel -= 1
+            if self.__fuel <= 0:
+                self.__health = 0
         
         # Mouvement
         self.set_velocity(self.get_velocity() + (self.get_acceleration() * self.get_dir()))
