@@ -39,6 +39,17 @@ class Game:
         # Pas besoin de geter / seter
         self.__clock = pygame.time.Clock()
         
+        # Affichage du chargement
+        background = pygame.image.load("assets/imgs/Background.png")
+        background = pygame.transform.scale(background, (self.__assets.SCREEN_WIDTH, self.__assets.SCREEN_HEIGHT))
+        chargement = pygame.image.load("assets/imgs/chargement.png")
+        chargement_rect = chargement.get_rect()
+        chargement_rect.x = self.__assets.SCREEN_WIDTH / 2 - chargement_rect.width / 2
+        chargement_rect.y = self.__assets.SCREEN_HEIGHT / 2 - chargement_rect.height / 2
+        self.__screen.blit(background, background.get_rect())
+        self.__screen.blit(chargement, chargement_rect)
+        pygame.display.flip()
+        
         # Gestionnaire de mission
         if self.__mission_id is not None and self.__monde_id is not None:
             id = f"{self.__monde_id}-{self.__mission_id}"
@@ -93,6 +104,7 @@ class Game:
         self.__civil_numbers = self.get_civils_number()
         self.__civil_dead = 0
         self.__civil_saved = 0
+        self.__loading = True
     
     # Geter / Seter
     def get_monde_id(self) -> int:
@@ -135,6 +147,16 @@ class Game:
     def handle(self):
         while self.__running:
             # Affichage
+            if self.__loading:
+                background = pygame.image.load("assets/imgs/Background.png")
+                background = pygame.transform.scale(background, (self.__assets.SCREEN_WIDTH, self.__assets.SCREEN_HEIGHT))
+                chargement = pygame.image.load("assets/imgs/chargement.png")
+                chargement_rect = chargement.get_rect()
+                chargement_rect.x = self.__assets.SCREEN_WIDTH / 2 - chargement_rect.width / 2
+                chargement_rect.y = self.__assets.SCREEN_HEIGHT / 2 - chargement_rect.height / 2
+                self.__screen.blit(background, background.get_rect())
+                self.__screen.blit(chargement, chargement_rect)
+                self.__loading = False
             if self.__mode == "menu":
                 self.__screen.fill((239, 204, 172))
                 self.__link.draw()
