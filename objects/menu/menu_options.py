@@ -15,11 +15,30 @@ class MenuOptions:
         self.create_elements()
 
     def create_elements(self):
-        self.elements.append(Button("", 215, 475, self.assets.bouton_confirm, self.assets.bouton_confirm_click, self.confirm, self.assets))
-        self.elements.append(Slider("Son", ((self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2), 200, 350, 8, self.update_sound, self.assets))
-        self.elements.append(Slider("Musique", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, 260, 350, 8, self.update_music, self.assets))
-        self.elements.append(Dropdown("Thème", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, 325, 133, 30, self.assets.retire_theme, self.update_theme, self.assets))
-        self.elements.append(Dropdown("Résolution", ((self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2) + 150, 325, 133, 30, self.assets.retire_resolution, self.update_resolution, self.assets, False))
+        element_height = 50
+        spacing = 20 
+        num_elements = 5
+        
+        total_height = (element_height * num_elements) + (spacing * (num_elements - 1))
+        
+        start_y = (self.assets.SCREEN_HEIGHT - total_height) // 2
+        
+        current_y = start_y
+        
+        current_y += (element_height + spacing) // 2
+
+        self.elements.append(Slider("Son", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, current_y, 350, 8, self.update_sound, self.assets))
+        current_y += element_height + spacing
+        
+        self.elements.append(Slider("Musique", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, current_y, 350, 8, self.update_music, self.assets))
+        current_y += element_height + spacing
+        
+        self.elements.append(Dropdown("Thème", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, current_y, 133, 30, self.assets.retire_theme, self.update_theme, self.assets))
+        
+        self.elements.append(Dropdown("Résolution", ((self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2) + 150, current_y, 133, 30, self.assets.retire_resolution, self.update_resolution, self.assets, False))
+        current_y += (element_height + spacing * 5)
+
+        self.elements.append(Button("", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, current_y, self.assets.bouton_confirm, self.assets.bouton_confirm_click, self.confirm, self.assets))
 
     def draw(self):
         bg_x = (self.assets.SCREEN_WIDTH - self.assets.background_menu_options.get_width()) // 2
