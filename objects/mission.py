@@ -164,16 +164,15 @@ class Mission():
             base_pos = ((width // 2) * tile_size, 4 * tile_size + 30)
             zone_morte_debut = (width // 2) - 2
             zone_morte_fin = (width // 2) + 2
-            nb_structure = (width - 5) // 5
-            for i in range(0, nb_structure):
+            nb_elements = (width - 5) // 5
+            for i in range(0, nb_elements):
+                # Structure
                 offset = 0
                 if i * 4 >= zone_morte_debut or (i * 4 <= zone_morte_debut and i * 4 + 3 >= zone_morte_debut) or (i * 4 >= zone_morte_debut and i * 4 + 3 >= zone_morte_fin):
                     offset = 5
-                x = random.randint((i + offset) * 4, (i + offset) * 4 + 3)
-                print(f"structure {i} -> x={x} (({i} + {offset}) * 4, ({i} + {offset}) * 4 + 4)")
                 pos = (
-                    x * tile_size,
-                    4 * tile_size + 73        
+                    random.randint((i + offset) * 4, (i + offset) * 4 + 3) * tile_size,
+                    4 * tile_size + 73
                 )
                 if monde == '1':
                     theme = "ville"
@@ -184,13 +183,42 @@ class Mission():
                 elif monde == '4':
                     theme = "brick"
                 self.__structures.append(structure.Structure(self.__structures_group, pos[0], pos[1], pos, random.choice(["batiment", "garage"]), theme, self.__game))
-            tank1_pos = (5 * tile_size, 4 * tile_size + 100)
-            tank2_pos = (20 * tile_size, 4 * tile_size + 100)
-            
+                # Tanks
+                offset = 0
+                if i * 4 >= zone_morte_debut or (i * 4 <= zone_morte_debut and i * 4 + 3 >= zone_morte_debut) or (i * 4 >= zone_morte_debut and i * 4 + 3 >= zone_morte_fin):
+                    offset = 5
+                pos = (
+                    random.randint((i + offset) * 4, (i + offset) * 4 + 3) * tile_size,
+                    4 * tile_size + 100
+                )
+                self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), pos, random.randint(1, 2))
+                # Terroristes
+                offset = 0
+                if i * 4 >= zone_morte_debut or (i * 4 <= zone_morte_debut and i * 4 + 3 >= zone_morte_debut) or (i * 4 >= zone_morte_debut and i * 4 + 3 >= zone_morte_fin):
+                    offset = 5
+                pos = (
+                    random.randint((i + offset) * 4, (i + offset) * 4 + 3) * tile_size,
+                    4 * tile_size + 75
+                )
+                if difficulte == 1:
+                    if random.randint(1, 10) == 1:
+                        type_terroriste = "kamikaze"
+                    else:
+                        type_terroriste = "classique"
+                elif difficulte == 2:
+                    if random.randint(1, 5) == 1:
+                        type_terroriste = "kamikaze"
+                    else:
+                        type_terroriste = "classique"
+                elif difficulte == 3:
+                    if random.randint(1, 2) == 1:
+                        type_terroriste = "kamikaze"
+                    else:
+                        type_terroriste = "classique"
+                self.__enemis.add_terroriste(pos[0], pos[1], pos, type_terroriste)
+            for i in range(0, random.randint(0, difficulte * 2)):
+                self.__enemis.add_avion(self.__screen, self.__map.get_map_size(), (random.choice([-50, self.__screen.get_width()]), random.randint(40, 140)), random.randint(1, 2), random.choice([-1, 1]))
             self.__base = base.Base(self.__base_group, base_pos[0], base_pos[1], base_pos)
-            if not reload:
-                self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (5 * tile_size, 100 + 4 * tile_size))
-                self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100 + 4 * tile_size))
         else:
             if int(id[0]) == 1:
                 if int(id[-1]) == 1:
