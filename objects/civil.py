@@ -48,6 +48,7 @@ class Civil(pygame.sprite.Sprite):
         self.__reversed = False
 
         self.son = Music()
+        self.sifflement = self.son.sifflement()
         self.play_song = None
         
     # Geter / Seter
@@ -132,9 +133,11 @@ class Civil(pygame.sprite.Sprite):
             elif self.hitbox.colliderect(player.get_heli().hitbox) and player.get_storage() < player.get_max_storage() and not self.__aboard and player.get_landed():
                 player.set_storage(player.get_storage() + 1)
                 self.__aboard = True
+                self.sifflement.stop()
             elif self.hitbox.colliderect(player.get_heli().hitbox) and not player.get_landed() and not self.__saved and not self.__aboard:
                 self.hit()
                 self.son.splash()
+                self.sifflement.stop()
             elif self.rect.x - self.RANGE <= player.get_heli().get_rect().x <= self.rect.x + self.RANGE and player.get_landed():
                 self.__state = "run"
                 self.__speed = 2
@@ -142,8 +145,10 @@ class Civil(pygame.sprite.Sprite):
                     self.__dir = -1
                 else:
                     self.__dir = 1
+                self.sifflement.stop()
             elif self.rect.x - self.RANGE <= player.get_heli().get_rect().x <= self.rect.x + self.RANGE:
                 self.__state = "help"
+                self.sifflement.stop()
                 if self.play_song is None: 
                     choice = random.choice([1, 2, 3])
                     if choice == 1:
@@ -158,6 +163,7 @@ class Civil(pygame.sprite.Sprite):
             elif self.__state == "help":
                 self.__state = "idle"
                 self.play_song = None
+                self.sifflement.stop()
             else:
                 self.__switch_animation_timer += 1
                 if self.__switch_animation_timer >= self.__switch_animation_timer_target and self.__state not in ("death", "damage"):
@@ -167,13 +173,18 @@ class Civil(pygame.sprite.Sprite):
                     if self.__state == "walk":
                         self.__speed = 1
                         self.__dir = random.choice([-1, 1])
+                        self.sifflement.stop()
                     elif self.__state in ("idle", "wait"):
                         self.__dir = 0
+                        if self.__state == "idle":
+                            self.sifflement.stop()
                         if self.__state == "wait":
                             if random.choice([True, False, False, False, False]):
-                                self.son.sifflement()
+                                pass
+                            self.sifflement.play(-1)
         
         if self.__state in ("walk", "run"):
+            self.sifflement.stop()
             self.move(map_size)
     
     def despawn(self) -> None:
@@ -256,6 +267,7 @@ class Civil(pygame.sprite.Sprite):
             self.__state = "damage"
         self.origine.add_civils_dead()
         self.__game.add_score(-1)
+        self.sifflement.stop()
     
     def sync_side(self) -> None:
         if (self.__dir == -1 and not self.__reversed) or (self.__dir == 1 and self.__reversed):
