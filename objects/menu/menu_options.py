@@ -28,10 +28,10 @@ class MenuOptions:
         
         current_y += (element_height + spacing) // 2
 
-        self.elements.append(Slider("Son", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, current_y, 350, 8, self.update_sound, self.assets))
+        self.elements.append(Slider("Son", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, current_y, 350, 8, self.update_sound, self.assets, self.assets.sfx_volume))
         current_y += element_height + spacing
         
-        self.elements.append(Slider("Musique", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, current_y, 350, 8, self.update_music, self.assets))
+        self.elements.append(Slider("Musique", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, current_y, 350, 8, self.update_music, self.assets, self.assets.music_volume))
         current_y += (element_height + spacing) // 2
 
         cache_button = pygame.image.load(f'assets/menu/bouton_cache.png').convert_alpha()

@@ -502,6 +502,8 @@ class Game:
         pygame.mixer.music.set_volume(data["music"])
         self.__assets.click_sound.set_volume(data["sfx"])
         self.__assets.up_click_sound.set_volume(data["sfx"])
+        self.__assets.sfx_volume = data["sfx"]
+        self.__assets.music_volume = data["music"]
         self.__assets.THEME = data["theme"]
         self.update_hud()
         self.__link.update_theme(data["theme"])
