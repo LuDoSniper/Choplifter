@@ -44,8 +44,7 @@ class WinStep:
         start_y = ((self.assets.SCREEN_HEIGHT - total_height) // 2)
         start_x = (self.assets.SCREEN_WIDTH - button_width) // 2
 
-        self.buttons.append(Button('SUIVANT', start_x, start_y, self.assets.bouton, self.assets.bouton_click, self.next_game, self.assets))
-        self.buttons.append(Button('MISSION', start_x, start_y + button_height + spacing, self.assets.bouton, self.assets.bouton_click, lambda: self.change_menu_callback("mission"), self.assets))
+        self.buttons.append(Button('SUIVANT', start_x, start_y + button_height + spacing, self.assets.bouton, self.assets.bouton_click, self.next_game, self.assets))
         self.buttons.append(Button('MENU', start_x, start_y + (button_height + spacing) * 2 , self.assets.bouton, self.assets.bouton_click, lambda: self.change_menu_callback("main"), self.assets))
 
     def handle_event(self, event):
