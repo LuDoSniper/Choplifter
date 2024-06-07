@@ -16,13 +16,31 @@ import objects.saver as saver
 
 import pygame
 
+def max_score(data: list) -> list:
+    data = list(data)
+    max = data[0]
+    for score in data:
+        if score["score"] > max["score"]:
+            max = score
+    return max
+
+def trier_score(data: list) -> list:
+    data = list(data)
+    scores = []
+    while data != []:
+        max = max_score(data)
+        data.pop(data.index(max))
+        scores.append(max)
+    return scores
+
 requests_manager = requester.Requester()
 data = requests_manager.download(True, True)
 
 classement_score = []
-for player in data["all"]:
+data["all"] = trier_score(data["all"])
+for player in data["scoreboard"]:
     classement_score.append((player["username"], player["score"]))
-if "ID" not in data:
+if data["self"] not in data["all"]:
     positionnement_score = "Aucune données"
     points_vous = "Aucune données"
 else:
@@ -47,6 +65,9 @@ class Link:
         self.restart = False
         self.assets = assets
         self.current_menu = "main"
+        self.classement_score = classement_score
+        self.positionnement_score = positionnement_score
+        self.points_vous = points_vous
         self.menus = {
             "main": Menu(self.assets.screen, self.change_menu, self.quit_game, self.assets),
             "play": MenuJouer(self.assets.screen, self.change_menu, self.assets),
@@ -54,7 +75,7 @@ class Link:
             "credits": MenuCredits(self.assets.screen, self.change_menu, self.assets),
             "pause": MenuPause(self.assets.screen, self.change_menu, self.restart_game, self.quit_game, assets),
             "son": MenuSon(self.assets.screen, self.change_menu, assets),
-            "survie": MenuScore(self.assets.screen, self.change_menu, assets, classement_score, positionnement_score, points_vous),
+            "survie": MenuScore(self.assets.screen, self.change_menu, assets, self.classement_score, self.positionnement_score, self.points_vous),
             "palier": MenuPalier(self.assets.screen, self.change_menu, assets, classement_palier, positionnement_palier, palier_vous),
             "mission": MenuMission(self.assets.screen, self.change_menu, assets, missions, "Ile Alloca"),
             "lose": MenuLose(self.assets.screen, self.change_menu, assets),
@@ -66,6 +87,12 @@ class Link:
         self.update_resolution(self.assets.RESOLUTION)
 
     def change_menu(self, menu_name):
+        if menu_name == "survie":
+            data = self.get_scoreboard()
+            self.classement_score = data[0]
+            self.positionnement_score = data[1]
+            self.points_vous = data[2]
+            self.menus["survie"].set_scoreboard(data)
         save_manager.save(self.get_data())
         self.current_menu = menu_name
 
@@ -133,6 +160,22 @@ class Link:
 
     def restart_game(self) -> None:
         self.restart = True
+
+    def get_scoreboard(self) -> list:
+        classment = []
+        positionnement = 0
+        points = 0
+        data = requests_manager.download(True, True)
+        data["all"] = trier_score(data["all"])
+        for player in data["scoreboard"]:
+            classment.append((player["username"], player["score"]))
+        if data["self"] not in data["all"]:
+            positionnement = "Aucune données"
+            points = "Aucune données"
+        else:
+            positionnement = data["all"].index(data["self"]) + 1
+            points = data["self"]["score"]
+        return (classment, positionnement, points)
 
     def get_data(self) -> dict:
         data = self.menus["options"].get_volume()

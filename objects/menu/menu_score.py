@@ -87,6 +87,11 @@ class MenuScore:
                                 return response
                 self.clicked_element = None
 
+    def set_scoreboard(self, data: tuple) -> None:
+        self.classement = data[0]
+        self.positionnement = data[1]
+        self.points_vous = data[2]
+
     def start_survie(self):
         print("Lance survie")
         return "survie"
