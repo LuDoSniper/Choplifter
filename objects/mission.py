@@ -162,7 +162,7 @@ class Mission():
                     theme = "desert"
                 elif monde == 4:
                     theme = "brick"
-                self.__structures.append(structure.Structure(self.__structures_group, pos[0], pos[1], pos, random.choice(["batiment", "garage"]), theme, self.__game))
+                self.__structures.append(structure.Structure(self.__structures_group, pos[0], pos[1], pos, random.choice(["batiment", "garage"]), theme, self.__game, "sandbox"))
                 # Tanks
                 offset = 0
                 if i * 4 >= zone_morte_debut or (i * 4 <= zone_morte_debut and i * 4 + 3 >= zone_morte_debut) or (i * 4 >= zone_morte_debut and i * 4 + 3 >= zone_morte_fin):
