@@ -453,6 +453,7 @@ class Game:
         self.__mode = "menu"
         quotient = (self.__civil_numbers / 250) * self.__civil_saved
         self.__score += quotient * 250
+        self.__score = int(self.__score)
         data = self.__save_manager.load()
         data["survival"]["running"] = True
         data["survival"]["score"] = self.__score
