@@ -111,7 +111,11 @@ class Link:
 
         for menu_name in self.menus:
             if hasattr(self.menus[menu_name], 'elements'):
-                self.menus[menu_name].draw()
+                self.menus[menu_name].elements = []
+                self.menus[menu_name].create_elements()
+            elif hasattr(self.menus[menu_name], 'buttons'):
+                self.menus[menu_name].buttons = []
+                self.menus[menu_name].create_buttons()
 
     def quit_game(self) -> None:
         self.stop = True
