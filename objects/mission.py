@@ -162,15 +162,17 @@ class Mission():
             
             # Positions
             base_pos = ((width // 2) * tile_size, 4 * tile_size + 30)
-            zone_morte_debut = (width // 2) - (2 * tile_size)
-            zone_morte_fin = (width // 2) + (2 * tile_size)
-            nb_structure = (width - 5) // 4
+            zone_morte_debut = (width // 2) - 2
+            zone_morte_fin = (width // 2) + 2
+            nb_structure = (width - 5) // 5
             for i in range(0, nb_structure):
                 offset = 0
-                if i * 4 >= zone_morte_debut or (i * 4 <= zone_morte_debut and i * 4 + 4 >= zone_morte_debut) or (i * 4 >= zone_morte_debut and i * 4 + 4 >= zone_morte_fin):
+                if i * 4 >= zone_morte_debut or (i * 4 <= zone_morte_debut and i * 4 + 3 >= zone_morte_debut) or (i * 4 >= zone_morte_debut and i * 4 + 3 >= zone_morte_fin):
                     offset = 5
+                x = random.randint((i + offset) * 4, (i + offset) * 4 + 3)
+                print(f"structure {i} -> x={x} (({i} + {offset}) * 4, ({i} + {offset}) * 4 + 4)")
                 pos = (
-                    random.randint((i + offset) * 4, (i + offset) * 4 + 4) * tile_size,
+                    x * tile_size,
                     4 * tile_size + 73        
                 )
                 if monde == '1':
