@@ -6,13 +6,13 @@
         "Ile Alloca": [
             true,
             true,
-            false,
-            false
+            true,
+            true
         ],
         "Foret Alloca": [
-            false,
-            false,
-            false,
+            true,
+            true,
+            true,
             false
         ],
         "Desert Alloca": [

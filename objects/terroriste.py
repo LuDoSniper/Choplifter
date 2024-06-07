@@ -153,6 +153,7 @@ class Terroriste(pygame.sprite.Sprite):
     
     def explode(self) -> None:
         self.__explosion = explosion.Explosion(self.__explosion_group, self.rect.x + self.rect.width / 2, self.rect.y + self.rect.height / 2, (self.__pos[0] + self.rect.width / 2, self.__pos[1] + self.rect.height / 2))
+        self.__music_manager.boom_splash()
     
     def move(self, map_size: int) -> None:
         self.rect.x += self.__speed * self.__dir

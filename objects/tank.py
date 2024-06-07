@@ -160,6 +160,7 @@ class Tank(pygame.sprite.Sprite):
         for civil in civils:
             if self.hitbox.colliderect(civil.hitbox):
                 civil.hit()
+                self.__music_manager.splash()
     
     def move(self) -> None:
         self.set_velocity(self.get_velocity() + (self.get_acceleration() * self.get_dir()))

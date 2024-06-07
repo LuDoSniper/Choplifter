@@ -260,3 +260,26 @@ class Music():
         son = pygame.mixer.Sound(path)
         son.set_volume(self.__save_manager.load()["sfx"] * 1.4)
         son.play()
+    
+    def boom_splash(self) -> None:
+        sounds = [
+            "Blood_Splat_Gib01 #87171.wav",
+            "Blood_Splat_Gib01.wav",
+            "Blood_Splat_Gib02.wav",
+            "Blood_Splat_Gib03 #85589.wav",
+            "Blood_Splat_Gib03.wav",
+            "Blood_Splat_Gib04 #87507.wav",
+            "Blood_Splat_Gib04.wav",
+            "Blood_Splat_Gib05.wav",
+            "Blood_Splat_Gib10 #85649.wav",
+            "Blood_Splat_Gib10.wav",
+            "Blood_Splat_Gib14.wav",
+            "Blood_Splat_Gib16.wav",
+            "Blood_Splat_Gib17 #85393.wav",
+            "Blood_Splat_Gib17.wav",
+            "Blood_Splat_Gib18.wav",
+        ]
+        path = f"assets/son/sfx/{random.choice(sounds)}"
+        son = pygame.mixer.Sound(path)
+        son.set_volume(self.__save_manager.load()["sfx"])
+        son.play()
