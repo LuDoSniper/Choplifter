@@ -227,13 +227,16 @@ class Civil(pygame.sprite.Sprite):
             self.__state = "death"
             self.play_song = None
             if self.play_song is None: 
-                choice = random.choice([1, 2, 3])
-                if choice == 1:
-                    self.son.mort_1()
-                elif choice == 2:
-                    self.son.mort_2()
-                elif choice == 3:
-                    self.son.mort_3()
+                if not self.__egged:
+                    choice = random.choice([1, 2, 3])
+                    if choice == 1:
+                        self.son.mort_1()
+                    elif choice == 2:
+                        self.son.mort_2()
+                    elif choice == 3:
+                        self.son.mort_3()
+                else:
+                    self.son.play_egg()
                 self.play_song = True
         
         if self.__egged:

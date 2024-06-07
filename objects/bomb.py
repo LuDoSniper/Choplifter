@@ -4,11 +4,16 @@ import objects.structure as structure
 import objects.civil as civil
 import objects.terroriste as terroriste
 import objects.music as music
+import objects.saver as saver
 
 class Bomb(pygame.sprite.Sprite):
     def __init__(self, group: pygame.sprite.Group, pos: tuple, local_pos: tuple, screen: pygame.Surface, min_height: int) -> None:
         super().__init__(group)
         self.__music_manager = music.Music()
+        self.__save_manager = saver.Saver()
+        self.son = pygame.mixer.Sound("assets/son/game/falling_bomb.mp3")
+        self.son.set_volume(self.__save_manager.load()["sfx"] * 0.5)
+        self.son.play()
         
         self.image = pygame.image.load("assets/imgs/Bomb_tmp_7x20.png")
         self.rect = self.image.get_rect()
@@ -54,6 +59,8 @@ class Bomb(pygame.sprite.Sprite):
         return self.__expolded
     def set_exploded(self, exploded: bool) -> None:
         self.__expolded = exploded
+        if exploded:
+            self.son.stop()
     
     # Méthodes
     def fall(self, targets: list) -> None:
@@ -63,6 +70,7 @@ class Bomb(pygame.sprite.Sprite):
         # Explosion
         if self.rect.y > self.__min_height: # Touche le sol
             self.set_exploded(True)
+            self.son.stop()
             self.__music_manager.bomb_explode()
         
         for target in targets:
