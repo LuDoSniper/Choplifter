@@ -351,13 +351,14 @@ class Player:
                     self.get_explosions_group().remove(explosion)
                 # Gestion des explosions (degats)
                 for target in targets:
-                    if explosion.hitbox.colliderect(target.hitbox) and explosion.origine == "bomb": # Collision
+                    if target not in explosion.memory and explosion.hitbox.colliderect(target.hitbox) and explosion.origine == "bomb": # Collision
                         if type(target) == tank.Tank and target.hit(3):
                             target.set_exploded(True)
                         elif type(target) in (civil.Civil, terroriste.Terroriste):
                             target.hit()
                         elif type(target) == structure.Structure:
                             target.hit()
+                        explosion.memory.append(target)
     
     def sync_vel_explosions(self, velocity: float, left: bool, right: bool) -> None:
         for explosion in self.get_explosions_list():

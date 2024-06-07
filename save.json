@@ -1,6 +1,6 @@
 {
-    "sfx": 0.5,
-    "music": 0.5,
+    "sfx": 0.12,
+    "music": 0.12571428571428572,
     "theme": "Gris",
     "missions": {
         "Ile Alloca": [
@@ -30,9 +30,9 @@
     },
     "resolution": "600x800",
     "survival": {
-        "running": true,
-        "score": 2466.0,
-        "palier": 0,
+        "running": false,
+        "score": null,
+        "palier": null,
         "pb_score": 200,
         "pb_palier": 0
     },
