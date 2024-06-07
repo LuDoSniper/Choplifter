@@ -38,11 +38,11 @@ class Reloader():
                 for civil in element.get_civils_list():
                     civil_data = {}
                     civil_data["pos"] = civil.get_pos()
+                    if civil.get_aboard():
+                        civil.set_state("death")
                     civil_data["state"] = civil.get_state()
                     if civil.get_base():
                         civil.set_saved(True)
-                    elif civil.get_aboard():
-                        civil.set_saved(False)
                     civil_data["saved"] = civil.get_saved()
                     civil_data["gender"] = civil.get_gender()
                     civil_data["type"] = civil.get_type()
@@ -70,9 +70,10 @@ class Reloader():
         for structure in data_serialized["structures"]:
             civils = []
             group = pygame.sprite.Group()
-            for civil in structure["civils"]:
-                civils.append(civil_.Civil(group, None, civil["pos"][0], civil["pos"][1], civil["pos"], civil["gender"], civil["type"], civil["clothes"], game))
             structures.append(structure_.Structure(struct_group, structure["pos"][0], structure["pos"][1], structure["pos"], structure["type"], structure["theme"], game))
+            for civil in structure["civils"]:
+                civils.append(civil_.Civil(group, structures[-1], civil["pos"][0], civil["pos"][1], civil["pos"], civil["gender"], civil["type"], civil["clothes"], game))
+                civils[-1].set_state(civil["state"])
             structures[-1].set_civils_list(civils)
             structures[-1].set_state(structure["health"])
             structures[-1].update_image()
