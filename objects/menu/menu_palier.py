@@ -1,23 +1,22 @@
 from objects.menu.button import Button
 import pygame
-from typing import List, Tuple
 
-class MenuSurvie:
-    def __init__(self, screen, change_menu_callback, assets, classement, positionnement, points_vous):
+class MenuPalier:
+    def __init__(self, screen, change_menu_callback, assets, classement, positionnement, palier_vous):
         self.screen = screen
         self.change_menu_callback = change_menu_callback
         self.assets = assets
         self.classement = classement
         self.positionnement = positionnement
-        self.points_vous = points_vous
+        self.palier_vous = palier_vous
         self.buttons = []
         self.clicked_element = None
         self.create_buttons()
 
     def draw(self):
-        bg_x = (self.assets.SCREEN_WIDTH - self.assets.background_menu_survie.get_width()) // 2
-        bg_y = (self.assets.SCREEN_HEIGHT - self.assets.background_menu_survie.get_height()) // 2
-        self.screen.blit(self.assets.background_menu_survie, (bg_x, bg_y))
+        bg_x = (self.assets.SCREEN_WIDTH - self.assets.background_menu_palier.get_width()) // 2
+        bg_y = (self.assets.SCREEN_HEIGHT - self.assets.background_menu_palier.get_height()) // 2
+        self.screen.blit(self.assets.background_menu_palier, (bg_x, bg_y))
         
         font = self.assets.get_custom_font(20)
         y_start = 125
@@ -30,7 +29,7 @@ class MenuSurvie:
             self.screen.blit(text_surface, text_rect)
         else:
             for i, (joueur, points) in enumerate(self.classement):
-                text = f"TOP {i + 1} : {joueur} - {points} pts"
+                text = f"TOP {i + 1} : {joueur} - {points} paliers"
                 text_surface = font.render(text, True, self.assets.GRIS_FONCE)
                 text_rect = text_surface.get_rect(center=(self.assets.SCREEN_WIDTH // 2, bg_y + y_start + i * spacing))
                 self.screen.blit(text_surface, text_rect)
@@ -38,7 +37,7 @@ class MenuSurvie:
             if self.positionnement == "Aucune données":
                 text = "Aucune données sur vous !"
             else:
-                text = f"TOP {self.positionnement} : Vous - {self.points_vous} pts"
+                text = f"TOP {self.positionnement} : Vous - {self.palier_vous} paliers"
             text_surface = font.render(text, True, self.assets.GRIS_CLAIR)
             text_rect = text_surface.get_rect(center=(self.assets.SCREEN_WIDTH // 2, bg_y + y_start + len(self.classement) * spacing))
             self.screen.blit(text_surface, text_rect)
@@ -59,13 +58,14 @@ class MenuSurvie:
         font = 20
 
 
-        y_start = (self.assets.SCREEN_HEIGHT + self.assets.background_menu_survie.get_height()) // 2 - self.assets.bouton_continue.get_height() - 20
-        x_start = (self.assets.SCREEN_WIDTH - self.assets.background_menu_survie.get_width()) / 2  + (self.assets.background_menu_survie.get_width() - (button_width * 2 + spacing)) // 2
+        y_start = (self.assets.SCREEN_HEIGHT + self.assets.background_menu_palier.get_height()) // 2 - self.assets.bouton_continue.get_height() - 20
+        x_start = (self.assets.SCREEN_WIDTH - self.assets.background_menu_palier.get_width()) / 2  + (self.assets.background_menu_palier.get_width() - (button_width * 2 + spacing)) // 2
         self.bouton_survie = pygame.transform.scale(self.assets.bouton, (button_width, button_height))
         self.bouton_click_survie = pygame.transform.scale(self.assets.bouton_click, (button_width, button_height))
 
         self.buttons.append(Button('RETOUR', x_start, y_start, self.bouton_survie, self.bouton_click_survie, lambda: self.change_menu_callback("play"), self.assets, (255,255,255), font))
         self.buttons.append(Button('JOUER', x_start + button_width + spacing , y_start, self.bouton_survie, self.bouton_click_survie, self.start_survie, self.assets, (255,255,255), font))
+        self.buttons.append(Button('', ((self.assets.SCREEN_WIDTH - self.assets.background_menu_score.get_width()) // 2) - 10, (self.assets.SCREEN_HEIGHT - self.assets.background_menu_score.get_height()) - (self.assets.fleche_gauche.get_width() // 2) - 10, self.assets.fleche_gauche, self.assets.fleche_gauche_click, lambda: self.change_menu_callback("survie"), self.assets))
 
     def variable_exists(self, var_name):
         return hasattr(self, var_name)

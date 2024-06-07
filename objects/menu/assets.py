@@ -49,7 +49,8 @@ class Assets:
         self.background_menu_options = pygame.image.load('assets/menu/background_option.png').convert()
         self.background_menu_credits = pygame.image.load('assets/menu/background_credits.png').convert()
         self.background_menu_pause = pygame.image.load('assets/menu/background_pause.png').convert()
-        self.background_menu_survie = pygame.image.load('assets/menu/background_survie.png').convert()
+        self.background_menu_score = pygame.image.load('assets/menu/background_score.png')
+        self.background_menu_palier = pygame.image.load('assets/menu/background_palier.png')
         self.background_menu_mission = pygame.image.load('assets/menu/background_mission.png')
         self.background_lose = pygame.image.load('assets/menu/background_lose.png').convert()
         self.bouton_leave = pygame.image.load('assets/menu/leave.png').convert_alpha()
@@ -84,6 +85,11 @@ class Assets:
         self.bouton_unlock = pygame.image.load(f'assets/menu/unlock_{self.THEME}.png').convert_alpha()
         self.bouton_lock = pygame.image.load(f'assets/menu/lock_{self.THEME}.png').convert_alpha()
         self.bouton_unlock_clicked = pygame.image.load(f'assets/menu/unlock_clicked_{self.THEME}.png').convert_alpha()
+
+        self.fleche_droite = pygame.image.load('assets/menu/fleche_droite.png')
+        self.fleche_droite_click = pygame.image.load('assets/menu/fleche_droite_click.png')
+        self.fleche_gauche = pygame.image.load('assets/menu/fleche_gauche.png')
+        self.fleche_gauche_click = pygame.image.load('assets/menu/fleche_gauche_click.png')
 
         self.map = pygame.image.load(f'assets/menu/map.png').convert_alpha()
 

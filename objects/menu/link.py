@@ -4,12 +4,13 @@ from objects.menu.menu_options import MenuOptions
 from objects.menu.menu_credits import MenuCredits
 from objects.menu.menu_pause import MenuPause
 from objects.menu.menu_son import MenuSon
-from objects.menu.menu_survie import MenuSurvie
+from objects.menu.menu_score import MenuScore
 from objects.menu.menu_mission import MenuMission
 from objects.menu.menu_lose import MenuLose
 from objects.menu.menu_win import MenuWin
 from objects.menu.lose_step import LoseStep
 from objects.menu.win_step import WinStep
+from objects.menu.menu_palier import MenuPalier
 import objects.requester as requester
 import objects.saver as saver
 
@@ -18,19 +19,23 @@ import pygame
 requests_manager = requester.Requester()
 data = requests_manager.download(True, True)
 
-classement = []
+classement_score = []
 for player in data["all"]:
-    classement.append((player["username"], player["score"]))
+    classement_score.append((player["username"], player["score"]))
 if "ID" not in data:
-    positionnement = "Aucune données"
+    positionnement_score = "Aucune données"
     points_vous = "Aucune données"
 else:
-    positionnement = data["all"].index(data["self"]) + 1
+    positionnement_score = data["all"].index(data["self"]) + 1
     points_vous = data["self"]["score"]
 
 save_manager = saver.Saver()
 
 missions = save_manager.load()["missions"]
+
+classement_palier = [("Jouer 1", 14), ("Joueur 5", 13), ("Joueur 8", 11)]
+positionnement_palier = 9
+palier_vous = 8
 
 score = 1487
 palier = 4
@@ -49,7 +54,8 @@ class Link:
             "credits": MenuCredits(self.assets.screen, self.change_menu, self.assets),
             "pause": MenuPause(self.assets.screen, self.change_menu, self.restart_game, self.quit_game, assets),
             "son": MenuSon(self.assets.screen, self.change_menu, assets),
-            "survie": MenuSurvie(self.assets.screen, self.change_menu, assets, classement, positionnement, points_vous),
+            "survie": MenuScore(self.assets.screen, self.change_menu, assets, classement_score, positionnement_score, points_vous),
+            "palier": MenuPalier(self.assets.screen, self.change_menu, assets, classement_palier, positionnement_palier, palier_vous),
             "mission": MenuMission(self.assets.screen, self.change_menu, assets, missions, "Ile Alloca"),
             "lose": MenuLose(self.assets.screen, self.change_menu, assets),
             "win": MenuWin(self.assets.screen, self.change_menu, assets),
