@@ -1,6 +1,7 @@
 from objects.menu.button import Button
 from objects.menu.slider import Slider
 import pygame
+import objects.saver as saver
 
 class MenuSon:
     def __init__(self, screen, change_menu_callback, assets):
@@ -70,6 +71,12 @@ class MenuSon:
 
     def confirm(self):
         print("Options confirmées")
+        save_manager = saver.Saver()
+        data = save_manager.load()
+        volumes = self.get_volume()
+        data["music"] = volumes["music"]
+        data["sfx"] = volumes["sfx"]
+        save_manager.save(data)
         self.change_menu_callback("pause")
     
     def get_sliders(self) -> list:

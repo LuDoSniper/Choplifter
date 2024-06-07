@@ -130,6 +130,9 @@ class Link:
             self.score = data[0]
             self.palier = data[1]
             self.menu[menu_name].set_score_palier(data)
+        elif menu_name == "pause":
+            volumes = self.menus["son"].get_volume()
+            self.menus["options"].set_volume(volumes)
         save_manager.save(self.get_data())
         self.current_menu = menu_name
 
@@ -242,7 +245,10 @@ class Link:
         return ((classment, positionnement, points), (classement_palier, positionnement_palier, palier_vous))
 
     def get_data(self) -> dict:
-        data = self.menus["options"].get_volume()
+        if not self.restart:
+            data = self.menus["options"].get_volume()
+        else:
+            data = self.menus["son"].get_volume()
         data["theme"] = self.assets.THEME
         data["missions"] = self.missions
         print("Resolution : ", self.assets.RESOLUTION)

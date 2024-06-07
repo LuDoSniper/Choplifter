@@ -96,7 +96,8 @@ while response != "exit":
         # current_game.change_menu(current_game.get_current_menu())
         response = "restart"
         print("sournois")
-    else:  
+    else:
+        data = save_manager.load()
         music_manager.switch(musique)
         screen = assets_manager.SCREEN
         current_game = game.Game(screen, assets_manager, music_manager, mode, steps, mission, monde)
