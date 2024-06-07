@@ -33,14 +33,14 @@ class MenuOptions:
         self.elements.append(Slider("Musique", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, current_y, 350, 8, self.update_music, self.assets))
         current_y += (element_height + spacing) // 2
 
-        cache_button = pygame.image.load(f'assets/menu/bouton_vert.png').convert_alpha()
-        cache_button_click = pygame.image.load(f'assets/menu/button-on-vert.png').convert_alpha()
+        cache_button = pygame.image.load(f'assets/menu/bouton_cache.png').convert_alpha()
+        cache_button_click = pygame.image.load(f'assets/menu/bouton_cache_click.png').convert_alpha()
 
-        multiplier = 0.4
-        cache_button = pygame.transform.scale(cache_button, (self.assets.new_button_width * multiplier, self.assets.new_button_height * multiplier))
-        cache_button_click = pygame.transform.scale(cache_button_click, (self.assets.new_button_width * multiplier, self.assets.new_button_height * multiplier))
+        multiplier = 0.5
+        cache_button = pygame.transform.scale(cache_button, (cache_button.get_width() * multiplier, cache_button.get_height() * multiplier))
+        cache_button_click = pygame.transform.scale(cache_button_click, (cache_button_click.get_width() * multiplier, cache_button_click.get_height() * multiplier))
 
-        self.elements.append(Button("Cache", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, current_y, cache_button, cache_button_click, self.delete_cache, self.assets, (255,255,255), 16))
+        self.elements.append(Button("Vider le cache", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, current_y, cache_button, cache_button_click, self.delete_cache, self.assets, (255,255,255), 16))
         current_y += (element_height + spacing)
 
 
