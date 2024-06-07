@@ -66,6 +66,12 @@ while response != "exit":
         elif mission in (3, 4):
             intensity = "high"
         musique = f"monde{monde}-{intensity}"
+    elif response == "new_try_survie":
+        mode = f"new_try_survie{current_game.get_player().get_try()}"
+        monde = current_game.get_monde_id()
+        mission = current_game.get_mission_id()
+        intensity = "low"
+        musique = f"monde{monde}-{intensity}"
     elif response == "survie":
         mode = "survie"
         monde = random.randint(1, 4)
