@@ -224,7 +224,8 @@ class Music():
     def sifflement(self) -> None:
         son = pygame.mixer.Sound('assets/son/game/sifflement.mp3')
         son.set_volume(self.__save_manager.load()["sfx"])
-        son.play()
+        # son.play()
+        return son
 
     def victoire(self) -> None:
         son = pygame.mixer.Sound('assets/son/game/victoire.wav')
@@ -283,3 +284,13 @@ class Music():
         son = pygame.mixer.Sound(path)
         son.set_volume(self.__save_manager.load()["sfx"])
         son.play()
+    
+    def get_scream(self):
+        sounds = [
+            "cri-1.aiff",
+            "cri-2.wav"
+        ]
+        path = f"assets/son/game/{random.choice(sounds)}"
+        son = pygame.mixer.Sound(path)
+        son.set_volume(self.__save_manager.load()["sfx"])
+        return son
