@@ -130,11 +130,11 @@ class Bullet(pygame.sprite.Sprite):
                     target.hit()
                     choice = random.choice([1, 2, 3])
                     if choice == 1:
-                        self.__music_manager.mort_1()
+                        self.__music_manager.rire_1()
                     elif choice == 2:
-                        self.__music_manager.mort_2()
+                        self.__music_manager.rire_2()
                     elif choice == 3:
-                        self.__music_manager.mort_3()
+                        self.__music_manager.rire_3()
 
 
                 else:

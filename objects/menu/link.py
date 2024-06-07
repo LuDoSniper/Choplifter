@@ -241,6 +241,7 @@ class Link:
         data = self.menus["options"].get_volume()
         data["theme"] = self.assets.THEME
         data["missions"] = self.missions
+        print(self.assets.RESOLUTION)
         data["resolution"] = self.assets.RESOLUTION
         data_origine = save_manager.load()
         data["survival"] = data_origine["survival"]
