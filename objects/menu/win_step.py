@@ -18,7 +18,7 @@ class WinStep:
         bg_y = (self.assets.SCREEN_HEIGHT - self.assets.background_lose.get_height()) // 2
         self.screen.blit(self.assets.background_lose, (bg_x, bg_y))
 
-        game_win_text = self.assets.get_custom_font(32).render("Palier terminé !", True, self.assets.GRIS_FONCE)
+        game_win_text = self.assets.get_custom_font(32).render("Etape terminé !", True, self.assets.GRIS_FONCE)
         game_win_rect = game_win_text.get_rect(center=(self.assets.SCREEN_WIDTH // 2, bg_y + 50))
         self.screen.blit(game_win_text, game_win_rect)
 
@@ -65,6 +65,10 @@ class WinStep:
                         if response is not None:
                             return response
             self.clicked_element = None
+
+    def set_score_palier(self, data: tuple) -> None:
+        self.score = data[0]
+        self.palier = data[1]
 
     def next_game(self):
         print("Lancement de la partie suivante")

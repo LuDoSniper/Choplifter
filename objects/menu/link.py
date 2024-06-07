@@ -49,14 +49,21 @@ else:
 
 save_manager = saver.Saver()
 
-missions = save_manager.load()["missions"]
+data = save_manager.load()
+missions = data["missions"]
 
 classement_palier = [("Jouer 1", 14), ("Joueur 5", 13), ("Joueur 8", 11)]
 positionnement_palier = 9
 palier_vous = 8
 
-score = 1487
-palier = 4
+if data["survival"]["score"] is None:
+    score = 0
+else:
+    score = data["survival"]["score"]
+if data["survival"]["palier"] is None:
+    palier = 0
+else:
+    palier = data["survival"]["palier"]
 
 class Link:
     def __init__(self, assets):
@@ -68,6 +75,8 @@ class Link:
         self.classement_score = classement_score
         self.positionnement_score = positionnement_score
         self.points_vous = points_vous
+        self.score = score
+        self.palier = palier
         self.menus = {
             "main": Menu(self.assets.screen, self.change_menu, self.quit_game, self.assets),
             "play": MenuJouer(self.assets.screen, self.change_menu, self.assets),
@@ -93,6 +102,11 @@ class Link:
             self.positionnement_score = data[1]
             self.points_vous = data[2]
             self.menus["survie"].set_scoreboard(data)
+        elif menu_name in ("win_step", "lose_step"):
+            data = self.get_score_palier()
+            self.score = data[0]
+            self.palier = data[1]
+            self.menu[menu_name].set_score_palier(data)
         save_manager.save(self.get_data())
         self.current_menu = menu_name
 
@@ -160,6 +174,17 @@ class Link:
 
     def restart_game(self) -> None:
         self.restart = True
+
+    def get_score_palier(self) -> tuple:
+        if data["survival"]["score"] is None:
+            score = 0
+        else:
+            score = data["survival"]["score"]
+        if data["survival"]["palier"] is None:
+            palier = 0
+        else:
+            palier = data["survival"]["palier"]
+        return (score, palier)
 
     def get_scoreboard(self) -> list:
         classment = []
