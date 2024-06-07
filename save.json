@@ -28,7 +28,7 @@
             false
         ]
     },
-    "resolution": "FULL",
+    "resolution": "600x800",
     "survival": {
         "running": false,
         "score": null,
