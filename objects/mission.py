@@ -159,10 +159,33 @@ class Mission():
                 width = 150
             self.__map = map.Map(f"assets/tilesets/survival/{monde}-{difficulte}.tmx", width, height, tile_size, self.__screen, pig=True)
             self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
-            self.__base = base.Base(self.__base_group, 4 * tile_size, 30, (4 * tile_size, 30 + 4 * tile_size))
-            self.__structures.append(structure.Structure(self.__structures_group, 2 * tile_size, 72 + 4 * tile_size, (2 * tile_size, 72 + 4 * tile_size), "batiment", "ville", self.__game))
-            self.__structures.append(structure.Structure(self.__structures_group, 10 * tile_size, 72 + 4 * tile_size, (2 * tile_size, 72 + 4 * tile_size), "garage", "ville", self.__game))
-            self.__structures.append(structure.Structure(self.__structures_group, 15 * tile_size, 72 + 4 * tile_size, (2 * tile_size, 72 + 4 * tile_size), "batiment", "ville", self.__game))
+            
+            # Positions
+            base_pos = ((width // 2) * tile_size, 4 * tile_size + 30)
+            zone_morte_debut = (width // 2) - (2 * tile_size)
+            zone_morte_fin = (width // 2) + (2 * tile_size)
+            nb_structure = (width - 5) // 4
+            for i in range(0, nb_structure):
+                offset = 0
+                if i * 4 >= zone_morte_debut or (i * 4 <= zone_morte_debut and i * 4 + 4 >= zone_morte_debut) or (i * 4 >= zone_morte_debut and i * 4 + 4 >= zone_morte_fin):
+                    offset = 5
+                pos = (
+                    random.randint((i + offset) * 4, (i + offset) * 4 + 4) * tile_size,
+                    4 * tile_size + 73        
+                )
+                if monde == '1':
+                    theme = "ville"
+                elif monde == '2':
+                    theme = "brick"
+                elif monde == '3':
+                    theme = "desert"
+                elif monde == '4':
+                    theme = "brick"
+                self.__structures.append(structure.Structure(self.__structures_group, pos[0], pos[1], pos, random.choice(["batiment", "garage"]), theme, self.__game))
+            tank1_pos = (5 * tile_size, 4 * tile_size + 100)
+            tank2_pos = (20 * tile_size, 4 * tile_size + 100)
+            
+            self.__base = base.Base(self.__base_group, base_pos[0], base_pos[1], base_pos)
             if not reload:
                 self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (5 * tile_size, 100 + 4 * tile_size))
                 self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100 + 4 * tile_size))

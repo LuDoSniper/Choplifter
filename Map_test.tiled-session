@@ -130,6 +130,14 @@
                 "x": 801.5218769816105,
                 "y": 160.30437539632214
             }
+        },
+        "assets/tilesets/survival/2-2.tmx": {
+            "scale": 0.41067708333333336,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 961.8262523779329,
+                "y": 160.710209258085
+            }
         }
     },
     "last.imagePath": "C:/Users/lucie/OneDrive/Bureau/Hesias/B1/Major_Project/Choplifter/assets/tilesets",
