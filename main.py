@@ -98,6 +98,7 @@ while response != "exit":
         print("sournois")
     else:  
         music_manager.switch(musique)
+        screen = assets_manager.SCREEN
         current_game = game.Game(screen, assets_manager, music_manager, mode, steps, mission, monde)
         current_game.set_data(data)
         current_game.handle()
