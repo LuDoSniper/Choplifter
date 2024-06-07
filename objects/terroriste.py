@@ -65,6 +65,11 @@ class Terroriste(pygame.sprite.Sprite):
         
     # Geter / Seter
     
+    def get_type(self) -> str:
+        return self.__type
+    def set_type(self, type: str) -> None:
+        self.__type = type
+    
     def get_group(self) -> pygame.sprite.Group:
         return self.group
     def set_group(self, group: pygame.sprite.Group) -> None:

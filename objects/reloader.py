@@ -1,8 +1,12 @@
 import pygame
 import os
 import json
+import random
 import objects.structure as structure_
 import objects.civil as civil_
+import objects.tank as tank_
+import objects.avion as avion_
+import objects.terroriste as terroriste_
 
 class Reloader():
     def __init__(self, path: str = "tmp.json") -> None:
@@ -23,8 +27,8 @@ class Reloader():
     def serialize(self, list: list) -> None:
         data_serialized = []
         for element in list:
+            data = {}
             if type(element) == structure_.Structure:
-                data = {}
                 data["pos"] = element.get_pos()
                 data["health"] = element.get_state()
                 data["theme"] = element.get_theme()
@@ -45,10 +49,19 @@ class Reloader():
                     civil_data["clothes"] = civil.get_clothes()
                     civils.append(civil_data)
                 data["civils"] = civils
+            elif type(element) == tank_.Tank:
+                data["pos"] = element.get_pos()
+                data["health"] = element.get_health()
+                data["type"] = element.get_type()
+            elif type(element) == avion_.Avion:
+                data["type"] = element.get_type()
+            elif type(element) == terroriste_.Terroriste and element.get_state not in ("death", "scream"):
+                data["pos"] = element.get_pos()
+                data["type"] = element.get_type()
             data_serialized.append(data)
         return data_serialized
     
-    def deserialize(self, game) -> dict:
+    def deserialize(self, game, screen: pygame.Surface, map_size: int) -> dict:
         data_serialized = self.load()
         data_deserialized = {}
         # Structures
@@ -70,4 +83,22 @@ class Reloader():
         data_deserialized["structures"] = {}
         data_deserialized["structures"]["list"] = structures
         data_deserialized["structures"]["group"] = struct_group
+        # Enemis
+        enemis_group = pygame.sprite.Group()
+        data_deserialized["enemis_group"] = enemis_group
+        # Tanks
+        tanks = []
+        for tank in data_serialized["tanks"]:
+            tanks.append(tank_.Tank(enemis_group, screen, map_size, game, tank["pos"], tank["type"]))
+        data_deserialized["tanks"] = tanks
+        # Avions
+        avions = []
+        for avion in data_serialized["avions"]:
+            avions.append(avion_.Avion(enemis_group, screen, map_size, game, type=avion["type"], dir=random.choice([-1, 1])))
+        data_deserialized["avions"] = avions
+        # Terroristes
+        terroristes = []
+        for terroriste in data_serialized["terroristes"]:
+            terroristes.append(terroriste_.Terroriste(enemis_group, terroriste["pos"][0], terroriste["pos"][1], terroriste["pos"], terroriste["type"], game))
+        data_deserialized["terroristes"] = terroristes
         return data_deserialized

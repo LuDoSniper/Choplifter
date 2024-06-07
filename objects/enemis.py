@@ -22,7 +22,12 @@ class Enemis:
         return self.__group
     def set_group(self, group: pygame.sprite.Group) -> None:
         self.__group = group
-        super().__init__(group)
+        for tank in self.__tanks:
+            tank.set_group(group)
+        for avion in self.__avions:
+            avion.set_group(group)
+        for terroriste in self.__terroristes:
+            terroriste.set_group(group)
     
     def get_explosions(self) -> list:
         return self.__explosions

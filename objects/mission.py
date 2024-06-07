@@ -64,11 +64,6 @@ class Mission():
     # Méthodes
     
     def load(self, id: str, reload: bool = False) -> None:
-        if reload:
-            reload_manager = reloader.Reloader()
-            data = reload_manager.deserialize(self.__game)
-            self.__structures = data["structures"]["list"]
-            self.__structures_group = data["structures"]["group"]
             # civils = []
             # for structure_tmp in self.__structures:
             #     tmp = structure_tmp.get_civils_list()
@@ -272,12 +267,12 @@ class Mission():
                     terroriste2_pos = (34 * tile_size, 4 * tile_size + 75)
                     
                     self.__base = base.Base(self.__base_group, base_pos[0], base_pos[1], (base_pos))
-                    self.__structures.append(structure.Structure(self.__structures_group, structure1_pos[0], structure1_pos[1], (structure1_pos), "batiment", "ville", self.__game))
-                    self.__structures.append(structure.Structure(self.__structures_group, structure2_pos[0], structure2_pos[1], (structure2_pos), "garage", "ville", self.__game))
-                    self.__structures.append(structure.Structure(self.__structures_group, structure3_pos[0], structure3_pos[1], (structure3_pos), "batiment", "ville", self.__game))
-                    self.__structures.append(structure.Structure(self.__structures_group, structure4_pos[0], structure4_pos[1], (structure4_pos), "garage", "ville", self.__game))
-                    self.__structures.append(structure.Structure(self.__structures_group, structure5_pos[0], structure5_pos[1], (structure5_pos), "batiment", "ville", self.__game))
                     if not reload:
+                        self.__structures.append(structure.Structure(self.__structures_group, structure1_pos[0], structure1_pos[1], (structure1_pos), "batiment", "ville", self.__game))
+                        self.__structures.append(structure.Structure(self.__structures_group, structure2_pos[0], structure2_pos[1], (structure2_pos), "garage", "ville", self.__game))
+                        self.__structures.append(structure.Structure(self.__structures_group, structure3_pos[0], structure3_pos[1], (structure3_pos), "batiment", "ville", self.__game))
+                        self.__structures.append(structure.Structure(self.__structures_group, structure4_pos[0], structure4_pos[1], (structure4_pos), "garage", "ville", self.__game))
+                        self.__structures.append(structure.Structure(self.__structures_group, structure5_pos[0], structure5_pos[1], (structure5_pos), "batiment", "ville", self.__game))
                         self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank1_pos))
                         self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank2_pos))
                         self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank3_pos))
@@ -2118,7 +2113,14 @@ class Mission():
                         self.__enemis.add_avion(self.__screen, self.__map.get_map_size(), avion5_pos, dir=random.choice([-1, 1]), type=2)
         
         if reload:
-            pass
+            reload_manager = reloader.Reloader()
+            data = reload_manager.deserialize(self.__game, self.__screen, self.__map.get_map_size())
+            self.__structures = data["structures"]["list"]
+            self.__structures_group = data["structures"]["group"]
+            self.__enemis.set_tanks(data["tanks"])
+            self.__enemis.set_avions(data["avions"])
+            self.__enemis.set_terroristes(data["terroristes"])
+            self.__enemis.set_group(data["enemis_group"])
             # Set data
             # i = 0
             # for terroriste in terroristes:

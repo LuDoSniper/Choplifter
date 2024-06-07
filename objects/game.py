@@ -447,6 +447,9 @@ class Game:
     def reload(self) -> None:
         data = {}
         data["structures"] = self.__reload_manager.serialize(self.__structures_list)
+        data["tanks"] = self.__reload_manager.serialize(self.__enemis.get_tanks())
+        data["avions"] = self.__reload_manager.serialize(self.__enemis.get_avions())
+        data["terroristes"] = self.__reload_manager.serialize(self.__enemis.get_terroristes())
         self.__reload_manager.save(data)
         if self.__mission_id is not None and self.__monde_id is not None:
             id = f"{self.__monde_id}-{self.__mission_id}"
