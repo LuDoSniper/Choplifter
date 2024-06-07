@@ -1,4 +1,5 @@
 import pygame
+import os
 from pytmx.util_pygame import load_pygame
 import objects.PIG as PIG
 # Typage
@@ -40,7 +41,8 @@ class Map:
             self.__rect = pygame.Rect((0, 0), (self.__width * self.__tile_size, self.__height * self.__tile_size))
         else:
             path_cut = path[:-4]
-            PIG.generate_map_image(path, f"{path_cut}.png")
+            if not os.path.exists(f"{path_cut}.png"):
+                PIG.generate_map_image(path, f"{path_cut}.png")
             self.__image = pygame.image.load(f"{path_cut}.png")
             size = self.__tile_size / 32
             self.__image = pygame.transform.scale(self.__image, (self.__image.get_rect().width * size, self.__image.get_rect().height * size))
