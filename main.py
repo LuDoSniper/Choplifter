@@ -31,9 +31,7 @@ response = current_game.get_response()
 while response != "exit":
     mission = None
     monde = None
-    if response is None:
-        response = "restart"
-    if "-" in response:
+    if response is not None and "-" in response:
         tmp = response.split('-')
         mission = int(tmp[1])
         if tmp[0].split(' ')[0] == "Ile":
