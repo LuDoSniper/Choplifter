@@ -283,10 +283,10 @@ class Terroriste(pygame.sprite.Sprite):
         # x
         offset = 0
         if self.__dir > 0:
-            offset = self.rect.width
-        x = self.rect.x + offset
+            offset = self.hitbox.width
+        x = self.hitbox.x + offset
         # y
-        y = self.rect.y + self.rect.height / 2
+        y = self.hitbox.y + self.hitbox.height / 2 - 10
         # pos
         pos = (
             self.__pos[0] + x,
