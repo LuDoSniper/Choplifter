@@ -145,6 +145,7 @@ class MenuOptions:
         for slider in self.get_sliders():
             if slider.label == "Son":
                 data["sfx"] = slider.value
+                self.assets.sfx_volume = slider.value
             elif slider.label == "Musique":
                 data["music"] = slider.value
         return data

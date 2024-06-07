@@ -168,6 +168,8 @@ class Link:
         self.menus["son"].update_sound(self.assets.click_sound.get_volume())
         self.menus["son"].update_music(pygame.mixer.music.get_volume())
 
+        self.assets.sfx_volume = self.assets.click_sound.get_volume()
+
         for menu_name in self.menus:
             if hasattr(self.menus[menu_name], 'buttons'):
                 self.menus[menu_name].create_buttons()
@@ -243,7 +245,8 @@ class Link:
         data = self.menus["options"].get_volume()
         data["theme"] = self.assets.THEME
         data["missions"] = self.missions
-        print(self.assets.RESOLUTION)
+        print("Resolution : ", self.assets.RESOLUTION)
+        print("SFX : ", self.assets.sfx_volume)
         data["resolution"] = self.assets.RESOLUTION
         data_origine = save_manager.load()
         data["survival"] = data_origine["survival"]
