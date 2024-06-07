@@ -119,9 +119,9 @@ class Civil(pygame.sprite.Sprite):
             #     self.rect.x = player.get_heli().get_rect().x
             #     self.hitbox.x = player.get_heli().get_rect().x + 24
             if self.__base:
-                if self.rect.x < base_porte.x:
+                if self.hitbox.x < base_porte.x:
                     self.__dir = 1
-                elif self.rect.x > base_porte.x:
+                elif self.hitbox.x > base_porte.x:
                     self.__dir = -1
                 self.__state = "run"
                 if self.hitbox.colliderect(base_porte):

@@ -156,7 +156,7 @@ class Score():
         self.__color = color
         self.__font = pygame.font.Font("assets/font/kenvector_future.ttf", 12)
         self.__group = pygame.sprite.Group()
-        self.__background = Civil_Background(self.__group, (self.__screen.get_width() / 2 - 100 / 2, 10), (100, 22), self.__color)
+        self.__background = Civil_Background(self.__group, (self.__screen.get_width() / 2 - 200 / 2, 10), (200, 22), self.__color)
 
     def update(self, color: str) -> None:
         self.__color = color
