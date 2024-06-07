@@ -28,6 +28,9 @@ class Assets:
         self.retire_theme = [self.theme for self.theme in self.THEMES if self.theme != self.THEME]
         self.color_theme = (255,255,255)
 
+        self.music_volume = 0.5
+        self.sfx_volume = 0.5
+
         self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
         # self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
