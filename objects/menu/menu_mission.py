@@ -111,6 +111,8 @@ class MenuMission:
                 if button.is_hovered(event.pos) and button.on_click is not None:
                     self.clicked_element = button
                     button.on_click()
+                elif button.is_hovered(event.pos) and button.on_click is None:
+                    self.assets.error.play()
             if self.quit_button and self.quit_button.is_hovered(event.pos):
                 self.clicked_element = self.quit_button
                 self.quit_button.on_click()
