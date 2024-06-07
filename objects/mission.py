@@ -8,13 +8,14 @@ import objects.avion as avion
 import objects.terroriste as terroriste
 import objects.structure as structure
 import objects.base as base
+import objects.reloader as reloader
 
 class Mission():
-    def __init__(self, id: str, screen: pygame.Surface, game, nb_try: int) -> None:
+    def __init__(self, id: str, screen: pygame.Surface, game, nb_try: int, reload: bool = False) -> None:
         self.__id = id
         self.__screen = screen
         self.__game = game
-        self.load(id)
+        self.load(id, reload)
         if nb_try is not None:
             self.__player.set_try(nb_try)
     
@@ -64,45 +65,50 @@ class Mission():
     
     def load(self, id: str, reload: bool = False) -> None:
         if reload:
-            civils = []
-            for structure_tmp in self.__structures:
-                tmp = structure_tmp.get_civils_list()
-                for civil in tmp:
-                    civils.append(civil)
+            reload_manager = reloader.Reloader()
+            data = reload_manager.deserialize(self.__game)
+            self.__structures = data["structures"]["list"]
+            self.__structures_group = data["structures"]["group"]
+            # civils = []
+            # for structure_tmp in self.__structures:
+            #     tmp = structure_tmp.get_civils_list()
+            #     for civil in tmp:
+            #         civils.append(civil)
             
-            terroristes = self.__enemis.get_terroristes()
-            tanks = self.__enemis.get_tanks()
-            avions = self.__enemis.get_avions()
+            # terroristes = self.__enemis.get_terroristes()
+            # tanks = self.__enemis.get_tanks()
+            # avions = self.__enemis.get_avions()
             
-            # Get data
-            civils_data = []
-            for civil in civils:
-                civils_data.append(civil.get_data())
-                civil.origine = self.__structures.index(civil.origine)
+            # # Get data
+            # civils_data = []
+            # for civil in civils:
+            #     civils_data.append(civil.get_data())
+            #     civil.origine = self.__structures.index(civil.origine)
             
-            terroristes_data = []
-            for terroriste in terroristes:
-                terroristes_data.append(terroriste.get_data())
+            # terroristes_data = []
+            # for terroriste in terroristes:
+            #     terroristes_data.append(terroriste.get_data())
             
-            tanks_data = []
-            for tank in tanks:
-                tanks_data.append(tank.get_data())
+            # tanks_data = []
+            # for tank in tanks:
+            #     tanks_data.append(tank.get_data())
             
-            avions_data = []
-            for avion in avions:
-                avions_data.append(avion.get_data())
+            # avions_data = []
+            # for avion in avions:
+            #     avions_data.append(avion.get_data())
             
-            structures_data = []
-            for structure_tmp in self.__structures:
-                structures_data.append(structure_tmp.get_data())
+            # structures_data = []
+            # for structure_tmp in self.__structures:
+            #     structures_data.append(structure_tmp.get_data())
         
         height = 4 # temporaire
         tile_size = 64 # temporaire
         
         self.__base_group = pygame.sprite.Group()
-        self.__structures = []
         self.__enemis = enemis.Enemis(self.__screen, self.__game)
-        self.__structures_group = pygame.sprite.Group()
+        if not reload:
+            self.__structures = []
+            self.__structures_group = pygame.sprite.Group()
         
         if id == "map_test":
             width = 20
@@ -239,10 +245,10 @@ class Mission():
                     tank2_pos = (20 * tile_size, 4 * tile_size + 100)
                     
                     self.__base = base.Base(self.__base_group, base_pos[0], base_pos[1], (base_pos))
-                    self.__structures.append(structure.Structure(self.__structures_group, structure1_pos[0], structure1_pos[1], (structure1_pos), "batiment", "ville", self.__game))
-                    self.__structures.append(structure.Structure(self.__structures_group, structure2_pos[0], structure2_pos[1], (structure2_pos), "garage", "ville", self.__game))
-                    self.__structures.append(structure.Structure(self.__structures_group, structure3_pos[0], structure3_pos[1], (structure3_pos), "batiment", "ville", self.__game))
                     if not reload:
+                        self.__structures.append(structure.Structure(self.__structures_group, structure1_pos[0], structure1_pos[1], (structure1_pos), "batiment", "ville", self.__game))
+                        self.__structures.append(structure.Structure(self.__structures_group, structure2_pos[0], structure2_pos[1], (structure2_pos), "garage", "ville", self.__game))
+                        self.__structures.append(structure.Structure(self.__structures_group, structure3_pos[0], structure3_pos[1], (structure3_pos), "batiment", "ville", self.__game))
                         self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank1_pos))
                         self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (tank2_pos))
                 elif int(id[-1]) == 2:
@@ -2112,40 +2118,41 @@ class Mission():
                         self.__enemis.add_avion(self.__screen, self.__map.get_map_size(), avion5_pos, dir=random.choice([-1, 1]), type=2)
         
         if reload:
+            pass
             # Set data
-            i = 0
-            for terroriste in terroristes:
-                terroriste.set_data(terroristes_data[i])
-                i += 1
+            # i = 0
+            # for terroriste in terroristes:
+            #     terroriste.set_data(terroristes_data[i])
+            #     i += 1
             
-            i = 0
-            for tank in tanks:
-                tank.set_data(tanks_data[i])
-                tank.set_group(self.__enemis.get_group())
-                tmp = self.__enemis.get_tanks()
-                tmp.append(tank)
-                self.__enemis.set_list(tmp)
-                i += 1
+            # i = 0
+            # for tank in tanks:
+            #     tank.set_data(tanks_data[i])
+            #     tank.set_group(self.__enemis.get_group())
+            #     tmp = self.__enemis.get_tanks()
+            #     tmp.append(tank)
+            #     self.__enemis.set_list(tmp)
+            #     i += 1
             
-            i = 0
-            for avion in avions:
-                avion.set_data(avions_data[i])
-                i += 1
+            # i = 0
+            # for avion in avions:
+            #     avion.set_data(avions_data[i])
+            #     i += 1
             
-            i = 0
-            for structure_tmp in self.__structures:
-                structure_tmp.set_data(structures_data[i])
-                i += 1
+            # i = 0
+            # for structure_tmp in self.__structures:
+            #     structure_tmp.set_data(structures_data[i])
+            #     i += 1
     
-            i = 0
-            for civil in civils:
-                civil.set_data(civils_data[i])
-                civil.set_group(self.__structures[civil.origine].get_civils_group())
-                tmp = self.__structures[civil.origine].get_civils_list()
-                tmp.append(civil)
-                self.__structures[civil.origine].set_civils_list(tmp)
-                civil.origine = self.__structures[civil.origine]
-                i += 1
+            # i = 0
+            # for civil in civils:
+            #     civil.set_data(civils_data[i])
+            #     civil.set_group(self.__structures[civil.origine].get_civils_group())
+            #     tmp = self.__structures[civil.origine].get_civils_list()
+            #     tmp.append(civil)
+            #     self.__structures[civil.origine].set_civils_list(tmp)
+            #     civil.origine = self.__structures[civil.origine]
+            #     i += 1
             
     def reload(self, id: str) -> None:
         player_try = self.__player.get_try() - 1

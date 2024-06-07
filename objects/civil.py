@@ -48,6 +48,21 @@ class Civil(pygame.sprite.Sprite):
         
     # Geter / Seter
     
+    def get_gender(self) -> str:
+        return self.__gender
+    def set_gender(self, gender: str) -> None:
+        self.__gender = gender
+    
+    def get_type(self) -> int:
+        return self.__type
+    def set_type(self, type: int) -> None:
+        self.__type = type
+    
+    def get_clothes(self) -> int:
+        return self.__clothes
+    def set_clothes(self, clothes) -> None:
+        self.__clothes = clothes
+    
     def get_group(self) -> pygame.sprite.Group:
         return self.group
     def set_group(self, group: pygame.sprite.Group) -> None:
