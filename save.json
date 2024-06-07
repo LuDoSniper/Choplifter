@@ -1,6 +1,6 @@
 {
-    "sfx": 0,
-    "music": 0,
+    "music": 0.5,
+    "sfx": 0.5,
     "theme": "Gris",
     "missions": {
         "Ile Alloca": [
@@ -34,6 +34,5 @@
         "score": null,
         "pb": null
     },
-    "username": "Guest_0",
-    "ID": "$2y$10$D2AfA7BAUWb92Vy9TEjRzOmcCv3V3gqKdUJhW0TS1SqdoX6voezSa"
+    "username": "Guest"
 }
