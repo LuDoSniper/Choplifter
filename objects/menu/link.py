@@ -16,19 +16,22 @@ import objects.saver as saver
 
 import pygame
 
-def max_score(data: list) -> list:
+def max_score(data: list, palier: bool = False) -> list:
+    key = "score"
+    if palier:
+        key = "palier"
     data = list(data)
     max = data[0]
     for score in data:
-        if score["score"] > max["score"]:
+        if score[key] > max[key]:
             max = score
     return max
 
-def trier_score(data: list) -> list:
+def trier_score(data: list, palier: bool = False) -> list:
     data = list(data)
     scores = []
     while data != []:
-        max = max_score(data)
+        max = max_score(data, palier)
         data.pop(data.index(max))
         scores.append(max)
     return scores
@@ -37,24 +40,31 @@ requests_manager = requester.Requester()
 data = requests_manager.download(True, True)
 
 classement_score = []
-data["all"] = trier_score(data["all"])
-for player in data["scoreboard"]:
+data["all"]["score"] = trier_score(data["all"]["score"])
+for player in data["scoreboard"]["score"]:
     classement_score.append((player["username"], player["score"]))
-if "self" not in data or data["self"] not in data["all"]:
+if "self" not in data or data["self"] not in data["all"]["score"]:
     positionnement_score = "Aucune données"
     points_vous = "Aucune données"
 else:
-    positionnement_score = data["all"].index(data["self"]) + 1
+    positionnement_score = data["all"]["score"].index(data["self"]) + 1
     points_vous = data["self"]["score"]
 
 save_manager = saver.Saver()
 
+classement_palier = []
+data["all"]["palier"] = trier_score(data["all"]["palier"], palier=True)
+for player in data["scoreboard"]["palier"]:
+    classement_palier.append((player["username"], player["score"]))
+if "self" not in data or data["self"] not in data["all"]["palier"]:
+    positionnement_palier = "Aucune données"
+    palier_vous = "Aucune données"
+else:
+    positionnement_palier = data["all"]["palier"].index(data["self"]) + 1
+    palier_vous = data["self"]["palier"]
+
 data = save_manager.load()
 missions = data["missions"]
-
-classement_palier = [("Jouer 1", 14), ("Joueur 5", 13), ("Joueur 8", 11)]
-positionnement_palier = 9
-palier_vous = 8
 
 if data["survival"]["score"] is None:
     score = 0
@@ -75,6 +85,9 @@ class Link:
         self.classement_score = classement_score
         self.positionnement_score = positionnement_score
         self.points_vous = points_vous
+        self.classement_palier = classement_palier
+        self.positionnement_palier = positionnement_palier
+        self.palier_vous = palier_vous
         self.score = score
         self.palier = palier
         self.menus = {
@@ -98,10 +111,14 @@ class Link:
     def change_menu(self, menu_name):
         if menu_name == "survie":
             data = self.get_scoreboard()
-            self.classement_score = data[0]
-            self.positionnement_score = data[1]
-            self.points_vous = data[2]
-            self.menus["survie"].set_scoreboard(data)
+            self.classement_score = data[0][0]
+            self.positionnement_score = data[0][1]
+            self.points_vous = data[0][2]
+            self.classement_palier = data[1][0]
+            self.positionnement_palier = data[1][1]
+            self.palier_vous = data[1][2]
+            self.menus["survie"].set_scoreboard(data[0])
+            self.menus["palier"].set_scoreboard(data[1])
         elif menu_name in ("win_step", "lose_step"):
             data = self.get_score_palier()
             self.score = data[0]
@@ -191,16 +208,30 @@ class Link:
         positionnement = 0
         points = 0
         data = requests_manager.download(True, True)
-        data["all"] = trier_score(data["all"])
-        for player in data["scoreboard"]:
+        data["all"]["score"] = trier_score(data["all"]["score"])
+        for player in data["scoreboard"]["score"]:
             classment.append((player["username"], player["score"]))
-        if "self" not in data or data["self"] not in data["all"]:
+        if "self" not in data or data["self"] not in data["all"]["score"]:
             positionnement = "Aucune données"
             points = "Aucune données"
         else:
-            positionnement = data["all"].index(data["self"]) + 1
+            positionnement = data["all"]["score"].index(data["self"]) + 1
             points = data["self"]["score"]
-        return (classment, positionnement, points)
+        
+        classement_palier = []
+        positionnement_palier = 0
+        palier_vous = 0
+        data["all"]["palier"] = trier_score(data["all"]["palier"])
+        for player in data["scoreboard"]["palier"]:
+            classement_palier.append((player["username"], player["palier"]))
+        if "self" not in data or data["self"] not in data["all"]["palier"]:
+            positionnement_palier = "Aucune données"
+            palier_vous = "Aucune données"
+        else:
+            positionnement_palier = data["all"]["palier"].index(data["self"]) + 1
+            palier_vous = data["self"]["palier"]
+        
+        return ((classment, positionnement, points), (classement_palier, positionnement_palier, palier_vous))
 
     def get_data(self) -> dict:
         data = self.menus["options"].get_volume()
