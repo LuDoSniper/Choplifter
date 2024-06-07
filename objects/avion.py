@@ -5,8 +5,9 @@ import objects.bullets as bullets
 import pygame.locals
 
 class Avion(pygame.sprite.Sprite):
-    def __init__(self, group: pygame.sprite.Group, screen: pygame.Surface, map_size: int, pos: tuple = (0, 10), type: int = 1, dir: int = 1) -> None:
+    def __init__(self, group: pygame.sprite.Group, screen: pygame.Surface, map_size: int, game, pos: tuple = (0, 10), type: int = 1, dir: int = 1) -> None:
         super().__init__(group)
+        self.__game = game
         # Image et Rect doivent être publiques pour Sprite
         if type == 1:
             tmp = 1
@@ -237,6 +238,11 @@ class Avion(pygame.sprite.Sprite):
     def hit(self, damage: int = 1) -> bool:
         self.__health -= damage
         if self.__health <= 0:
+            if self.__type == 1:
+                score = 15
+            elif self.__type == 2:
+                score = 20
+            self.__game.add_score(score)
             return True
         self.image = pygame.image.load(f"assets/avion/avion-{self.__type}-{self.__health}.png")
         if self.__dir == 1:

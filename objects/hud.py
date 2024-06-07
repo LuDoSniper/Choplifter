@@ -149,11 +149,32 @@ class Stored():
             60 + (font_rect.height / 5)
         )
         self.__screen.blit(font_surface, font_rect)
-        
-class HUD():
-    def __init__(self, screen: pygame.Surface, color: str, nb_try: int) -> None:
+
+class Score():
+    def __init__(self, screen: pygame.Surface, color: str) -> None:
         self.__screen = screen
         self.__color = color
+        self.__font = pygame.font.Font("assets/font/kenvector_future.ttf", 12)
+        self.__group = pygame.sprite.Group()
+        self.__background = Civil_Background(self.__group, (self.__screen.get_width() / 2 - 100 / 2, 10), (100, 22), self.__color)
+
+    def update(self, color: str) -> None:
+        self.__color = color
+        self.__background.update(self.__color)
+
+    def afficher(self, score: int):
+        self.__group.draw(self.__screen)
+        font_surface = self.__font.render(f"Score : {score}", True, (255, 255, 255))
+        font_rect = font_surface.get_rect()
+        font_rect.x = self.__background.rect.x + self.__background.rect.width / 2 - font_rect.width / 2
+        font_rect.y = 10 + self.__background.rect.height / 2 - font_rect.height / 2
+        self.__screen.blit(font_surface, font_rect)
+   
+class HUD():
+    def __init__(self, screen: pygame.Surface, color: str, nb_try: int, survival: bool) -> None:
+        self.__screen = screen
+        self.__color = color
+        self.__survival = survival
         self.__items = pygame.sprite.Group()
         self.__health = Health(self.__items, self.__screen)
         self.__fuel = Fuel(self.__items, self.__screen)
@@ -161,6 +182,8 @@ class HUD():
         self.__saved = Saved(self.__screen, self.__color)
         self.__dead = Dead(self.__screen, self.__color)
         self.__try = Try(self.__screen, self.__color, nb_try)
+        if self.__survival:
+            self.__score = Score(self.__screen, self.__color)
     
     # Geter / Seter
     
@@ -173,18 +196,23 @@ class HUD():
     
     def update(self, color: str) -> None:
         self.__color = color
-        for item in [self.__stored, self.__saved, self.__dead, self.__try]:
+        elements = [self.__stored, self.__saved, self.__dead, self.__try]
+        if self.__survival:
+            elements.append(self.__score)
+        for item in elements:
             item.update(self.__color)
     
     def update_try(self, nb_int: int) -> None:
         self.__try.update_try(nb_int)
     
-    def afficher(self, health: int, fuel: int, stored: int, max_storage: int, saved: int, max_civil: int, dead: int) -> None:
+    def afficher(self, health: int, fuel: int, stored: int, max_storage: int, saved: int, max_civil: int, dead: int, score: int) -> None:
         self.__health.afficher(health)
         self.__fuel.afficher(fuel)
         self.__stored.afficher(stored, max_storage)
         self.__saved.afficher(saved, max_civil)
         self.__dead.afficher(dead, max_civil)
         self.__try.afficher()
+        if self.__survival:
+            self.__score.afficher(score)
         
         self.__items.draw(self.__screen)

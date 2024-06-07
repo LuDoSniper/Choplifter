@@ -6,7 +6,8 @@ import objects.player as player
 import objects.terroriste as terroriste
 
 class Enemis:
-    def __init__(self, screen: pygame.Surface) -> None:
+    def __init__(self, screen: pygame.Surface, game) -> None:
+        self.__game = game
         self.__group = pygame.sprite.Group()
         self.__explosions = []
         self.__tanks = []
@@ -68,7 +69,7 @@ class Enemis:
     
     # Tanks
     def add_tank(self, screen: pygame.Surface, map_size: int, pos: tuple = (0, 40), type: int = 1) -> None:
-        self.__tanks.append(tank.Tank(self.get_group(), screen, map_size, pos, type))
+        self.__tanks.append(tank.Tank(self.get_group(), screen, map_size, self.__game, pos, type))
     
     def handle_tanks(self, player: player.Player, civils: list, structures: list) -> None:
         for tank in self.get_tanks():
@@ -117,7 +118,7 @@ class Enemis:
     
     #Avion
     def add_avion(self, screen: pygame.Surface, map_size: int, pos: tuple = (0, 40), type: int = 1, dir = 1) -> None:
-        self.__avions.append(avion.Avion(self.get_group(), screen, map_size, pos, type, dir))
+        self.__avions.append(avion.Avion(self.get_group(), screen, map_size, self.__game, pos, type, dir))
     
     def handle_avions(self) -> None:
         for avion in self.get_avions():
@@ -152,7 +153,7 @@ class Enemis:
     
     # Terroristes
     def add_terroriste(self, local_x: int, local_y: int, pos: tuple = (0, 40), type: str = "classique") -> None:
-        self.__terroristes.append(terroriste.Terroriste(self.get_group(), local_x, local_y, pos, type)) # Remplir
+        self.__terroristes.append(terroriste.Terroriste(self.get_group(), local_x, local_y, pos, type, self.__game)) # Remplir
     
     def handle_terroristes(self, map_size: int, screen: pygame.Surface, civils: list, player_var) -> None:
         for terroriste in self.__terroristes:

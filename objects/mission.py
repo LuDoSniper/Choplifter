@@ -99,7 +99,7 @@ class Mission():
         
         self.__base_group = pygame.sprite.Group()
         self.__structures = []
-        self.__enemis = enemis.Enemis(self.__screen)
+        self.__enemis = enemis.Enemis(self.__screen, self.__game)
         self.__structures_group = pygame.sprite.Group()
         
         if id == "map_test":

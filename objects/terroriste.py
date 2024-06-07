@@ -5,10 +5,11 @@ import objects.explosion as explosion
 import objects.music as music
 
 class Terroriste(pygame.sprite.Sprite):
-    def __init__(self, group: pygame.sprite.Group, local_x: int, local_y: int, pos: tuple, type: str):
+    def __init__(self, group: pygame.sprite.Group, local_x: int, local_y: int, pos: tuple, type: str, game):
         super().__init__(group)
         self.__music_manager = music.Music()
         self.__type = type
+        self.__game = game
         
         self.group = group
         self.image = pygame.image.load(f"assets/terroriste/{type}/idle 1/0.png")
@@ -287,6 +288,11 @@ class Terroriste(pygame.sprite.Sprite):
             self.__gun_state = "drop"
             self.__frame = 0
             self.__gun_frame = 0
+        if self.__type == "kamikaze":
+            score = 4
+        elif self.__type == "classique":
+            score = 2
+        self.__game.add_score(score)
     
     def sync_side(self) -> None:
         if (self.__dir == -1 and not self.__reversed) or (self.__dir == 1 and self.__reversed):

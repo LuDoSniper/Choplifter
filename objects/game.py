@@ -86,7 +86,7 @@ class Game:
         self.__structures_list = self.__mission_manager.get_structures_list()
     
         # HUD
-        self.__hud = hud.HUD(self.__screen, self.__assets.THEME, self.__player.get_try())
+        self.__hud = hud.HUD(self.__screen, self.__assets.THEME, self.__player.get_try(), self.__mode == "survie")
     
         # Base
         # self.__base_group = pygame.sprite.Group()
@@ -107,8 +107,16 @@ class Game:
         self.__civil_dead = 0
         self.__civil_saved = 0
         self.__loading = True
+        self.__score = 0
     
     # Geter / Seter
+    def get_score(self) -> int:
+        return self.__score
+    def set_score(self, score: int) -> None:
+        self.__score = score
+    def add_score(self, add: int) -> None:
+        self.__score += add
+    
     def get_monde_id(self) -> int:
         return self.__monde_id
     
@@ -183,7 +191,7 @@ class Game:
                 self.get_player().get_heli().sync_side(self.get_player().get_dir())
             
             if self.__mode != "menu":
-                self.__hud.afficher(self.get_player().get_health(), self.get_player().get_fuel(), self.__player.get_storage(), self.__player.get_max_storage(), self.__civil_saved, self.__civil_numbers, self.__civil_dead)
+                self.__hud.afficher(self.get_player().get_health(), self.get_player().get_fuel(), self.__player.get_storage(), self.__player.get_max_storage(), self.__civil_saved, self.__civil_numbers, self.__civil_dead, self.__score)
             
             # Events uniques
             if self.__mode == "menu":
@@ -342,10 +350,13 @@ class Game:
         dead = self.__civil_dead
         saved = self.__civil_saved
         if dead + saved == self.__civil_numbers:
-            if saved >= self.__civil_numbers / 2:
-                self.win()
+            if self.__mode != "survie":
+                if saved >= self.__civil_numbers / 2:
+                    self.win()
+                else:
+                    self.game_over()
             else:
-                self.game_over()
+                self.step_end()
     
     def win(self) -> None:
         self.__current_menu = "win"
@@ -375,6 +386,14 @@ class Game:
         self.__current_menu = "lose"
         self.__link.current_menu = "lose"
         self.__mode = "menu"
+    
+    def step_end(self) -> None:
+        print("Fin de l'étape courante")
+        self.__current_menu = "end_step"
+        self.__link.current_menu = "end_step"
+        self.__mode = "menu"
+        quotient = (self.__civil_numbers / 250) * self.__civil_saved
+        self.__score += quotient * 250
     
     def despawn_civils(self) -> None:
         for structure in self.__structures_list:

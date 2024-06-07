@@ -5,8 +5,9 @@ class Civil(pygame.sprite.Sprite):
     
     RANGE = 200
     
-    def __init__(self, group: pygame.sprite.Group, origine, local_x: int, local_y: int, pos: tuple, gender: str, type: int, clothes: int, egged: bool = False) -> None:
+    def __init__(self, group: pygame.sprite.Group, origine, local_x: int, local_y: int, pos: tuple, gender: str, type: int, clothes: int, game, egged: bool = False) -> None:
         super().__init__(group)
+        self.__game = game
         self.group = group
         self.origine = origine
         self.image = pygame.image.load(f"assets/civils/Exported_PNGs/{gender}/Character {type}/Clothes {clothes}/Character{type}{gender[0]}_{clothes}_idle_0.png")
@@ -107,6 +108,7 @@ class Civil(pygame.sprite.Sprite):
                 if self.hitbox.colliderect(base_porte):
                     self.__base = False
                     self.__saved = True
+                    self.__game.add_score(25)
             
             elif self.hitbox.colliderect(player.get_heli().hitbox) and player.get_storage() < player.get_max_storage() and not self.__aboard and player.get_landed():
                 player.set_storage(player.get_storage() + 1)
@@ -209,6 +211,7 @@ class Civil(pygame.sprite.Sprite):
         if self.__state != "death":
             self.__state = "damage"
         self.origine.add_civils_dead()
+        self.__game.add_score(-1)
     
     def sync_side(self) -> None:
         if (self.__dir == -1 and not self.__reversed) or (self.__dir == 1 and self.__reversed):

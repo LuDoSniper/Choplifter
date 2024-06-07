@@ -156,7 +156,7 @@ class Structure(pygame.sprite.Sprite):
                     x = random.randint(self.rect.x, self.rect.x + self.rect.width)
             self.__pos_tmp.append(x)
             y_offset = 10
-            self.__civils_list.append(civil.Civil(self.__civils_group, self, x, self.rect.y + y_offset, (x, self.rect.y + y_offset), gender, type, clothes, self.__egged))
+            self.__civils_list.append(civil.Civil(self.__civils_group, self, x, self.rect.y + y_offset, (x, self.rect.y + y_offset), gender, type, clothes, self.__game, self.__egged))
     
     def remove_civil(self, civil) -> None:
         self.__civils_group.remove(civil)
