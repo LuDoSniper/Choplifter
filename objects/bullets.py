@@ -62,7 +62,7 @@ class Bullet(pygame.sprite.Sprite):
             if dir != 1:
                 self.rect.x += 8 * self.SPEED + self.__boost
                 self.hitbox.x += 8 * self.SPEED + self.__boost
-            for i in range(0, 8):
+            for _ in range(0, 8):
                 self.move()
     
     # Geter / Seter

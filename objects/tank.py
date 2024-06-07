@@ -153,7 +153,18 @@ class Tank(pygame.sprite.Sprite):
             self.set_dir(0)
     
     def shoot(self) -> None:
-        self.__bullet = bullets.Bullet(self.__bullet_group, self.__screen, self, self.__dir, 65 * self.__dir, self.__pos, self.rect.x + (18 * self.__dir), self.rect.y - 5, boost=-3)
+        if self.__dir == 1:
+            bullet_pos = (
+                self.rect.x + 37,
+                self.rect.y - 15
+            )
+        else:
+            bullet_pos = (
+                self.rect.x - 15,
+                self.rect.y - 15
+            )
+        # self.rect.x + (18 * self.__dir), self.rect.y - 5
+        self.__bullet = bullets.Bullet(self.__bullet_group, self.__screen, self, self.__dir, 65 * self.__dir, self.__pos, bullet_pos[0], bullet_pos[1], boost=-3)
         self.__music_manager.tank_shoot()
     
     def scan_civils(self, civils: list) -> None:
