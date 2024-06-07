@@ -24,6 +24,7 @@ class Explosion(pygame.sprite.Sprite):
         self.__frame_timer = 0
         
         self.__exploded = False
+        self.memory = []
         
     # Geter / Seter
     

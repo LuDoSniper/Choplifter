@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "assets/tilesets/Island/1-1.tmx",
+    "activeFile": "assets/tilesets/survival/2-1.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
@@ -12,13 +12,46 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "assets/tilesets/Desert/Assets.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tilesets/Desert/BG1.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tilesets/Desert/BG2.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tilesets/Desert/Clouds.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tilesets/Desert/desertFoliage.tsx": {
+            "scaleInDock": 1
+        },
         "assets/tilesets/Desert/map_desert.tmx": {
             "scale": 1.11328125,
             "selectedLayer": 0,
             "viewCenter": {
                 "x": 320.6736842105263,
-                "y": 159.43859649122808
+                "y": 158.540350877193
             }
+        },
+        "assets/tilesets/Desert/stone.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tilesets/Desert/tilesetsand.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tilesets/Forest/Background.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tilesets/Forest/Textures&trees.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tilesets/Forest/bgcolor.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tilesets/Forest/main.tsx": {
+            "scaleInDock": 1
         },
         "assets/tilesets/Island/1-1.tmx": {
             "scale": 1,
@@ -53,19 +86,19 @@
             }
         },
         "assets/tilesets/Island/Clouds.tsx": {
-            "scaleInDock": 1,
+            "scaleInDock": 0.5,
             "scaleInEditor": 1
         },
         "assets/tilesets/Island/Sky.tsx": {
-            "scaleInDock": 1,
+            "scaleInDock": 0.5,
             "scaleInEditor": 1
         },
         "assets/tilesets/Island/desertFoliage.tsx": {
-            "scaleInDock": 1,
+            "scaleInDock": 0.5,
             "scaleInEditor": 1
         },
         "assets/tilesets/Island/map_test_tileset.tsx": {
-            "scaleInDock": 1,
+            "scaleInDock": 0.5,
             "scaleInEditor": 1
         },
         "assets/tilesets/Mountain/4-2.tmx": {
@@ -76,8 +109,20 @@
                 "y": 143
             }
         },
+        "assets/tilesets/Mountain/BG1.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tilesets/Mountain/BG2.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tilesets/Mountain/Clouds.tsx": {
+            "scaleInDock": 1
+        },
         "assets/tilesets/Mountain/MossyRockTileSet.tsx": {
             "scaleInDock": 0.5
+        },
+        "assets/tilesets/Mountain/Rock Mountain.tsx": {
+            "scaleInDock": 1
         },
         "assets/tilesets/map_test.tmx": {
             "scale": 1,
@@ -88,7 +133,7 @@
             }
         },
         "assets/tilesets/map_test_tileset.tsx": {
-            "scaleInDock": 1,
+            "scaleInDock": 0.5,
             "scaleInEditor": 8
         },
         "assets/tilesets/sandbox/sandbox.tmx": {
@@ -104,31 +149,31 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 1202.2828154724164,
-                "y": 161.3189600507293
+                "y": 159.79708306911868
             }
         },
         "assets/tilesets/survival/1-2.tmx": {
             "scale": 0.24640625000000002,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1603.043753963221,
-                "y": 162.33354470513632
+                "x": 1594.9270767279645,
+                "y": 156.24603677869368
             }
         },
         "assets/tilesets/survival/1-3.tmx": {
             "scale": 0.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 2722,
-                "y": 242
+                "x": 2720,
+                "y": 241
             }
         },
         "assets/tilesets/survival/2-1.tmx": {
             "scale": 0.49281250000000004,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 801.5218769816105,
-                "y": 160.30437539632214
+                "x": 797.4635383639823,
+                "y": 79.13760304375387
             }
         },
         "assets/tilesets/survival/2-2.tmx": {
@@ -136,7 +181,63 @@
             "selectedLayer": 0,
             "viewCenter": {
                 "x": 961.8262523779329,
-                "y": 160.710209258085
+                "y": 159.49270767279643
+            }
+        },
+        "assets/tilesets/survival/2-3.tmx": {
+            "scale": 0.1642708333333333,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 2404.5656309448327,
+                "y": 161.3189600507294
+            }
+        },
+        "assets/tilesets/survival/3-1.tmx": {
+            "scale": 0.3285416666666666,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1202.2828154724164,
+                "y": 162.8408370323399
+            }
+        },
+        "assets/tilesets/survival/3-2.tmx": {
+            "scale": 0.24640625000000002,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1603.043753963221,
+                "y": 160.30437539632203
+            }
+        },
+        "assets/tilesets/survival/3-3.tmx": {
+            "scale": 0.1642708333333333,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 2404.5656309448327,
+                "y": 161.3189600507294
+            }
+        },
+        "assets/tilesets/survival/4-1.tmx": {
+            "scale": 0.3285416666666666,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1202.2828154724164,
+                "y": 162.8408370323399
+            }
+        },
+        "assets/tilesets/survival/4-2.tmx": {
+            "scale": 0.24640625000000002,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1603.043753963221,
+                "y": 160.30437539632203
+            }
+        },
+        "assets/tilesets/survival/4-3.tmx": {
+            "scale": 0.1642708333333333,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 2404.5656309448327,
+                "y": 161.3189600507294
             }
         }
     },
@@ -148,26 +249,38 @@
     "openFiles": [
         "assets/tilesets/map_test.tmx",
         "assets/tilesets/map_test_tileset.tsx",
-        "assets/tilesets/Island/1-1.tmx",
         "assets/tilesets/Island/Clouds.tsx",
         "assets/tilesets/Island/desertFoliage.tsx",
         "assets/tilesets/Island/map_test_tileset.tsx",
-        "assets/tilesets/Island/Sky.tsx"
+        "assets/tilesets/Island/Sky.tsx",
+        "assets/tilesets/Desert/map_desert.tmx",
+        "assets/tilesets/survival/1-1.tmx",
+        "assets/tilesets/survival/1-2.tmx",
+        "assets/tilesets/survival/1-3.tmx",
+        "assets/tilesets/survival/2-1.tmx",
+        "assets/tilesets/survival/2-2.tmx",
+        "assets/tilesets/survival/2-3.tmx",
+        "assets/tilesets/survival/3-1.tmx",
+        "assets/tilesets/survival/3-2.tmx",
+        "assets/tilesets/survival/3-3.tmx",
+        "assets/tilesets/survival/4-1.tmx",
+        "assets/tilesets/survival/4-2.tmx",
+        "assets/tilesets/survival/4-3.tmx"
     ],
     "project": "Map_test.tiled-project",
     "recentFiles": [
-        "assets/tilesets/survival/1-2.tmx",
-        "assets/tilesets/Island/1-1.tmx",
-        "assets/tilesets/survival/1-3.tmx",
-        "assets/tilesets/survival/1-1.tmx",
-        "assets/tilesets/sandbox/sandbox.tmx",
-        "assets/tilesets/Island/1-4.tmx",
-        "assets/tilesets/Island/1-3.tmx",
-        "assets/tilesets/Island/1-2.tmx",
         "assets/tilesets/map_test.tmx",
         "assets/tilesets/map_test_tileset.tsx",
+        "assets/tilesets/Island/Clouds.tsx",
+        "assets/tilesets/Island/desertFoliage.tsx",
+        "assets/tilesets/Island/map_test_tileset.tsx",
         "assets/tilesets/Island/Sky.tsx",
-        "assets/tilesets/Island/map_test_tileset.tsx"
+        "assets/tilesets/Desert/map_desert.tmx",
+        "assets/tilesets/survival/1-1.tmx",
+        "assets/tilesets/survival/1-2.tmx",
+        "assets/tilesets/survival/1-3.tmx",
+        "assets/tilesets/survival/4-3.tmx",
+        "assets/tilesets/survival/4-2.tmx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }

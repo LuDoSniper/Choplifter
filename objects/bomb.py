@@ -67,12 +67,12 @@ class Bomb(pygame.sprite.Sprite):
         
         for target in targets:
             if self.hitbox.colliderect(target.hitbox): # Collision
-                if type(target) == tank.Tank and target.hit(3):
-                    target.set_exploded(True)
-                elif type(target) in (civil.Civil, terroriste.Terroriste):
-                    target.hit()
-                elif type(target) == structure.Structure:
-                    target.hit(True)
+                # if type(target) == tank.Tank and target.hit(3):
+                #     target.set_exploded(True)
+                # elif type(target) in (civil.Civil, terroriste.Terroriste):
+                #     target.hit()
+                # elif type(target) == structure.Structure:
+                #     target.hit(True)
                 self.set_exploded(True)
                 self.__music_manager.bomb_explode()
     

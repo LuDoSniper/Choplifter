@@ -58,8 +58,12 @@ class Game:
             nb_try = int(self.__mode[-1])
             self.__mode = "survie"
         if self.__mode == "survie":
-            if self.__steps is not None and self.__steps % 8 == 0 and self.__steps != 0 and self.__mission_id < 3:
-                self.__mission_id += 1
+            palier = self.__save_manager.load()["survival"]["palier"]
+            if palier is not None and mission_id < 3:
+                if palier == 8:
+                    mission_id = 2
+                elif palier == 16:
+                    mission_id = 3
             id = f"survie/{self.__monde_id}-{self.__mission_id}"
             print("steps :", steps)
         elif self.__mission_id is not None and self.__monde_id is not None:
@@ -117,6 +121,11 @@ class Game:
         self.__civil_saved = 0
         self.__loading = True
         self.__score = 0
+        self.__palier = 0
+        data = self.__save_manager.load()
+        if data["survival"]["running"]:
+            self.__score = data["survival"]["score"]
+            self.__palier = data["survival"]["palier"]
     
     # Geter / Seter
     def get_steps(self) -> int:
@@ -328,6 +337,15 @@ class Game:
                                 }
                             }
                             requests_manager.upload(requests)
+                            data = self.__save_manager.load()
+                            data["survival"] = {
+                                    "running" : False,
+                                    "score" : None,
+                                    "palier": None,
+                                    "pb_score" : self.__score,
+                                    "pb_palier": self.__palier
+                                }
+                            self.__save_manager.save(data)
                         else:
                             self.__response = "new_try_survie"
                             self.quit()
@@ -383,7 +401,7 @@ class Game:
     def check_end_game(self) -> bool:
         dead = self.__civil_dead
         saved = self.__civil_saved
-        if dead + saved == self.__civil_numbers:
+        if dead + saved >= self.__civil_numbers:
             if self.__mode != "survie":
                 if saved >= self.__civil_numbers / 2:
                     self.win()
@@ -428,6 +446,11 @@ class Game:
         self.__mode = "menu"
         quotient = (self.__civil_numbers / 250) * self.__civil_saved
         self.__score += quotient * 250
+        data = self.__save_manager.load()
+        data["survival"]["running"] = True
+        data["survival"]["score"] = self.__score
+        data["survival"]["palier"] = self.__palier
+        self.__save_manager.save(data)
     
     def despawn_civils(self) -> None:
         for structure in self.__structures_list:

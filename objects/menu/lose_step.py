@@ -66,6 +66,10 @@ class LoseStep:
                             return response
             self.clicked_element = None
 
+    def set_score_palier(self, data: tuple) -> None:
+        self.score = data[0]
+        self.palier = data[1]
+
     def next_game(self):
         print("Nouveau palier")
         return "survie_retry"

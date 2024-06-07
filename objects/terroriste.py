@@ -283,16 +283,16 @@ class Terroriste(pygame.sprite.Sprite):
             bullet.move(target)
     
     def hit(self) -> None:
-        if self.__state != "death":
+        if self.__state not in ("death", "blood"):
             self.__state = "death"
             self.__gun_state = "drop"
             self.__frame = 0
             self.__gun_frame = 0
-        if self.__type == "kamikaze":
-            score = 4
-        elif self.__type == "classique":
-            score = 2
-        self.__game.add_score(score)
+            if self.__type == "kamikaze":
+                score = 4
+            elif self.__type == "classique":
+                score = 2
+            self.__game.add_score(score)
     
     def sync_side(self) -> None:
         if (self.__dir == -1 and not self.__reversed) or (self.__dir == 1 and self.__reversed):

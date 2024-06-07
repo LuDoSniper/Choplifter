@@ -86,7 +86,10 @@ while response != "exit":
         mission = current_game.get_mission_id() + 1
         intensity = "low"
         musique = f"monde{monde}-{intensity}"
-        steps = current_game.get_steps() + 1
+        steps = current_game.get_steps()
+        if steps is None:
+            steps = 0
+        steps += 1
         
     # Antibug
     if response is None:
