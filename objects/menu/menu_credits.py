@@ -12,17 +12,17 @@ class MenuCredits:
     def create_elements(self):
         self.elements = []
         button_x = (self.assets.SCREEN_WIDTH - self.assets.bouton_continue.get_width()) // 2
-        button_y = (self.assets.SCREEN_HEIGHT + self.assets.background_menu_credits.get_height()) // 2 - self.assets.bouton_continue.get_height() - 125 + 20
+        button_y = (self.assets.SCREEN_HEIGHT + self.assets.background_menu_credits.get_height()) // 2 - self.assets.bouton_continue.get_height() - 20
         self.elements.append(Button("", button_x, button_y,
                                       self.assets.bouton_continue, self.assets.bouton_continue_click,
                                       self.continuer, self.assets))
 
     def draw(self):
         bg_x = (self.assets.SCREEN_WIDTH - self.assets.background_menu_credits.get_width()) // 2
-        bg_y = (self.assets.SCREEN_HEIGHT) // 2 - 300
-        self.screen.blit(self.assets.background_menu_credits, (bg_x, bg_y))
+        bg_y = (self.assets.SCREEN_HEIGHT // 2 - self.assets.background_menu_credits.get_height() // 5)
+        self.screen.blit(self.assets.background_menu_credits, (bg_x, (self.assets.SCREEN_HEIGHT - self.assets.background_menu_credits.get_height()) // 2))
 
-        base = 110
+        base = 1
         spacing = 20
 
         mouse_pos = pygame.mouse.get_pos()
@@ -31,22 +31,22 @@ class MenuCredits:
             element.draw(self.screen)
 
         dev_surf = self.assets.custom_font_16.render("DEVELOPPE PAR", True, self.assets.GRIS_FONCE)
-        dev_surf_rect = dev_surf.get_rect(center=(self.assets.SCREEN_WIDTH // 2, bg_y + base + spacing))
+        dev_surf_rect = dev_surf.get_rect(center=(self.assets.SCREEN_WIDTH // 2, bg_y))
         self.screen.blit(dev_surf, dev_surf_rect.topleft)
 
         names = ["Donnarieix Lucien", "Falchero Maxime", "Da Cunha Mathys"]
         for i, name in enumerate(names):
             name_surf = self.assets.custom_font_16.render(name, True, self.assets.GRIS_CLAIR)
-            name_surf_rect = name_surf.get_rect(center=(self.assets.SCREEN_WIDTH // 2, bg_y + base + spacing*2 + i * spacing))
+            name_surf_rect = name_surf.get_rect(center=(self.assets.SCREEN_WIDTH // 2, bg_y + spacing * i + spacing))
             self.screen.blit(name_surf, name_surf_rect.topleft)
 
         des_surf = self.assets.custom_font_16.render("DESIGNE PAR", True, self.assets.GRIS_FONCE)
-        des_surf_rect = des_surf.get_rect(center=(self.assets.SCREEN_WIDTH // 2, bg_y + base*2 + spacing))
+        des_surf_rect = des_surf.get_rect(center=(self.assets.SCREEN_WIDTH // 2, bg_y + spacing * 5))
         self.screen.blit(des_surf, des_surf_rect.topleft)
 
         for i, name in enumerate(names):
             name_surf = self.assets.custom_font_16.render(name, True, self.assets.GRIS_CLAIR)
-            name_surf_rect = name_surf.get_rect(center=(self.assets.SCREEN_WIDTH // 2, bg_y + base*2 + spacing*2 + i * 20))
+            name_surf_rect = name_surf.get_rect(center=(self.assets.SCREEN_WIDTH // 2, bg_y + spacing * 5 + spacing * i + spacing))
             self.screen.blit(name_surf, name_surf_rect.topleft)
 
     def variable_exists(self, var_name):
