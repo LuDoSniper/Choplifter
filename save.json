@@ -1,16 +1,16 @@
 {
-    "sfx": 0.12,
-    "music": 0.12571428571428572,
+    "sfx": 0.19714285714285715,
+    "music": 0,
     "theme": "Gris",
     "missions": {
         "Ile Alloca": [
             true,
-            false,
-            false,
-            false
+            true,
+            true,
+            true
         ],
         "Foret Alloca": [
-            false,
+            true,
             false,
             false,
             false

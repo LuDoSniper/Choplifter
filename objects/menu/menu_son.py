@@ -61,8 +61,7 @@ class MenuSon:
             self.clicked_element = None 
             
     def update_sound(self, value):
-        self.assets.click_sound.set_volume(value)
-        self.assets.up_click_sound.set_volume(value)
+        self.assets.set_sfx_sound(value)
         print(f"Son volume: {value}")
 
     def update_music(self, value):

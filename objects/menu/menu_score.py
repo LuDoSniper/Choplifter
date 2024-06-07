@@ -65,7 +65,7 @@ class MenuScore:
 
         self.buttons.append(Button('RETOUR', x_start, y_start, self.bouton_survie, self.bouton_click_survie, lambda: self.change_menu_callback("play"), self.assets, (255,255,255), font))
         self.buttons.append(Button('JOUER', x_start + button_width + spacing , y_start, self.bouton_survie, self.bouton_click_survie, self.start_survie, self.assets, (255,255,255), font))
-        self.buttons.append(Button('', ((self.assets.SCREEN_WIDTH + self.assets.background_menu_score.get_width()) // 2) - (self.assets.fleche_droite.get_width()) + 10, (self.assets.SCREEN_HEIGHT - self.assets.background_menu_score.get_height()) - (self.assets.fleche_droite.get_width() // 2) - 10, self.assets.fleche_droite, self.assets.fleche_droite_click, lambda: self.change_menu_callback("palier"), self.assets))
+        self.buttons.append(Button('', ((self.assets.SCREEN_WIDTH + self.assets.background_menu_score.get_width()) // 2) - (self.assets.fleche_droite.get_width()) + 10, (self.assets.SCREEN_HEIGHT) // 2 - (self.assets.fleche_droite.get_width() // 2) - 10, self.assets.fleche_droite, self.assets.fleche_droite_click, lambda: self.change_menu_callback("palier"), self.assets))
 
     def variable_exists(self, var_name):
         return hasattr(self, var_name)
