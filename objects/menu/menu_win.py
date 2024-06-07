@@ -59,7 +59,7 @@ class MenuWin:
 
     def next_game(self):
         # print("Lancement de la partie suivante")
-        pass
+        return "next_solo"
 
     def quit_game(self):
         pygame.quit()

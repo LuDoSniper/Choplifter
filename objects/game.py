@@ -244,7 +244,7 @@ class Game:
                         self.__music_manager.switch("main_background_layer1")
                         self.__current_menu = self.__link.current_menu
                     self.__response = self.__link.handle_event(event)
-                    if self.__response in ("solo", "sandbox", "new_try", "survie", "survie_next", "survie_retry") or (self.__response is not None and '-' in self.__response):
+                    if self.__response in ("solo", "sandbox", "new_try", "survie", "survie_next", "survie_retry", "next_solo") or (self.__response is not None and '-' in self.__response):
                         self.quit()
                     elif self.__response == "continue":
                         self.__mode = self.__tmp

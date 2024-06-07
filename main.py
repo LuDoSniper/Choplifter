@@ -67,6 +67,18 @@ while response != "exit":
         elif mission in (3, 4):
             intensity = "high"
         musique = f"monde{monde}-{intensity}"
+    elif response == "next_solo":
+        mode = "solo"
+        monde = current_game.get_monde_id()
+        mission = current_game.get_mission_id() + 1
+        if mission > 4:
+            mission = 1
+            monde += 1
+        if mission in (1, 2):
+            intensity = "low"
+        elif mission in (3, 4):
+            intensity = "high"
+        musique = f"monde{monde}-{intensity}"
     elif response == "new_try_survie":
         mode = f"new_try_survie{current_game.get_player().get_try()}"
         monde = current_game.get_monde_id()
