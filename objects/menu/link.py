@@ -8,6 +8,7 @@ from objects.menu.menu_score import MenuScore
 from objects.menu.menu_mission import MenuMission
 from objects.menu.menu_lose import MenuLose
 from objects.menu.menu_win import MenuWin
+from objects.menu.final_win import FinalWin
 from objects.menu.lose_step import LoseStep
 from objects.menu.win_step import WinStep
 from objects.menu.menu_palier import MenuPalier
@@ -104,6 +105,7 @@ class Link:
             "mission": MenuMission(self.assets.screen, self.change_menu, assets, missions, "Ile Alloca"),
             "lose": MenuLose(self.assets.screen, self.change_menu, assets),
             "win": MenuWin(self.assets.screen, self.change_menu, assets),
+            "final_win": FinalWin(self.assets.screen, self.change_menu, assets),
             "lose_step": LoseStep(self.assets.screen, self.change_menu, assets, score, palier),
             "win_step": WinStep(self.assets.screen, self.change_menu, assets, score, palier)
         }

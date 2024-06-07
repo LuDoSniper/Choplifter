@@ -1,5 +1,6 @@
 from objects.menu.button import Button
 import pygame
+import webbrowser
 
 class MenuCredits:
     def __init__(self, screen, change_menu_callback, assets):
@@ -13,6 +14,13 @@ class MenuCredits:
         self.elements = []
         button_x = (self.assets.SCREEN_WIDTH - self.assets.bouton_continue.get_width()) // 2
         button_y = (self.assets.SCREEN_HEIGHT + self.assets.background_menu_credits.get_height()) // 2 - self.assets.bouton_continue.get_height() - 20
+        discord_button = pygame.image.load(f'assets/menu/bouton_cache.png').convert_alpha()
+        discord_button_click = pygame.image.load(f'assets/menu/bouton_cache_click.png').convert_alpha()
+
+        self.elements.append(Button("Rejoindre notre discord", (self.assets.SCREEN_WIDTH - discord_button.get_width()) // 2, button_y - discord_button.get_height() - 5,
+                                    discord_button, discord_button_click,
+                                    self.get_discord, self.assets, (255,255,255), 16))
+        
         self.elements.append(Button("", button_x, button_y,
                                       self.assets.bouton_continue, self.assets.bouton_continue_click,
                                       self.continuer, self.assets))
@@ -69,3 +77,6 @@ class MenuCredits:
 
     def continuer(self):
         self.change_menu_callback("main")
+
+    def get_discord(self):
+        webbrowser.open("https://discord.gg/SNv4enf68V")
