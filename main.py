@@ -93,7 +93,9 @@ while response != "exit":
         
     # Antibug
     if response is None:
-        current_game.change_menu(current_game.get_current_menu())
+        # current_game.change_menu(current_game.get_current_menu())
+        response = "restart"
+        print("sournois")
     else:  
         music_manager.switch(musique)
         current_game = game.Game(screen, assets_manager, music_manager, mode, steps, mission, monde)

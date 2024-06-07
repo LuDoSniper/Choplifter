@@ -113,6 +113,8 @@ class Link:
         self.update_resolution(self.assets.RESOLUTION)
 
     def change_menu(self, menu_name):
+        print("change_menu")
+        print(menu_name)
         if menu_name == "survie":
             data = self.get_scoreboard()
             self.classement_score = data[0][0]
