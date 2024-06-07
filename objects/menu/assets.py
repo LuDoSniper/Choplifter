@@ -47,7 +47,7 @@ class Assets:
         self.background_menu_credits = pygame.image.load('assets/menu/background_credits.png').convert()
         self.background_menu_pause = pygame.image.load('assets/menu/background_pause.png').convert()
         self.background_menu_survie = pygame.image.load('assets/menu/background_survie.png').convert()
-        self.background_menu_mission = pygame.image.load('assets/menu/background_mission.png').convert()
+        self.background_menu_mission = pygame.image.load('assets/menu/background_mission.png')
         self.background_lose = pygame.image.load('assets/menu/background_lose.png').convert()
         self.bouton_leave = pygame.image.load('assets/menu/leave.png').convert_alpha()
         self.bouton_cancel = pygame.image.load('assets/menu/cancel.png').convert_alpha()
