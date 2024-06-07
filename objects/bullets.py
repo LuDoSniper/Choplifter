@@ -7,6 +7,7 @@ import objects.structure as structure
 import objects.civil as civil
 import objects.terroriste as terroriste
 import objects.music as music
+import random
 
 class Bullet(pygame.sprite.Sprite):
     
@@ -127,6 +128,15 @@ class Bullet(pygame.sprite.Sprite):
                         target.set_exploded(True)
                 elif type(target) in (civil.Civil, terroriste.Terroriste):
                     target.hit()
+                    choice = random.choice([1, 2, 3])
+                    if choice == 1:
+                        self.__music_manager.mort_1()
+                    elif choice == 2:
+                        self.__music_manager.mort_2()
+                    elif choice == 3:
+                        self.__music_manager.mort_3()
+
+
                 else:
                     target.set_exploded(True)
                 

@@ -2,6 +2,7 @@ from objects.menu.button import Button
 import pygame
 import sys
 
+
 class MenuPause:
     def __init__(self, screen, change_menu_callback, restart_callback, quit_callback, assets):
         self.assets = assets

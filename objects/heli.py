@@ -1,4 +1,5 @@
 import pygame
+from objects.music import Music
 
 class Heli:
     
@@ -10,6 +11,7 @@ class Heli:
             self.__image.get_rect().width * 1.5,
             self.__image.get_rect().height * 1.5
         ))
+
         self.__image_tmp = self.__image
         self.__rect = self.__image.get_rect()
         self.__rect.x = screen.get_width() / 2 - self.__rect.width / 2

@@ -1,5 +1,6 @@
 import pygame
 import random
+from objects.music import Music
 
 class Civil(pygame.sprite.Sprite):
     
@@ -45,6 +46,9 @@ class Civil(pygame.sprite.Sprite):
         self.__speed = 1
         self.__dir = 0
         self.__reversed = False
+
+        self.son = Music()
+        self.play_song = None
         
     # Geter / Seter
     
@@ -124,20 +128,34 @@ class Civil(pygame.sprite.Sprite):
                     self.__dir = 1
             elif self.rect.x - self.RANGE <= player.get_heli().get_rect().x <= self.rect.x + self.RANGE:
                 self.__state = "help"
+                if self.play_song is None: 
+                    choice = random.choice([1, 2, 3])
+                    if choice == 1:
+                        self.son.help_1()
+                    elif choice == 2:
+                        self.son.help_2()
+                    elif choice == 3:
+                        self.son.help_3()
+                    self.play_song = True
+                    
+                
             elif self.__state == "help":
                 self.__state = "idle"
+                self.play_song = None
             else:
                 self.__switch_animation_timer += 1
                 if self.__switch_animation_timer >= self.__switch_animation_timer_target and self.__state not in ("death", "damage"):
                     self.__switch_animation_timer = 0
                     self.__switch_animation_timer_target = random.randint(150, 250)
                     self.__state = random.choice(["idle", "walk", "wait"])
-                    
                     if self.__state == "walk":
                         self.__speed = 1
                         self.__dir = random.choice([-1, 1])
                     elif self.__state in ("idle", "wait"):
                         self.__dir = 0
+                        if self.__state == "wait":
+                            if random.choice([True, False, False, False, False]):
+                                self.son.sifflement()
         
         if self.__state in ("walk", "run"):
             self.move(map_size)
@@ -180,6 +198,16 @@ class Civil(pygame.sprite.Sprite):
             if self.__frame > 0:
                 self.__frame = 1
             self.__state = "death"
+            self.play_song = None
+            if self.play_song is None: 
+                choice = random.choice([1, 2, 3])
+                if choice == 1:
+                    self.son.mort_1()
+                elif choice == 2:
+                    self.son.mort_2()
+                elif choice == 3:
+                    self.son.mort_3()
+                self.play_song = True
         
         if self.__egged:
             clothes = 4

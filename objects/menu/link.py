@@ -11,6 +11,7 @@ from objects.menu.menu_win import MenuWin
 from objects.menu.lose_step import LoseStep
 from objects.menu.win_step import WinStep
 from objects.menu.menu_palier import MenuPalier
+import objects.music as music
 import objects.requester as requester
 import objects.saver as saver
 
@@ -90,6 +91,7 @@ class Link:
         self.palier_vous = palier_vous
         self.score = score
         self.palier = palier
+        self.son = music.Music()
         self.menus = {
             "main": Menu(self.assets.screen, self.change_menu, self.quit_game, self.assets),
             "play": MenuJouer(self.assets.screen, self.change_menu, self.assets),

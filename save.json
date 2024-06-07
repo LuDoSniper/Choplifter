@@ -1,16 +1,16 @@
 {
-    "sfx": 0.19714285714285715,
-    "music": 0,
+    "sfx": 0.24571428571428572,
+    "music": 0.07428571428571429,
     "theme": "Gris",
     "missions": {
         "Ile Alloca": [
             true,
-            true,
-            true,
-            true
+            false,
+            false,
+            false
         ],
         "Foret Alloca": [
-            true,
+            false,
             false,
             false,
             false
@@ -33,9 +33,8 @@
         "running": false,
         "score": null,
         "palier": null,
-        "pb_score": 999.0,
-        "pb_palier": 0
+        "pb_score": null,
+        "pb_palier": null
     },
-    "username": "LuDo_Sniper",
-    "ID": "$2y$10$w0lpHSNUab9HYWHRJrU17ua8UzNDFdUrWhg.HrVF4DKvEH6D2.68u"
+    "username": "Guest"
 }

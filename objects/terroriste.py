@@ -62,6 +62,7 @@ class Terroriste(pygame.sprite.Sprite):
         self.__exploding_delay = 60
         self.__despawn_timer = 0
         self.__despawn_timer_delay = 300
+        self.play_song = None
         
     # Geter / Seter
     
@@ -255,6 +256,13 @@ class Terroriste(pygame.sprite.Sprite):
                 elif self.__type == "kamikaze":
                     self.__state = "scream"
                     self.__exploding = True
+                    if self.play_song is None: 
+                        choice = random.choice([True, False])
+                        if choice:
+                            self.__music_manager.cri_1()
+                        else:
+                            self.__music_manager.cri_2()
+                        self.play_song = True
     
     def explode_civils(self, civils: list) -> None:
         for civil in civils:
@@ -286,6 +294,14 @@ class Terroriste(pygame.sprite.Sprite):
         if self.__state not in ("death", "blood"):
             self.__state = "death"
             self.__gun_state = "drop"
+            choice = random.choice([1, 2, 3])
+            if choice == 1:
+                self.__music_manager.terroriste_mort_1()
+            elif choice == 2:
+                self.__music_manager.terroriste_mort_2()
+            elif choice == 3:
+                self.__music_manager.terroriste_mort_3()
+            self.play_song = True
             self.__frame = 0
             self.__gun_frame = 0
             if self.__type == "kamikaze":

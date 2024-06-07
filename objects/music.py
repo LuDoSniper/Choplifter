@@ -144,3 +144,106 @@ class Music():
         explosion = pygame.mixer.Sound("assets/son/sfx/Explo_Small_01_Short_Violent.wav")
         explosion.set_volume(self.__save_manager.load()["sfx"])
         explosion.play()
+
+    def avion_tire(self) -> None :
+        tire = pygame.mixer.Sound('assets/son/game/avion_tire.mp3')
+        tire.set_volume(self.__save_manager.load()["sfx"])
+        tire.play()
+
+    def cri_1(self) -> None:
+        son = pygame.mixer.Sound('assets/son/game/cri-1.aiff')
+        son.set_volume(self.__save_manager.load()["sfx"])
+        son.play()
+
+    def cri_2(self) -> None:
+        son = pygame.mixer.Sound('assets/son/game/cri-2.wav')
+        son.set_volume(self.__save_manager.load()["sfx"])
+        son.play()
+
+    def defaite(self) -> None:
+        son = pygame.mixer.Sound('assets/son/game/defaite.wav')
+        son.set_volume(self.__save_manager.load()["sfx"])
+        son.play()
+
+    def helicopter(self, value) -> None:
+        son = pygame.mixer.Sound('assets/son/game/helicopter.wav')
+        son.set_volume((self.__save_manager.load()["sfx"] * 0.04))
+        if value == 1:
+            son.play(loops=-1)
+        elif value == 0:
+            son.stop()
+
+    def help_1(self) -> None:
+        son = pygame.mixer.Sound('assets/son/game/help-1.wav')
+        son.set_volume(self.__save_manager.load()["sfx"])
+        son.play()
+
+    def help_2(self) -> None:
+        son = pygame.mixer.Sound('assets/son/game/help-2.wav')
+        son.set_volume(self.__save_manager.load()["sfx"])
+        son.play()
+
+    def help_3(self) -> None:
+        son = pygame.mixer.Sound('assets/son/game/help-3.wav')
+        son.set_volume(self.__save_manager.load()["sfx"])
+        son.play()
+
+    def help_5(self) -> None:
+        son = pygame.mixer.Sound('assets/son/game/help-5.ogg')
+        son.set_volume(self.__save_manager.load()["sfx"])
+        son.play()
+
+    def mort_1(self) -> None:
+        son = pygame.mixer.Sound('assets/son/game/mort_1.wav')
+        son.set_volume(self.__save_manager.load()["sfx"])
+        son.play()
+
+    def mort_2(self) -> None:
+        son = pygame.mixer.Sound('assets/son/game/mort_2.wav')
+        son.set_volume(self.__save_manager.load()["sfx"])
+        son.play()
+
+    def mort_3(self) -> None:
+        son = pygame.mixer.Sound('assets/son/game/mort_3.wav')
+        son.set_volume(self.__save_manager.load()["sfx"])
+        son.play()
+
+    def rire_1(self) -> None:
+        son = pygame.mixer.Sound('assets/son/game/rire_1.wav')
+        son.set_volume(self.__save_manager.load()["sfx"])
+        son.play()
+
+    def rire_2(self) -> None:
+        son = pygame.mixer.Sound('assets/son/game/rire_2.wav')
+        son.set_volume(self.__save_manager.load()["sfx"])
+        son.play()
+
+    def rire_3(self) -> None:
+        son = pygame.mixer.Sound('assets/son/game/rire_3.wav')
+        son.set_volume(self.__save_manager.load()["sfx"])
+        son.play()
+
+    def sifflement(self) -> None:
+        son = pygame.mixer.Sound('assets/son/game/sifflement.mp3')
+        son.set_volume(self.__save_manager.load()["sfx"])
+        son.play()
+
+    def victoire(self) -> None:
+        son = pygame.mixer.Sound('assets/son/game/victoire.wav')
+        son.set_volume(self.__save_manager.load()["sfx"])
+        son.play()
+
+    def terroriste_mort_1(self) -> None:
+        son = pygame.mixer.Sound('assets/son/game/terroriste_mort_1.wav')
+        son.set_volume(self.__save_manager.load()["sfx"])
+        son.play()
+
+    def terroriste_mort_2(self) -> None:
+        son = pygame.mixer.Sound('assets/son/game/terroriste_mort_2.wav')
+        son.set_volume(self.__save_manager.load()["sfx"])
+        son.play()
+
+    def terroriste_mort_3(self) -> None:
+        son = pygame.mixer.Sound('assets/son/game/terroriste_mort_3.wav')
+        son.set_volume(self.__save_manager.load()["sfx"])
+        son.play()

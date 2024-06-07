@@ -22,6 +22,7 @@ class Game:
         self.__mission_id = mission_id
         self.__monde_id = monde_id
         self.__assets = assets
+        self.play_song = None
         self.__link = link.Link(self.__assets)
         if mode != "menu":
             self.__link.current_menu = "pause"
@@ -265,6 +266,7 @@ class Game:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     if self.__link.current_menu == "pause":
                         self.__paused = not self.__paused
+                        
                         if self.__paused:
                             self.__tmp = self.__mode
                             self.__link.current_menu = "pause"
@@ -413,6 +415,9 @@ class Game:
     def win(self) -> None:
         self.__current_menu = "win"
         self.__link.current_menu = "win"
+        if self.play_song is None: 
+            self.__music_manager.victoire()
+            self.play_song = True
         self.__mode = "menu"
         data = self.get_data()
         id_mission = self.__mission_id + 1
@@ -438,11 +443,17 @@ class Game:
         self.__current_menu = "lose"
         self.__link.current_menu = "lose"
         self.__mode = "menu"
+        if self.play_song is None: 
+            self.__music_manager.defaite()
+            self.play_song = True
     
     def step_end(self) -> None:
         print("Fin de l'étape courante")
         self.__current_menu = "win_step"
         self.__link.current_menu = "win_step"
+        if self.play_song is None: 
+            self.__music_manager.victoire()
+            self.play_song = True
         self.__mode = "menu"
         quotient = (self.__civil_numbers / 250) * self.__civil_saved
         self.__score += quotient * 250

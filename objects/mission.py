@@ -8,12 +8,15 @@ import objects.avion as avion
 import objects.terroriste as terroriste
 import objects.structure as structure
 import objects.base as base
+import objects.music as music
 
 class Mission():
     def __init__(self, id: str, screen: pygame.Surface, game, nb_try: int) -> None:
         self.__id = id
         self.__screen = screen
         self.__game = game
+        self.son = music.Music()
+        self.play_sound = None
         self.load(id)
         if nb_try is not None:
             self.__player.set_try(nb_try)
@@ -116,6 +119,10 @@ class Mission():
                 self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (5 * tile_size, 100 + 4 * tile_size))
                 self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100 + 4 * tile_size))
         elif id == "sandbox":
+            if self.play_sound is None :
+                self.son.helicopter(1)
+                print("C LE SONNNNNNNNNNN")
+                self.play_sound = True
             width = 60
             self.__map = map.Map(f"assets/tilesets/sandbox/sandbox.tmx", width, height, tile_size, self.__screen)
             self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size())
@@ -150,6 +157,9 @@ class Mission():
                 for pos in avion_positions:
                     self.__enemis.add_avion(self.__screen, self.__map.get_map_size(), (pos[0], pos[1]))
         elif "/" in id and id.split("/")[0] == "survie":
+            if self.play_sound is None :
+                self.son.helicopter(1)
+                self.play_sound = True
             tmp = id.split('/')[1]
             monde = tmp.split('-')[0]
             difficulte = int(tmp.split('-')[1])
@@ -222,6 +232,9 @@ class Mission():
                 self.__enemis.add_avion(self.__screen, self.__map.get_map_size(), (random.choice([-50, self.__screen.get_width()]), random.randint(40, 140)), random.randint(1, 2), random.choice([-1, 1]))
             self.__base = base.Base(self.__base_group, base_pos[0], base_pos[1], base_pos)
         else:
+            if self.play_sound is None :
+                self.son.helicopter(1)
+                self.play_sound = True
             if int(id[0]) == 1:
                 if int(id[-1]) == 1:
                     width = 30

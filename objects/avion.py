@@ -1,6 +1,7 @@
 import pygame
 import random
 import objects.bullets as bullets
+from objects.music import Music
 
 import pygame.locals
 
@@ -59,6 +60,8 @@ class Avion(pygame.sprite.Sprite):
         self.__delay = 0
         self.__bullets_list = []
         self.__bullets_group = pygame.sprite.Group()
+
+        self.son = Music()
     
     # Geter / Seter
     def get_group(self) -> pygame.sprite.Group:
@@ -232,6 +235,7 @@ class Avion(pygame.sprite.Sprite):
             self.__delay = 0
             self.__shooted = 5
             self.__bullets_list.append(bullets.Bullet(self.__bullets_group, self.__screen, self, self.__dir, 90 * self.__dir, self.__pos, self.rect.x, self.rect.y, 2, "balle-avion"))
+            self.son.avion_tire()
         if self.__shooted >= self.__max_shoot:
             self.__shooting = False
 
