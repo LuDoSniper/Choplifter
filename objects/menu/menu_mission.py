@@ -143,7 +143,7 @@ class MenuMission:
                     self.assets.error.play()
 
     def start_mission(self, mission_number):
-        print(f"Mission {mission_number} dans le {self.monde} démarrée")
+        # print(f"Mission {mission_number} dans le {self.monde} démarrée")
         return f"{self.monde.split('-')[0]}-{mission_number}"
 
     def set_missions(self, data_missions: dict) -> None:

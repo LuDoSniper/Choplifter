@@ -58,7 +58,8 @@ class FinalWin:
             self.clicked_element = None
 
     def next_game(self):
-        print("Lancement de la partie suivante")
+        # print("Lancement de la partie suivante")
+        pass
 
     def get_discord(self):
         webbrowser.open("https://discord.gg/SNv4enf68V")

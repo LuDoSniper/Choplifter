@@ -71,8 +71,8 @@ def generate_map_image(tmx_file, output_image_file):
                     
                     # Ouvrir l'image de la tuile et la découper
                     tile_image = Image.open(image_path).crop(region)
-                    print(f'Processing tile at ({x}, {y}) with gid {gid}')
-                    print(f'Tile region: {region}')
+                    # print(f'Processing tile at ({x}, {y}) with gid {gid}')
+                    # print(f'Tile region: {region}')
                     
                     # Créer une image temporaire pour la tuile à la position correcte
                     temp_image = Image.new('RGBA', map_image.size)

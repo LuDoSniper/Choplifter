@@ -58,7 +58,7 @@ class MenuPause:
             self.clicked_element = None 
 
     def reprendre(self):
-        print("Reprendre le jeu")
+        # print("Reprendre le jeu")
         return "continue"
 
     def quit_game(self):

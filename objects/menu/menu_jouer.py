@@ -56,13 +56,13 @@ class MenuJouer:
 
 
     def start_solo(self):
-        print("Lance solo")
+        # print("Lance solo")
         return "solo"
 
     def start_survival(self):
-        print("Lance duel")
+        # print("Lance duel")
         return "survie"
 
     def start_entrainement(self):
-        print("Lance sandbox")
+        # print("Lance sandbox")
         return "sandbox"

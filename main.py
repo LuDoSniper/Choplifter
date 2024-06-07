@@ -15,7 +15,7 @@ assets_manager = assets.Assets()
 
 screen = assets_manager.SCREEN
 #screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-print("Resolution : ", screen.get_size())
+# print("Resolution : ", screen.get_size())
 
 music_manager = music.Music(main=True)
 save_manager = saver.Saver()
@@ -95,7 +95,7 @@ while response != "exit":
     if response is None:
         # current_game.change_menu(current_game.get_current_menu())
         response = "restart"
-        print("sournois")
+        # print("sournois")
     else:
         data = save_manager.load()
         music_manager.switch(musique)

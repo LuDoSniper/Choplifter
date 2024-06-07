@@ -63,14 +63,14 @@ class MenuSon:
             
     def update_sound(self, value):
         self.assets.set_sfx_sound(value)
-        print(f"Son volume: {value}")
+        # print(f"Son volume: {value}")
 
     def update_music(self, value):
         pygame.mixer.music.set_volume(value)
-        print(f"Musique volume: {value}")
+        # print(f"Musique volume: {value}")
 
     def confirm(self):
-        print("Options confirmées")
+        # print("Options confirmées")
         save_manager = saver.Saver()
         data = save_manager.load()
         volumes = self.get_volume()

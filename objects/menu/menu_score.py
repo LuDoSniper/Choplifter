@@ -93,5 +93,5 @@ class MenuScore:
         self.points_vous = data[2]
 
     def start_survie(self):
-        print("Lance survie")
+        # print("Lance survie")
         return "survie"

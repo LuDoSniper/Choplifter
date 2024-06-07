@@ -68,7 +68,7 @@ class Game:
                 elif palier == 16:
                     mission_id = 3
             id = f"survie/{self.__monde_id}-{self.__mission_id}"
-            print("steps :", steps)
+            # print("steps :", steps)
         elif self.__mission_id is not None and self.__monde_id is not None:
             id = f"{self.__monde_id}-{self.__mission_id}"
         elif self.__mode == "sandbox":
@@ -433,10 +433,10 @@ class Game:
         data["missions"][monde][id_mission - 1] = True
         self.__save_manager.save(data)
         self.__link.set_missions(data["missions"])
-        print("win")
+        # print("win")
     
     def game_over(self) -> None:
-        print("game over")
+        # print("game over")
         self.__current_menu = "lose"
         self.__link.current_menu = "lose"
         self.__mode = "menu"
@@ -445,7 +445,7 @@ class Game:
             self.play_song = True
     
     def step_end(self) -> None:
-        print("Fin de l'étape courante")
+        # print("Fin de l'étape courante")
         self.__current_menu = "win_step"
         self.__link.current_menu = "win_step"
         if self.play_song is None: 

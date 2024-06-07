@@ -113,8 +113,8 @@ class Link:
         self.update_resolution(self.assets.RESOLUTION)
 
     def change_menu(self, menu_name):
-        print("change_menu")
-        print(menu_name)
+        # print("change_menu")
+        # print(menu_name)
         if menu_name == "survie":
             data = self.get_scoreboard()
             self.classement_score = data[0][0]
@@ -187,7 +187,7 @@ class Link:
         elif new_resolution == "FULL":
             pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
             self.assets.SCREEN_WIDTH, self.assets.SCREEN_HEIGHT = self.assets.screen.get_size()
-        print(self.assets.SCREEN_WIDTH, self.assets.SCREEN_HEIGHT)
+        # print(self.assets.SCREEN_WIDTH, self.assets.SCREEN_HEIGHT)
 
         for menu_name in self.menus:
             if hasattr(self.menus[menu_name], 'elements'):
@@ -251,8 +251,8 @@ class Link:
             data = self.menus["son"].get_volume()
         data["theme"] = self.assets.THEME
         data["missions"] = self.missions
-        print("Resolution : ", self.assets.RESOLUTION)
-        print("SFX : ", self.assets.sfx_volume)
+        # print("Resolution : ", self.assets.RESOLUTION)
+        # print("SFX : ", self.assets.sfx_volume)
         data["resolution"] = self.assets.RESOLUTION
         data_origine = save_manager.load()
         data["survival"] = data_origine["survival"]

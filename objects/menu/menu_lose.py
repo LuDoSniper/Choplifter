@@ -58,7 +58,7 @@ class MenuLose:
             self.clicked_element = None
 
     def restar_game(self):
-        print("Restart de la partie")
+        # print("Restart de la partie")
         return "new_try"
 
     def quit_game(self):

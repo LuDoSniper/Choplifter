@@ -239,7 +239,7 @@ class Structure(pygame.sprite.Sprite):
         ))
 
     def afficher_civils(self, screen: pygame.Surface, egged: bool = False) -> None:
-        print(self.__civils_group)
+        # print(self.__civils_group)
         self.easter_egg(egged)
         out_of_screen = []
         for civil in self.__civils_list:

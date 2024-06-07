@@ -58,7 +58,8 @@ class MenuWin:
             self.clicked_element = None
 
     def next_game(self):
-        print("Lancement de la partie suivante")
+        # print("Lancement de la partie suivante")
+        pass
 
     def quit_game(self):
         pygame.quit()

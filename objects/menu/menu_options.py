@@ -115,11 +115,11 @@ class MenuOptions:
         self.create_elements()
 
     def confirm(self):
-        print("Options confirmées")
+        # print("Options confirmées")
         self.change_menu_callback("main")
 
     def delete_cache(self):
-        print("Suppression du cache")
+        # print("Suppression du cache")
         path = "assets/tilesets/map_test.png"
         if os.path.exists(path):
             os.remove(path)

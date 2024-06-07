@@ -44,8 +44,8 @@ class Slider:
 
     def update_sound(self, value):
         self.assets.click_sound.set_volume(value)
-        print(f"Volume des clicks clicks: {value}")
+        # print(f"Volume des clicks clicks: {value}")
 
     def update_music(self, value):
         pygame.mixer.music.set_volume(value)
-        print(f"Musique volume: {value}")
+        # print(f"Musique volume: {value}")

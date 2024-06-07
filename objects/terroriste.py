@@ -150,7 +150,7 @@ class Terroriste(pygame.sprite.Sprite):
             self.hit()
             self.__music_manager.splash()
             self.__splashed = True
-            print("splashed")
+            # print("splashed")
     
     def explode(self) -> None:
         self.__explosion = explosion.Explosion(self.__explosion_group, self.rect.x + self.rect.width / 2, self.rect.y + self.rect.height / 2, (self.__pos[0] + self.rect.width / 2, self.__pos[1] + self.rect.height / 2))

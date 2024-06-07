@@ -71,7 +71,7 @@ class LoseStep:
         self.palier = data[1]
 
     def next_game(self):
-        print("Nouveau palier")
+        # print("Nouveau palier")
         return "survie_retry"
 
     def quit_game(self):

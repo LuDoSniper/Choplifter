@@ -71,7 +71,7 @@ class WinStep:
         self.palier = data[1]
 
     def next_game(self):
-        print("Lancement de la partie suivante")
+        # print("Lancement de la partie suivante")
         return "survie_next"
 
     def quit_game(self):
