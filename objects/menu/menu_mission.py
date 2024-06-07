@@ -12,7 +12,7 @@ class MenuMission:
         self.buttons = []
         self.quit_button = None
         self.clicked_element = None
-        self.circle_positions = [(70, 220), (265, 177), (107, 110), (250, 15)]
+        self.circle_positions = [(71, 219), (266, 178), (107, 111), (250, 14)]
         self.create_buttons()
         self.spacing = 10
 
@@ -44,14 +44,16 @@ class MenuMission:
             self.quit_button.update(mouse_pos)
             self.quit_button.draw(self.screen)
 
-        for idx, (monde, _) in enumerate(list(self.missions.items())):
+        for idx, (monde, test) in enumerate(list(self.missions.items())):
             circle_surface = pygame.Surface((40, 40), pygame.SRCALPHA)
             if monde == self.monde:
                 color = (78, 216, 101, 255)
-            else:
+            elif test[0]:
                 color = (0, 0, 0, 0)
+            else:
+                color = (0, 0, 0, 150)
             
-            pygame.draw.circle(circle_surface, color, (20, 20), 12)
+            pygame.draw.circle(circle_surface, color, (20, 20), 11)
             self.screen.blit(circle_surface, (map_x + self.circle_positions[idx][0] - 20, map_y + self.circle_positions[idx][1] - 20))
 
     def create_buttons(self):
@@ -128,13 +130,15 @@ class MenuMission:
                 self.clicked_element = None
         
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            for idx, (monde, _) in enumerate(list(self.missions.items())):
+            for idx, (monde, test) in enumerate(list(self.missions.items())):
                 position = self.circle_positions[idx]
-                if pygame.Rect(map_x + position[0] - 20, map_y + position[1] - 20, 40, 40).collidepoint(event.pos):
+                if pygame.Rect(map_x + position[0] - 20, map_y + position[1] - 20, 40, 40).collidepoint(event.pos) and test[0]:
                     self.monde = monde
                     self.create_buttons()
                     self.assets.up_click_sound.play()
                     break
+                elif pygame.Rect(map_x + position[0] - 20, map_y + position[1] - 20, 40, 40).collidepoint(event.pos): 
+                    self.assets.error.play()
 
     def start_mission(self, mission_number):
         print(f"Mission {mission_number} dans le {self.monde} démarrée")

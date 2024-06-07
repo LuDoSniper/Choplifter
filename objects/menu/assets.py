@@ -79,6 +79,7 @@ class Assets:
 
         self.click_sound = pygame.mixer.Sound('assets/menu/click_sound.mp3')
         self.up_click_sound = pygame.mixer.Sound('assets/menu/up_click_sound.ogg')
+        self.error = pygame.mixer.Sound('assets/menu/error.ogg')
         self.background_music = 'assets/menu/background_music.ogg'
         pygame.mixer.music.set_volume(0)
 
