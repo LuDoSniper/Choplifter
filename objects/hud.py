@@ -171,17 +171,19 @@ class Score():
         self.__screen.blit(font_surface, font_rect)
    
 class HUD():
-    def __init__(self, screen: pygame.Surface, color: str, nb_try: int, survival: bool) -> None:
+    def __init__(self, screen: pygame.Surface, color: str, nb_try: int, survival: bool, sandbox: bool = False) -> None:
         self.__screen = screen
         self.__color = color
         self.__survival = survival
+        self.__sandbox = sandbox
+        if not self.__sandbox:
+            self.__saved = Saved(self.__screen, self.__color)
+            self.__dead = Dead(self.__screen, self.__color)
+            self.__try = Try(self.__screen, self.__color, nb_try)
         self.__items = pygame.sprite.Group()
         self.__health = Health(self.__items, self.__screen)
         self.__fuel = Fuel(self.__items, self.__screen)
         self.__stored = Stored(self.__screen, self.__color)
-        self.__saved = Saved(self.__screen, self.__color)
-        self.__dead = Dead(self.__screen, self.__color)
-        self.__try = Try(self.__screen, self.__color, nb_try)
         if self.__survival:
             self.__score = Score(self.__screen, self.__color)
     
@@ -196,22 +198,27 @@ class HUD():
     
     def update(self, color: str) -> None:
         self.__color = color
-        elements = [self.__stored, self.__saved, self.__dead, self.__try]
+        if self.__sandbox:
+            elements = [self.__stored]
+        else:
+            elements = [self.__stored, self.__saved, self.__dead, self.__try]
         if self.__survival:
             elements.append(self.__score)
         for item in elements:
             item.update(self.__color)
     
     def update_try(self, nb_int: int) -> None:
-        self.__try.update_try(nb_int)
+        if not self.__sandbox:
+            self.__try.update_try(nb_int)
     
     def afficher(self, health: int, fuel: int, stored: int, max_storage: int, saved: int, max_civil: int, dead: int, score: int) -> None:
         self.__health.afficher(health)
         self.__fuel.afficher(fuel)
         self.__stored.afficher(stored, max_storage)
-        self.__saved.afficher(saved, max_civil)
-        self.__dead.afficher(dead, max_civil)
-        self.__try.afficher()
+        if not self.__sandbox:
+            self.__saved.afficher(saved, max_civil)
+            self.__dead.afficher(dead, max_civil)
+            self.__try.afficher()
         if self.__survival:
             self.__score.afficher(score)
         

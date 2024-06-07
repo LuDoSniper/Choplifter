@@ -102,7 +102,7 @@ class Game:
         self.__structures_list = self.__mission_manager.get_structures_list()
     
         # HUD
-        self.__hud = hud.HUD(self.__screen, self.__assets.THEME, self.__player.get_try(), self.__mode == "survie")
+        self.__hud = hud.HUD(self.__screen, self.__assets.THEME, self.__player.get_try(), self.__mode == "survie", sandbox=self.__mode == "sandbox")
     
         # Base
         # self.__base_group = pygame.sprite.Group()

@@ -127,7 +127,7 @@ class Mission():
                 self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (5 * tile_size, 100 + 4 * tile_size))
                 self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100 + 4 * tile_size))
         elif id == "sandbox":
-            width = 60
+            width = 75
             monde = random.randint(1, 4)
             if monde == 1:
                 monde_str = "Island"
