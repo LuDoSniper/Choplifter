@@ -82,6 +82,7 @@ class Assets:
         self.error = pygame.mixer.Sound('assets/menu/error.ogg')
         self.background_music = 'assets/menu/background_music.ogg'
         pygame.mixer.music.set_volume(0)
+        self.sfx = [self.up_click_sound, self.click_sound, self.error]
 
         self.bouton_unlock = pygame.image.load(f'assets/menu/unlock_{self.THEME}.png').convert_alpha()
         self.bouton_lock = pygame.image.load(f'assets/menu/lock_{self.THEME}.png').convert_alpha()
@@ -183,3 +184,7 @@ class Assets:
             self.color_theme = (214, 255, 208)
         elif self.THEME == "Jaune":
             self.color_theme = (255, 242, 208)
+
+    def set_sfx_sound(self, data):
+        for element in self.sfx:
+            element.set_volume(data)
