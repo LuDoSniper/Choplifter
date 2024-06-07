@@ -139,6 +139,11 @@ class Link:
         data["theme"] = self.assets.THEME
         data["missions"] = self.missions
         data["resolution"] = self.assets.RESOLUTION
+        data_origine = save_manager.load()
+        data["survival"] = data_origine["survival"]
+        data["username"] = data_origine["username"]
+        if "ID" in data_origine:
+            data["ID"] = data_origine["ID"]
         return data
     
     def set_volume(self, data: dict) -> None:

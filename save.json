@@ -1,0 +1,39 @@
+{
+    "sfx": 0,
+    "music": 0,
+    "theme": "Gris",
+    "missions": {
+        "Ile Alloca": [
+            true,
+            false,
+            false,
+            false
+        ],
+        "Foret Alloca": [
+            false,
+            false,
+            false,
+            false
+        ],
+        "Desert Alloca": [
+            false,
+            false,
+            false,
+            false
+        ],
+        "Montagne Alloca": [
+            false,
+            false,
+            false,
+            false
+        ]
+    },
+    "resolution": "600x800",
+    "survival": {
+        "running": false,
+        "score": null,
+        "pb": null
+    },
+    "username": "Guest_0",
+    "ID": "$2y$10$D2AfA7BAUWb92Vy9TEjRzOmcCv3V3gqKdUJhW0TS1SqdoX6voezSa"
+}

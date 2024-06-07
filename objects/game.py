@@ -11,12 +11,14 @@ import objects.menu.assets as assets
 import objects.menu.link as link
 import objects.music as music
 import objects.saver as saver
+import objects.requester as requester
 
 class Game:
-    def __init__(self, screen: pygame.Surface, assets: assets.Assets, music_manager: music.Music, mode: str, mission_id: int = None, monde_id: int = None, fullscreen: bool = False) -> None:
+    def __init__(self, screen: pygame.Surface, assets: assets.Assets, music_manager: music.Music, mode: str, steps: int = None, mission_id: int = None, monde_id: int = None, fullscreen: bool = False) -> None:
         self.__music_manager = music_manager
         self.__save_manager = saver.Saver()
         self.__mode = mode
+        self.__steps = steps
         self.__mission_id = mission_id
         self.__monde_id = monde_id
         self.__assets = assets
@@ -56,7 +58,10 @@ class Game:
             nb_try = int(self.__mode[-1])
             self.__mode = "survie"
         if self.__mode == "survie":
+            if self.__steps is not None and self.__steps % 8 == 0 and self.__steps != 0 and self.__mission_id < 3:
+                self.__mission_id += 1
             id = f"survie/{self.__monde_id}-{self.__mission_id}"
+            print("steps :", steps)
         elif self.__mission_id is not None and self.__monde_id is not None:
             id = f"{self.__monde_id}-{self.__mission_id}"
         elif self.__mode == "sandbox":
@@ -114,6 +119,11 @@ class Game:
         self.__score = 0
     
     # Geter / Seter
+    def get_steps(self) -> int:
+        return self.__steps
+    def set_steps(self, steps: int) -> None:
+        self.__steps = steps
+    
     def get_score(self) -> int:
         return self.__score
     def set_score(self, score: int) -> None:
@@ -221,7 +231,7 @@ class Game:
                         self.__music_manager.switch("main_background_layer1")
                         self.__current_menu = self.__link.current_menu
                     self.__response = self.__link.handle_event(event)
-                    if self.__response in ("solo", "sandbox", "new_try", "survie") or (self.__response is not None and '-' in self.__response):
+                    if self.__response in ("solo", "sandbox", "new_try", "survie", "survie_next", "survie_retry") or (self.__response is not None and '-' in self.__response):
                         self.quit()
                     elif self.__response == "continue":
                         self.__mode = self.__tmp
@@ -305,12 +315,20 @@ class Game:
                     elif self.__mode == "sandbox":
                         self.__player.set_health(100)
                     elif self.__mode == "survie":
+                        self.__player.set_try(self.__player.get_try() - 1)
                         if self.__player.get_try() <= 0:
                             self.__mode = "menu"
                             self.__current_menu = "lose_step"
                             self.__link.current_menu = "lose_step"
+                            requests_manager = requester.Requester()
+                            requests = {
+                                "upload":{
+                                    "username": self.__save_manager.load()["username"],
+                                    "score": self.__score
+                                }
+                            }
+                            requests_manager.upload(requests)
                         else:
-                            self.__player.set_try(self.__player.get_try() - 1)
                             self.__response = "new_try_survie"
                             self.quit()
                 
@@ -495,7 +513,13 @@ class Game:
             structure.sync_vel(velocity, left, right)
     
     def get_data(self) -> dict:
-        return self.__link.get_data()
+        data_origine = self.__save_manager.load()
+        data = self.__link.get_data()
+        data["survival"] = data_origine["survival"]
+        data["username"] = data_origine["username"]
+        if "ID" in data_origine:
+            data["ID"] = data_origine["ID"]
+        return data
     
     def set_data(self, data: dict) -> None:
         self.__link.set_volume(data)

@@ -29,6 +29,7 @@ save_manager.save(data)
 
 response = current_game.get_response()
 while response != "exit":
+    steps = None
     mission = None
     monde = None
     if response is not None and "-" in response:
@@ -72,19 +73,27 @@ while response != "exit":
         mission = current_game.get_mission_id()
         intensity = "low"
         musique = f"monde{monde}-{intensity}"
-    elif response == "survie":
+    elif response in ("survie", "survie_retry"):
         mode = "survie"
         monde = random.randint(1, 4)
         mission = 1
         intensity = "low"
         musique = f"monde{monde}-{intensity}"
+        steps = 0
+    elif response == "survie_next":
+        mode = "survie"
+        monde = random.randint(1, 4)
+        mission = current_game.get_mission_id() + 1
+        intensity = "low"
+        musique = f"monde{monde}-{intensity}"
+        steps = current_game.get_steps() + 1
         
     # Antibug
     if response is None:
         current_game.change_menu(current_game.get_current_menu())
     else:  
         music_manager.switch(musique)
-        current_game = game.Game(screen, assets_manager, music_manager, mode, mission, monde)
+        current_game = game.Game(screen, assets_manager, music_manager, mode, steps, mission, monde)
         current_game.set_data(data)
         current_game.handle()
         save_manager.save(current_game.get_data())
