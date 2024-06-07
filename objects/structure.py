@@ -52,6 +52,11 @@ class Structure(pygame.sprite.Sprite):
 
     # Getters / Setters
     
+    def get_state(self) -> int:
+        return self.__state
+    def set_state(self, state: int) -> None:
+        self.__state = state
+    
     def get_despawn(self) -> bool:
         return self.__despawn
     def set_despawn(self, despawn: bool) -> None:
@@ -225,7 +230,7 @@ class Structure(pygame.sprite.Sprite):
         state = ""
         if self.__state == 1:
             state = "-fissure"
-        elif self.__state == 0:
+        elif self.__state <= 0:
             state = "-decombres"
         self.image = pygame.image.load(f"assets/structure/{self.__type}/{self.__theme}{state}.png")
         self.image = pygame.transform.scale(self.image, (
@@ -234,6 +239,7 @@ class Structure(pygame.sprite.Sprite):
         ))
 
     def afficher_civils(self, screen: pygame.Surface, egged: bool = False) -> None:
+        print(self.__civils_group)
         self.easter_egg(egged)
         out_of_screen = []
         for civil in self.__civils_list:

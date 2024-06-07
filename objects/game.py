@@ -12,11 +12,13 @@ import objects.menu.link as link
 import objects.music as music
 import objects.saver as saver
 import objects.requester as requester
+import objects.reloader as reloader
 
 class Game:
     def __init__(self, screen: pygame.Surface, assets: assets.Assets, music_manager: music.Music, mode: str, steps: int = None, mission_id: int = None, monde_id: int = None, fullscreen: bool = False) -> None:
         self.__music_manager = music_manager
         self.__save_manager = saver.Saver()
+        self.__reload_manager = reloader.Reloader()
         self.__mode = mode
         self.__steps = steps
         self.__mission_id = mission_id
@@ -312,17 +314,7 @@ class Game:
                 # Gestion du player
                 if self.__player.get_health() <= 0:
                     if self.__mode == "solo":
-                        self.__mission_manager.reload(self.__mission_manager.get_id())
-                        # Mise à jour de game
-                        self.__map = self.__mission_manager.get_map()
-                        self.__player = self.__mission_manager.get_player()
-                        self.__structures_list = self.__mission_manager.get_structures_list()
-                        self.__structures_group = self.__mission_manager.get_structures_group()
-                        self.__enemis = self.__mission_manager.get_enemis()
-                        self.__base = self.__mission_manager.get_base()
-                        self.__base_group = self.__mission_manager.get_base_group()
-                        # Mise à jour du HUD
-                        self.__hud.update_try(self.__player.get_try())
+                        self.reload()
                     elif self.__mode == "sandbox":
                         self.__player.set_health(100)
                     elif self.__mode == "survie":
@@ -462,6 +454,32 @@ class Game:
         data["survival"]["score"] = self.__score
         data["survival"]["palier"] = self.__palier
         self.__save_manager.save(data)
+    
+    def reload(self) -> None:
+        data = {}
+        data["structures"] = self.__reload_manager.serialize(self.__structures_list)
+        data["tanks"] = self.__reload_manager.serialize(self.__enemis.get_tanks())
+        data["avions"] = self.__reload_manager.serialize(self.__enemis.get_avions())
+        data["terroristes"] = self.__reload_manager.serialize(self.__enemis.get_terroristes())
+        self.__reload_manager.save(data)
+        if self.__mission_id is not None and self.__monde_id is not None:
+            id = f"{self.__monde_id}-{self.__mission_id}"
+        elif self.__mode == "sandbox":
+            id = "sandbox"
+        else:
+            id = "map_test"
+        self.__mission_manager = mission.Mission(id, self.__screen, self, self.__player.get_try() - 1, reload=True)
+        # origine
+        # Mise à jour de game
+        self.__map = self.__mission_manager.get_map()
+        self.__player = self.__mission_manager.get_player()
+        self.__structures_list = self.__mission_manager.get_structures_list()
+        self.__structures_group = self.__mission_manager.get_structures_group()
+        self.__enemis = self.__mission_manager.get_enemis()
+        self.__base = self.__mission_manager.get_base()
+        self.__base_group = self.__mission_manager.get_base_group()
+        # Mise à jour du HUD
+        self.__hud.update_try(self.__player.get_try())
     
     def despawn_civils(self) -> None:
         for structure in self.__structures_list:
