@@ -128,38 +128,78 @@ class Mission():
                 self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (12 * tile_size, 100 + 4 * tile_size))
         elif id == "sandbox":
             width = 60
-            self.__map = map.Map(f"assets/tilesets/sandbox/sandbox.tmx", width, height, tile_size, self.__screen)
-            self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size())
-                            
+            monde = random.randint(1, 4)
+            if monde == 1:
+                monde_str = "Island"
+            elif monde == 2:
+                monde_str = "Forest"
+            elif monde == 3:
+                monde_str = "Desert"
+            elif monde == 4:
+                monde_str = "Mountain"
+            self.__map = map.Map(f"assets/tilesets/{monde_str}/{monde}-1.tmx", width, height, tile_size, self.__screen, pig=True)
+            self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size(), sandbox=True)
+            
             # Positions
-            base_pos = (14 * tile_size, 4 * tile_size + 30)
-            tank_positions = [(5 * tile_size, 4 * tile_size + 100), 
-                            (20 * tile_size, 4 * tile_size + 100),
-                            (10 * tile_size, 4 * tile_size + 100),  # Nouvelle position
-                            (25 * tile_size, 4 * tile_size + 100),  # Nouvelle position
-                            (5 * tile_size, 4 * tile_size + 100),   # Nouvelle position
-                            (20 * tile_size, 4 * tile_size + 100)]  # Nouvelle position
-            avion_positions = [(10 * tile_size, 4 * tile_size + 20), 
-                            (15 * tile_size, 4 * tile_size + 20),
-                            (5 * tile_size, 4 * tile_size + 20),  # Nouvelle position
-                            (20 * tile_size, 4 * tile_size + 20), # Nouvelle position
-                            (15 * tile_size, 4 * tile_size + 20)] # Nouvelle position
-            
-            structure_positions = [
-                (3 * tile_size, 4 * tile_size + 72),
-                (10 * tile_size, 4 * tile_size + 72),
-                (25 * tile_size, 4 * tile_size + 72)
-            ]
-            
-            self.__base = base.Base(self.__base_group, base_pos[0], base_pos[1], (base_pos[0], base_pos[1]))
-            for pos in structure_positions:
-                self.__structures.append(structure.Structure(self.__structures_group, pos[0], pos[1], (pos[0], pos[1]), "batiment", "ville", self.__game, "sandbox"))
-            
-            if not reload:
-                for pos in tank_positions:
-                    self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), (pos[0], pos[1]))
-                for pos in avion_positions:
-                    self.__enemis.add_avion(self.__screen, self.__map.get_map_size(), (pos[0], pos[1]))
+            base_pos = ((width // 2) * tile_size, 4 * tile_size + 30)
+            zone_morte_debut = (width // 2) - 2
+            zone_morte_fin = (width // 2) + 2
+            nb_elements = (width - 5) // 5
+            for i in range(0, nb_elements):
+                # Structure
+                offset = 0
+                if i * 4 >= zone_morte_debut or (i * 4 <= zone_morte_debut and i * 4 + 3 >= zone_morte_debut) or (i * 4 >= zone_morte_debut and i * 4 + 3 >= zone_morte_fin):
+                    offset = 5
+                pos = (
+                    random.randint((i + offset) * 4, (i + offset) * 4 + 3) * tile_size,
+                    4 * tile_size + 73
+                )
+                if monde == 1:
+                    theme = "ville"
+                elif monde == 2:
+                    theme = "brick"
+                elif monde == 3:
+                    theme = "desert"
+                elif monde == 4:
+                    theme = "brick"
+                self.__structures.append(structure.Structure(self.__structures_group, pos[0], pos[1], pos, random.choice(["batiment", "garage"]), theme, self.__game))
+                # Tanks
+                offset = 0
+                if i * 4 >= zone_morte_debut or (i * 4 <= zone_morte_debut and i * 4 + 3 >= zone_morte_debut) or (i * 4 >= zone_morte_debut and i * 4 + 3 >= zone_morte_fin):
+                    offset = 5
+                pos = (
+                    random.randint((i + offset) * 4, (i + offset) * 4 + 3) * tile_size,
+                    4 * tile_size + 100
+                )
+                self.__enemis.add_tank(self.__screen, self.__map.get_map_size(), pos, random.randint(1, 2))
+                # Terroristes
+                offset = 0
+                if i * 4 >= zone_morte_debut or (i * 4 <= zone_morte_debut and i * 4 + 3 >= zone_morte_debut) or (i * 4 >= zone_morte_debut and i * 4 + 3 >= zone_morte_fin):
+                    offset = 5
+                pos = (
+                    random.randint((i + offset) * 4, (i + offset) * 4 + 3) * tile_size,
+                    4 * tile_size + 75
+                )
+                difficulte = random.randint(1, 3)
+                if difficulte == 1:
+                    if random.randint(1, 10) == 1:
+                        type_terroriste = "kamikaze"
+                    else:
+                        type_terroriste = "classique"
+                elif difficulte == 2:
+                    if random.randint(1, 5) == 1:
+                        type_terroriste = "kamikaze"
+                    else:
+                        type_terroriste = "classique"
+                elif difficulte == 3:
+                    if random.randint(1, 2) == 1:
+                        type_terroriste = "kamikaze"
+                    else:
+                        type_terroriste = "classique"
+                self.__enemis.add_terroriste(pos[0], pos[1], pos, type_terroriste)
+            for i in range(0, random.randint(0, difficulte * 2)):
+                self.__enemis.add_avion(self.__screen, self.__map.get_map_size(), (random.choice([-50, self.__screen.get_width()]), random.randint(40, 140)), random.randint(1, 2), random.choice([-1, 1]))
+            self.__base = base.Base(self.__base_group, base_pos[0], base_pos[1], base_pos)
         elif "/" in id and id.split("/")[0] == "survie":
             # if self.play_sound is None :
             #     self.son.helicopter(1)

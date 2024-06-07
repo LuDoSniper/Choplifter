@@ -10,9 +10,10 @@ import objects.structure as structure
 import objects.music as music
 
 class Player:
-    def __init__(self, screen: pygame.Surface, pos: tuple, map_size: int) -> None:
+    def __init__(self, screen: pygame.Surface, pos: tuple, map_size: int, sandbox: bool = False) -> None:
         self.__heli = heli.Heli(screen)
         self.__music_manager = music.Music()
+        self.__sandbox = sandbox
         
         # Accès plus simple a screen
         self.__screen = screen
@@ -59,6 +60,11 @@ class Player:
         self.__explosions_group = pygame.sprite.Group()
     
     # Geter / Seter
+    def get_sandbox(self) -> bool:
+        return self.__sandbox
+    def set_sandbox(self, sandbox: bool) -> None:
+        self.__sandbox = sandbox
+    
     def get_heli(self) -> heli.Heli:
         return self.__heli
     def set_heli(self, heli: heli.Heli) -> None:
@@ -229,6 +235,9 @@ class Player:
                 self.__fuel -= 1
             if self.__fuel <= 0:
                 self.__health = 0
+                if self.__sandbox:
+                    self.__health = 100
+                    self.__fuel = 100
         
         # Mouvement
         self.set_velocity(self.get_velocity() + (self.get_acceleration() * self.get_dir()))
