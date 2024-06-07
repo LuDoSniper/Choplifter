@@ -2,6 +2,7 @@ from objects.menu.button import Button
 from objects.menu.slider import Slider
 from objects.menu.dropdown import Dropdown
 import pygame
+import os
 
 class MenuOptions:
     def __init__(self, screen, change_menu_callback, update_theme_callback, update_resolution_callback, assets):
@@ -120,6 +121,18 @@ class MenuOptions:
 
     def delete_cache(self):
         print("Suppression du cache")
+        path = "assets/tilesets/map_test.png"
+        if os.path.exists(path):
+            os.remove(path)
+        path = "assets/tilesets/sandbox/sandbox.png"
+        if os.path.exists(path):
+            os.remove(path)
+        for monde in range(1, 5):
+            for mission in range(1, 5):
+                for theme in ["Island", "Forest", "Desert", "Mountain", "survival"]:
+                    path = f"assets/tilesets/{theme}/{monde}-{mission}.png"
+                    if os.path.exists(path):
+                        os.remove(path)
     
     def get_sliders(self) -> list:
         sliders = []
