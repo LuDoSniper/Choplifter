@@ -2,11 +2,13 @@ import pygame
 import sys
 from objects.menu.button import Button
 
-class MenuWin:
-    def __init__(self, screen, change_menu_callback, assets):
+class WinStep:
+    def __init__(self, screen, change_menu_callback, assets, score, palier):
         self.assets = assets
         self.screen = screen
         self.change_menu_callback = change_menu_callback
+        self.score = score
+        self.palier = palier
         self.buttons = []
         self.clicked_element = None 
         self.create_buttons()
@@ -16,9 +18,17 @@ class MenuWin:
         bg_y = (self.assets.SCREEN_HEIGHT - self.assets.background_lose.get_height()) // 2
         self.screen.blit(self.assets.background_lose, (bg_x, bg_y))
 
-        game_over_text = self.assets.get_custom_font(32).render("GAGNE !", True, self.assets.GRIS_FONCE)
-        game_over_rect = game_over_text.get_rect(center=(self.assets.SCREEN_WIDTH // 2, bg_y + 50))
-        self.screen.blit(game_over_text, game_over_rect)
+        game_win_text = self.assets.get_custom_font(32).render("Palier terminé !", True, self.assets.GRIS_FONCE)
+        game_win_rect = game_win_text.get_rect(center=(self.assets.SCREEN_WIDTH // 2, bg_y + 50))
+        self.screen.blit(game_win_text, game_win_rect)
+
+        score_text = self.assets.get_custom_font(24).render(f"Palier: {self.palier}", True, self.assets.GRIS_CLAIR)
+        score_rect = score_text.get_rect(center=(self.assets.SCREEN_WIDTH // 2, game_win_rect.bottom + 40))
+        self.screen.blit(score_text, score_rect)
+
+        score_text = self.assets.get_custom_font(24).render(f"Score: {self.score}", True, self.assets.GRIS_CLAIR)
+        score_rect = score_text.get_rect(center=(self.assets.SCREEN_WIDTH // 2, game_win_rect.bottom + 90))
+        self.screen.blit(score_text, score_rect)
 
         mouse_pos = pygame.mouse.get_pos()
         for button in self.buttons:

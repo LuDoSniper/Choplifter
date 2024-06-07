@@ -3,11 +3,10 @@ import sys
 from objects.menu.button import Button
 
 class MenuLose:
-    def __init__(self, screen, change_menu_callback, assets, score):
+    def __init__(self, screen, change_menu_callback, assets):
         self.assets = assets
         self.screen = screen
         self.change_menu_callback = change_menu_callback
-        self.score = score
         self.buttons = []
         self.clicked_element = None 
         self.create_buttons()
@@ -21,10 +20,6 @@ class MenuLose:
         game_over_rect = game_over_text.get_rect(center=(self.assets.SCREEN_WIDTH // 2, bg_y + 50))
         self.screen.blit(game_over_text, game_over_rect)
 
-        score_text = self.assets.get_custom_font(24).render(f"NOMBRE PTS: {self.score}", True, self.assets.GRIS_CLAIR)
-        score_rect = score_text.get_rect(center=(self.assets.SCREEN_WIDTH // 2, game_over_rect.bottom + 40))
-        self.screen.blit(score_text, score_rect)
-
         mouse_pos = pygame.mouse.get_pos()
         for button in self.buttons:
             button.update(mouse_pos)
@@ -36,7 +31,7 @@ class MenuLose:
         spacing = 15
         total_height = 2 * button_height + spacing
 
-        start_y = ((self.assets.SCREEN_HEIGHT - total_height) // 2) + 25
+        start_y = ((self.assets.SCREEN_HEIGHT - total_height) // 2)
         start_x = (self.assets.SCREEN_WIDTH - button_width) // 2
 
         self.buttons.append(Button('RESTART', start_x, start_y, self.assets.bouton, self.assets.bouton_click, self.restar_game, self.assets))

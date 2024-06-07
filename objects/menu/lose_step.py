@@ -2,11 +2,13 @@ import pygame
 import sys
 from objects.menu.button import Button
 
-class MenuWin:
-    def __init__(self, screen, change_menu_callback, assets):
+class LoseStep:
+    def __init__(self, screen, change_menu_callback, assets, score, palier):
         self.assets = assets
         self.screen = screen
         self.change_menu_callback = change_menu_callback
+        self.score = score
+        self.palier = palier
         self.buttons = []
         self.clicked_element = None 
         self.create_buttons()
@@ -16,9 +18,17 @@ class MenuWin:
         bg_y = (self.assets.SCREEN_HEIGHT - self.assets.background_lose.get_height()) // 2
         self.screen.blit(self.assets.background_lose, (bg_x, bg_y))
 
-        game_over_text = self.assets.get_custom_font(32).render("GAGNE !", True, self.assets.GRIS_FONCE)
+        game_over_text = self.assets.get_custom_font(32).render("PERDU !", True, self.assets.GRIS_FONCE)
         game_over_rect = game_over_text.get_rect(center=(self.assets.SCREEN_WIDTH // 2, bg_y + 50))
         self.screen.blit(game_over_text, game_over_rect)
+
+        score_text = self.assets.get_custom_font(24).render(f"Palier: {self.palier}", True, self.assets.GRIS_CLAIR)
+        score_rect = score_text.get_rect(center=(self.assets.SCREEN_WIDTH // 2, game_over_rect.bottom + 40))
+        self.screen.blit(score_text, score_rect)
+
+        score_text = self.assets.get_custom_font(24).render(f"Score: {self.score}", True, self.assets.GRIS_CLAIR)
+        score_rect = score_text.get_rect(center=(self.assets.SCREEN_WIDTH // 2, game_over_rect.bottom + 90))
+        self.screen.blit(score_text, score_rect)
 
         mouse_pos = pygame.mouse.get_pos()
         for button in self.buttons:
@@ -31,12 +41,11 @@ class MenuWin:
         spacing = 15
         total_height = 2 * button_height + spacing
 
-        start_y = ((self.assets.SCREEN_HEIGHT - total_height) // 2)
+        start_y = ((self.assets.SCREEN_HEIGHT - total_height) // 2) + button_height * 1.3
         start_x = (self.assets.SCREEN_WIDTH - button_width) // 2
 
-        self.buttons.append(Button('SUIVANT', start_x, start_y, self.assets.bouton, self.assets.bouton_click, self.next_game, self.assets))
-        self.buttons.append(Button('MISSION', start_x, start_y + button_height + spacing, self.assets.bouton, self.assets.bouton_click, lambda: self.change_menu_callback("mission"), self.assets))
-        self.buttons.append(Button('MENU', start_x, start_y + (button_height + spacing) * 2 , self.assets.bouton, self.assets.bouton_click, lambda: self.change_menu_callback("main"), self.assets))
+        self.buttons.append(Button('Continuer', start_x, start_y, self.assets.bouton, self.assets.bouton_click, self.next_game, self.assets))
+        self.buttons.append(Button('MENU', start_x, start_y + (button_height + spacing) , self.assets.bouton, self.assets.bouton_click, lambda: self.change_menu_callback("main"), self.assets))
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -58,7 +67,7 @@ class MenuWin:
             self.clicked_element = None
 
     def next_game(self):
-        print("Lancement de la partie suivante")
+        print("Nouveau palier")
 
     def quit_game(self):
         pygame.quit()

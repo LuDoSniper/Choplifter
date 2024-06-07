@@ -8,6 +8,8 @@ from objects.menu.menu_survie import MenuSurvie
 from objects.menu.menu_mission import MenuMission
 from objects.menu.menu_lose import MenuLose
 from objects.menu.menu_win import MenuWin
+from objects.menu.lose_step import LoseStep
+from objects.menu.win_step import WinStep
 import objects.requester as requester
 import objects.saver as saver
 
@@ -31,6 +33,7 @@ save_manager = saver.Saver()
 missions = save_manager.load()["missions"]
 
 score = 1487
+palier = 4
 
 class Link:
     def __init__(self, assets):
@@ -48,8 +51,10 @@ class Link:
             "son": MenuSon(self.assets.screen, self.change_menu, assets),
             "survie": MenuSurvie(self.assets.screen, self.change_menu, assets, classement, positionnement, points_vous),
             "mission": MenuMission(self.assets.screen, self.change_menu, assets, missions, "Ile Alloca"),
-            "lose": MenuLose(self.assets.screen, self.change_menu, assets, score),
-            "win": MenuWin(self.assets.screen, self.change_menu, assets, score)
+            "lose": MenuLose(self.assets.screen, self.change_menu, assets),
+            "win": MenuWin(self.assets.screen, self.change_menu, assets),
+            "lose_step": LoseStep(self.assets.screen, self.change_menu, assets, score, palier),
+            "win_step": WinStep(self.assets.screen, self.change_menu, assets, score, palier)
         }
         self.update_theme(self.assets.THEME)
         self.update_resolution(self.assets.RESOLUTION)
