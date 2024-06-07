@@ -1,5 +1,5 @@
 {
-    "sfx": 0.19714285714285715,
+    "sfx": 0,
     "music": 0,
     "theme": "Bleu",
     "missions": {
@@ -28,5 +28,5 @@
             true
         ]
     },
-    "resolution": "600x800"
+    "resolution": "FULL"
 }

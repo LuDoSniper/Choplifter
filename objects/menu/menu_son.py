@@ -8,13 +8,29 @@ class MenuSon:
         self.screen = screen
         self.change_menu_callback = change_menu_callback
         self.clicked_element = None 
+        self.elements = []
         self.create_elements()
 
     def create_elements(self):
-        self.elements = []
-        self.elements.append(Button("", 215, 475, self.assets.bouton_confirm, self.assets.bouton_confirm_click, self.confirm, self.assets))
-        self.elements.append(Slider("Son", ((self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2), 200, 350, 8, self.update_sound, self.assets))
-        self.elements.append(Slider("Musique", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, 260, 350, 8, self.update_music, self.assets))
+        element_height = 50
+        spacing = 20 
+        num_elements = 5
+        
+        total_height = (element_height * num_elements) + (spacing * (num_elements - 1))
+        
+        start_y = (self.assets.SCREEN_HEIGHT - total_height) // 2
+        
+        current_y = start_y
+        
+        current_y += (element_height + spacing) // 2
+
+        self.elements.append(Slider("Son", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, current_y, 350, 8, self.update_sound, self.assets))
+        current_y += element_height + spacing
+        
+        self.elements.append(Slider("Musique", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, current_y, 350, 8, self.update_music, self.assets))
+        current_y += element_height + spacing
+
+        self.elements.append(Button("", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, current_y, self.assets.bouton_confirm, self.assets.bouton_confirm_click, self.confirm, self.assets))
 
     def draw(self):
         bg_x = (self.assets.SCREEN_WIDTH - self.assets.background_menu_options.get_width()) // 2
