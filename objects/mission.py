@@ -10,11 +10,13 @@ import objects.structure as structure
 import objects.base as base
 
 class Mission():
-    def __init__(self, id: str, screen: pygame.Surface, game) -> None:
+    def __init__(self, id: str, screen: pygame.Surface, game, nb_try: int) -> None:
         self.__id = id
         self.__screen = screen
         self.__game = game
         self.load(id)
+        if nb_try is not None:
+            self.__player.set_try(nb_try)
     
     # Geter / Seter
     

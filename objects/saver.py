@@ -32,5 +32,6 @@ class Saver():
                     "Foret Alloca": [False, False, False, False],
                     "Desert Alloca": [False, False, False, False],
                     "Montagne Alloca": [False, False, False, False]
-                }
+                },
+                "resolution": "600x800"
             }

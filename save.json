@@ -1,32 +1,32 @@
 {
     "sfx": 0,
     "music": 0,
-    "theme": "Bleu",
+    "theme": "Gris",
     "missions": {
         "Ile Alloca": [
-            true,
-            true,
-            true,
-            true
-        ],
-        "Foret Alloca": [
             true,
             false,
             false,
             false
         ],
+        "Foret Alloca": [
+            false,
+            false,
+            false,
+            false
+        ],
         "Desert Alloca": [
-            true,
-            true,
-            true,
-            true
+            false,
+            false,
+            false,
+            false
         ],
         "Montagne Alloca": [
-            true,
-            true,
-            true,
-            true
+            false,
+            false,
+            false,
+            false
         ]
     },
-    "resolution": "FULL"
+    "resolution": "600x800"
 }

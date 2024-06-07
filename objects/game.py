@@ -51,6 +51,10 @@ class Game:
         pygame.display.flip()
         
         # Gestionnaire de mission
+        nb_try = None
+        if self.__mode[:-1] == "new_try_survie":
+            nb_try = int(self.__mode[-1])
+            self.__mode = "survie"
         if self.__mode == "survie":
             id = f"survie/{self.__monde_id}-{self.__mission_id}"
         elif self.__mission_id is not None and self.__monde_id is not None:
@@ -59,7 +63,7 @@ class Game:
             id = "sandbox"
         else:
             id = "map_test"
-        self.__mission_manager = mission.Mission(id, self.__screen, self)
+        self.__mission_manager = mission.Mission(id, self.__screen, self, nb_try)
         
         # La map pourrais changer de game en game
         # self.__map = map.Map(20, 4, 64, self.__screen)
@@ -286,17 +290,29 @@ class Game:
                 
                 # Gestion du player
                 if self.__player.get_health() <= 0:
-                    self.__mission_manager.reload(self.__mission_manager.get_id())
-                    # Mise à jour de game
-                    self.__map = self.__mission_manager.get_map()
-                    self.__player = self.__mission_manager.get_player()
-                    self.__structures_list = self.__mission_manager.get_structures_list()
-                    self.__structures_group = self.__mission_manager.get_structures_group()
-                    self.__enemis = self.__mission_manager.get_enemis()
-                    self.__base = self.__mission_manager.get_base()
-                    self.__base_group = self.__mission_manager.get_base_group()
-                    # Mise à jour du HUD
-                    self.__hud.update_try(self.__player.get_try())
+                    if self.__mode == "solo":
+                        self.__mission_manager.reload(self.__mission_manager.get_id())
+                        # Mise à jour de game
+                        self.__map = self.__mission_manager.get_map()
+                        self.__player = self.__mission_manager.get_player()
+                        self.__structures_list = self.__mission_manager.get_structures_list()
+                        self.__structures_group = self.__mission_manager.get_structures_group()
+                        self.__enemis = self.__mission_manager.get_enemis()
+                        self.__base = self.__mission_manager.get_base()
+                        self.__base_group = self.__mission_manager.get_base_group()
+                        # Mise à jour du HUD
+                        self.__hud.update_try(self.__player.get_try())
+                    elif self.__mode == "sandbox":
+                        self.__player.set_health(100)
+                    elif self.__mode == "survie":
+                        if self.__player.get_try() <= 0:
+                            self.__mode = "menu"
+                            self.__current_menu = "lose_step"
+                            self.__link.current_menu = "lose_step"
+                        else:
+                            self.__player.set_try(self.__player.get_try() - 1)
+                            self.__response = "new_try_survie"
+                            self.quit()
                 
                 # Gestion des bombes
                 if self.get_player().get_bombs_list() != []:
@@ -389,8 +405,8 @@ class Game:
     
     def step_end(self) -> None:
         print("Fin de l'étape courante")
-        self.__current_menu = "end_step"
-        self.__link.current_menu = "end_step"
+        self.__current_menu = "win_step"
+        self.__link.current_menu = "win_step"
         self.__mode = "menu"
         quotient = (self.__civil_numbers / 250) * self.__civil_saved
         self.__score += quotient * 250
