@@ -183,6 +183,7 @@ class Game:
     def handle(self):
         while self.__running:
             # Affichage
+            self.__screen.fill((0, 0, 0))
             if self.__loading:
                 background = pygame.image.load("assets/imgs/Background.png")
                 background = pygame.transform.scale(background, (self.__assets.SCREEN_WIDTH, self.__assets.SCREEN_HEIGHT))
