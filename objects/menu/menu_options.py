@@ -31,14 +31,27 @@ class MenuOptions:
         current_y += element_height + spacing
         
         self.elements.append(Slider("Musique", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, current_y, 350, 8, self.update_music, self.assets))
-        current_y += element_height + spacing
-        
+        current_y += (element_height + spacing) // 2
+
+        cache_button = pygame.image.load(f'assets/menu/bouton_vert.png').convert_alpha()
+        cache_button_click = pygame.image.load(f'assets/menu/button-on-vert.png').convert_alpha()
+
+        multiplier = 0.4
+        cache_button = pygame.transform.scale(cache_button, (self.assets.new_button_width * multiplier, self.assets.new_button_height * multiplier))
+        cache_button_click = pygame.transform.scale(cache_button_click, (self.assets.new_button_width * multiplier, self.assets.new_button_height * multiplier))
+
+        self.elements.append(Button("Cache", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, current_y, cache_button, cache_button_click, self.delete_cache, self.assets, (255,255,255), 16))
+        current_y += (element_height + spacing)
+
+
         self.elements.append(Dropdown("Thème", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, current_y, 133, 30, self.assets.retire_theme, self.update_theme, self.assets))
         
         self.elements.append(Dropdown("Résolution", ((self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2) + 150, current_y, 133, 30, self.assets.retire_resolution, self.update_resolution, self.assets, False))
-        current_y += (element_height + spacing * 5)
 
-        self.elements.append(Button("", (self.assets.SCREEN_WIDTH - self.assets.background_menu.get_width()) // 2, current_y, self.assets.bouton_confirm, self.assets.bouton_confirm_click, self.confirm, self.assets))
+
+        current_y += (element_height + spacing * 2)
+
+        self.elements.append(Button("", ((self.assets.SCREEN_WIDTH + self.assets.background_menu.get_width()) // 2) - self.assets.bouton_confirm.get_width(), current_y, self.assets.bouton_confirm, self.assets.bouton_confirm_click, self.confirm, self.assets))
 
     def draw(self):
         bg_x = (self.assets.SCREEN_WIDTH - self.assets.background_menu_options.get_width()) // 2
@@ -104,6 +117,9 @@ class MenuOptions:
     def confirm(self):
         print("Options confirmées")
         self.change_menu_callback("main")
+
+    def delete_cache(self):
+        print("Suppression du cache")
     
     def get_sliders(self) -> list:
         sliders = []
