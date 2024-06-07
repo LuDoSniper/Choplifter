@@ -19,9 +19,9 @@ requests_manager = requester.Requester()
 data = requests_manager.download(True, True)
 
 classement = []
-for player in data["all"]:
+for player in data["scoreboard"]:
     classement.append((player["username"], player["score"]))
-if "ID" not in data:
+if "self" not in data:
     positionnement = "Aucune données"
     points_vous = "Aucune données"
 else:
@@ -133,6 +133,11 @@ class Link:
         data["theme"] = self.assets.THEME
         data["missions"] = self.missions
         data["resolution"] = self.assets.RESOLUTION
+        data_origine = save_manager.load()
+        data["survival"] = data_origine["survival"]
+        data["username"] = data_origine["username"]
+        if "ID" in data_origine:
+            data["ID"] = data_origine["ID"]
         return data
     
     def set_volume(self, data: dict) -> None:

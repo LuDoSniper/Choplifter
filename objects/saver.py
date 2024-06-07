@@ -23,7 +23,7 @@ class Saver():
             with open('save.json') as file:
                 return json.load(file)
         else:
-            return {
+            data = {
                 "music" : 0.5,
                 "sfx" : 0.5,
                 "theme" : "Gris",
@@ -33,5 +33,13 @@ class Saver():
                     "Desert Alloca": [False, False, False, False],
                     "Montagne Alloca": [False, False, False, False]
                 },
-                "resolution": "600x800"
+                "resolution": "600x800",
+                "survival" : {
+                    "running": False,
+                    "score": None,
+                    "pb": None
+                },
+                "username": "Guest"
             }
+            self.save(data)
+            return data

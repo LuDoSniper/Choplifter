@@ -25,6 +25,7 @@ class Requester():
         if response.json()["ID"] != "":
             data = self.__save_manager.load()
             data["ID"] = response.json()["ID"]
+            data["username"] = response.json()["username"]
             self.__save_manager.save(data)
     
     def download(self, self_: bool, all: bool) -> dict:

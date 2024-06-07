@@ -28,5 +28,12 @@
             false
         ]
     },
-    "resolution": "600x800"
+    "resolution": "600x800",
+    "survival": {
+        "running": false,
+        "score": null,
+        "pb": null
+    },
+    "username": "Guest_0",
+    "ID": "$2y$10$D2AfA7BAUWb92Vy9TEjRzOmcCv3V3gqKdUJhW0TS1SqdoX6voezSa"
 }
