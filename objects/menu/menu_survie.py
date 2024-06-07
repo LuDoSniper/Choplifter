@@ -50,20 +50,22 @@ class MenuSurvie:
 
 
     def create_buttons(self):
-        button_width = self.assets.bouton_jouer.get_width()
-        button_height = self.assets.bouton_jouer.get_height()
-
-        spacing = 20
-        font = 20
         multi = 0.8
 
-        y_start = self.assets.SCREEN_HEIGHT - 2 * (button_height)
-        x_start = (self.assets.SCREEN_WIDTH - self.assets.background_menu_survie.get_width()) / 2 + spacing 
-        self.bouton_survie = pygame.transform.scale(self.assets.bouton, (int(self.assets.bouton_jouer.get_width() * multi), int(self.assets.bouton_jouer.get_height() * multi)))
-        self.bouton_click_survie = pygame.transform.scale(self.assets.bouton_click, (int(self.assets.bouton_jouer.get_width() * multi), int(self.assets.bouton_jouer.get_height() * multi)))
+        button_width = self.assets.bouton_jouer.get_width() * multi
+        button_height = self.assets.bouton_jouer.get_height() * multi
+
+        spacing = 10
+        font = 20
+
+
+        y_start = (self.assets.SCREEN_HEIGHT + self.assets.background_menu_survie.get_height()) // 2 - self.assets.bouton_continue.get_height() - 20
+        x_start = (self.assets.SCREEN_WIDTH - self.assets.background_menu_survie.get_width()) / 2  + (self.assets.background_menu_survie.get_width() - (button_width * 2 + spacing)) // 2
+        self.bouton_survie = pygame.transform.scale(self.assets.bouton, (button_width, button_height))
+        self.bouton_click_survie = pygame.transform.scale(self.assets.bouton_click, (button_width, button_height))
 
         self.buttons.append(Button('RETOUR', x_start, y_start, self.bouton_survie, self.bouton_click_survie, lambda: self.change_menu_callback("play"), self.assets, (255,255,255), font))
-        self.buttons.append(Button('JOUER', x_start // 2 + button_width + spacing + 10, y_start, self.bouton_survie, self.bouton_click_survie, self.start_survie, self.assets, (255,255,255), font))
+        self.buttons.append(Button('JOUER', x_start + button_width + spacing , y_start, self.bouton_survie, self.bouton_click_survie, self.start_survie, self.assets, (255,255,255), font))
 
     def variable_exists(self, var_name):
         return hasattr(self, var_name)
