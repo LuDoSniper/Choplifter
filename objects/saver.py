@@ -37,7 +37,9 @@ class Saver():
                 "survival" : {
                     "running": False,
                     "score": None,
-                    "pb": None
+                    "palier": None,
+                    "pb_score": None,
+                    "pb_palier": None
                 },
                 "username": "Guest"
             }

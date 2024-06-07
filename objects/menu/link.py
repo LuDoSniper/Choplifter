@@ -40,7 +40,7 @@ classement_score = []
 data["all"] = trier_score(data["all"])
 for player in data["scoreboard"]:
     classement_score.append((player["username"], player["score"]))
-if data["self"] not in data["all"]:
+if "self" not in data or data["self"] not in data["all"]:
     positionnement_score = "Aucune données"
     points_vous = "Aucune données"
 else:
@@ -169,7 +169,7 @@ class Link:
         data["all"] = trier_score(data["all"])
         for player in data["scoreboard"]:
             classment.append((player["username"], player["score"]))
-        if data["self"] not in data["all"]:
+        if "self" not in data or data["self"] not in data["all"]:
             positionnement = "Aucune données"
             points = "Aucune données"
         else:

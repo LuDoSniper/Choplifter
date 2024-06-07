@@ -1,6 +1,6 @@
 {
-    "sfx": 0,
-    "music": 0,
+    "sfx": 0.5,
+    "music": 0.5,
     "theme": "Gris",
     "missions": {
         "Ile Alloca": [
@@ -30,10 +30,12 @@
     },
     "resolution": "600x800",
     "survival": {
-        "running": false,
-        "score": null,
-        "pb": null
+        "running": true,
+        "score": 2466.0,
+        "palier": 0,
+        "pb_score": 200,
+        "pb_palier": 0
     },
-    "username": "Guest_0",
-    "ID": "$2y$10$D2AfA7BAUWb92Vy9TEjRzOmcCv3V3gqKdUJhW0TS1SqdoX6voezSa"
+    "username": "LuDo_Sniper",
+    "ID": "$2y$10$w0lpHSNUab9HYWHRJrU17ua8UzNDFdUrWhg.HrVF4DKvEH6D2.68u"
 }
