@@ -248,6 +248,7 @@ class Game:
                     elif self.__response == "continue":
                         self.__mode = self.__tmp
                         self.__paused = False
+                        self.__mission_manager.heli_son.play(-1)
                 else:
                     # Touche pressée
                     if event.type == pygame.KEYDOWN:
@@ -273,8 +274,10 @@ class Game:
                             self.__tmp = self.__mode
                             self.__link.current_menu = "pause"
                             self.__mode = "menu"
+                            self.__mission_manager.heli_son.stop()
                         else:
                             self.__mode = self.__tmp
+                            self.__mission_manager.heli_son.play(-1)
             
             if not self.__paused and self.__mode != "menu":
                 # Etat des touches
@@ -403,6 +406,7 @@ class Game:
                     self.game_over()
             else:
                 self.step_end()
+            self.__mission_manager.heli_son.stop()
     
     def win(self) -> None:
         self.__current_menu = "win"
@@ -596,3 +600,4 @@ class Game:
     
     def quit(self) -> None:
         self.__running = False
+        self.__mission_manager.heli_son.stop()

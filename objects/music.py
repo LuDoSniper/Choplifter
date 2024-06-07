@@ -165,13 +165,10 @@ class Music():
         son.set_volume(self.__save_manager.load()["sfx"])
         son.play()
 
-    def helicopter(self, value) -> None:
+    def get_heli_sound(self) -> None:
         son = pygame.mixer.Sound('assets/son/game/helicopter.wav')
         son.set_volume((self.__save_manager.load()["sfx"] * 0.04))
-        if value == 1:
-            son.play(loops=-1)
-        elif value == 0:
-            son.stop()
+        return son
 
     def help_1(self) -> None:
         son = pygame.mixer.Sound('assets/son/game/help-1.wav')
