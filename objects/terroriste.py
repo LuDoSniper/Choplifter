@@ -63,6 +63,7 @@ class Terroriste(pygame.sprite.Sprite):
         self.__despawn_timer = 0
         self.__despawn_timer_delay = 300
         self.play_song = None
+        self.__splashed = False
         
     # Geter / Seter
     
@@ -144,8 +145,11 @@ class Terroriste(pygame.sprite.Sprite):
             if self.__explosion != None and self.__explosion.explode():
                 self.__explosion = None
         
-        if self.hitbox.colliderect(player.get_heli().hitbox):
+        if self.hitbox.colliderect(player.get_heli().hitbox) and not self.__splashed:
             self.hit()
+            self.__music_manager.splash()
+            self.__splashed = True
+            print("splashed")
     
     def explode(self) -> None:
         self.__explosion = explosion.Explosion(self.__explosion_group, self.rect.x + self.rect.width / 2, self.rect.y + self.rect.height / 2, (self.__pos[0] + self.rect.width / 2, self.__pos[1] + self.rect.height / 2))

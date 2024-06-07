@@ -1,4 +1,5 @@
 import pygame
+import random
 import objects.saver as saver
 
 class Music():
@@ -243,4 +244,19 @@ class Music():
     def terroriste_mort_3(self) -> None:
         son = pygame.mixer.Sound('assets/son/game/terroriste_mort_3.wav')
         son.set_volume(self.__save_manager.load()["sfx"])
+        son.play()
+    
+    def splash(self) -> None:
+        sounds = [
+            "Blood_Squirt1.wav",
+            "Blood_Squirt2.wav",
+            "Blood_Squirt3.wav",
+            "Blood_Squirt4.wav",
+            "Blood_Squirt5.wav",
+            "Blood_Squirt1 #85771.wav",
+            "Blood_Squirt2_Short.wav",
+        ]
+        path = f"assets/son/sfx/{random.choice(sounds)}"
+        son = pygame.mixer.Sound(path)
+        son.set_volume(self.__save_manager.load()["sfx"] * 1.4)
         son.play()
