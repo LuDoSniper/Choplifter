@@ -366,7 +366,7 @@ class Player:
                         elif type(target) in (civil.Civil, terroriste.Terroriste):
                             target.hit()
                         elif type(target) == structure.Structure:
-                            target.hit()
+                            target.hit(3)
                         explosion.memory.append(target)
     
     def sync_vel_explosions(self, velocity: float, left: bool, right: bool) -> None:

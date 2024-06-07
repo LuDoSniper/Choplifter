@@ -84,14 +84,14 @@ class MenuOptions:
             
     def update_sound(self, value):
         self.assets.set_sfx_sound(value)
-        print(f"Son volume: {value}")
+        # print(f"Son volume: {value}")
 
     def update_music(self, value):
         pygame.mixer.music.set_volume(value)
-        print(f"Musique volume: {value}")
+        # print(f"Musique volume: {value}")
 
     def update_theme(self, value):
-        print(f"Theme: {value}")
+        # print(f"Theme: {value}")
         self.update_theme_callback(value)
         for element in self.elements:
             if isinstance(element, Dropdown) and element.label == "Thème":
@@ -99,7 +99,7 @@ class MenuOptions:
 
     def update_resolution(self, value):
         self.update_resolution_callback(value)
-        print(f"Resolution: {value}")
+        # print(f"Resolution: {value}")
         for element in self.elements:
             if isinstance(element, Dropdown) and element.label == "Résolution":
                 element.options = [self.assets.resolution for self.assets.resolution in self.assets.RESOLUTIONS if self.assets.resolution != self.assets.RESOLUTION]

@@ -13,28 +13,29 @@
             true,
             true,
             true,
-            false
+            true
         ],
         "Desert Alloca": [
-            false,
-            false,
-            false,
-            false
+            true,
+            true,
+            true,
+            true
         ],
         "Montagne Alloca": [
-            false,
-            false,
-            false,
-            false
+            true,
+            true,
+            true,
+            true
         ]
     },
     "resolution": "600x800",
     "survival": {
-        "running": false,
-        "score": null,
-        "palier": null,
-        "pb_score": null,
-        "pb_palier": null
+        "running": true,
+        "score": 40,
+        "palier": 0,
+        "pb_score": 330,
+        "pb_palier": 0
     },
-    "username": "Guest"
+    "username": "Guest_1",
+    "ID": "$2y$10$fJAFK9qFdcSbyiofq6LOMu/KqzMkrY7T2CsJLYmcka1vjsx6ibmHq"
 }

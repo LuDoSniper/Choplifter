@@ -327,6 +327,7 @@ class Game:
                             self.__mode = "menu"
                             self.__current_menu = "lose_step"
                             self.__link.current_menu = "lose_step"
+                            self.__link.set_score_palier(self.__score, self.__palier)
                             requests_manager = requester.Requester()
                             requests = {
                                 "upload":{
@@ -430,9 +431,14 @@ class Game:
             monde = "Desert Alloca"
         elif id_monde == 4:
             monde = "Montagne Alloca"
-        data["missions"][monde][id_mission - 1] = True
-        self.__save_manager.save(data)
-        self.__link.set_missions(data["missions"])
+        elif id_monde == 5:
+            self.__current_menu = "final_win"
+            self.__link.current_menu = "final_win"
+            self.__mode = "menu"
+        if id_monde < 5:
+            data["missions"][monde][id_mission - 1] = True
+            self.__save_manager.save(data)
+            self.__link.set_missions(data["missions"])
         # print("win")
     
     def game_over(self) -> None:
@@ -448,6 +454,7 @@ class Game:
         # print("Fin de l'étape courante")
         self.__current_menu = "win_step"
         self.__link.current_menu = "win_step"
+        self.__link.set_score_palier(self.__score, self.__palier)
         if self.play_song is None: 
             self.__music_manager.victoire()
             self.play_song = True

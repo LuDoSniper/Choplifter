@@ -80,6 +80,12 @@ while response != "exit":
         intensity = "low"
         musique = f"monde{monde}-{intensity}"
         steps = 0
+        data = save_manager.load()
+        if not data["survival"]["running"]:
+            data["survival"]["running"] = True
+            data["survival"]["score"] = 0
+            data["survival"]["palier"] = 0
+            save_manager.save(data)
     elif response == "survie_next":
         mode = "survie"
         monde = random.randint(1, 4)

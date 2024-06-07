@@ -214,6 +214,12 @@ class Link:
             palier = data["survival"]["palier"]
         return (score, palier)
 
+    def set_score_palier(self, score: int, palier: int) -> None:
+        self.menus["lose_step"].score = score
+        self.menus["lose_step"].palier = palier
+        self.menus["win_step"].score = score
+        self.menus["win_step"].palier = palier
+
     def get_scoreboard(self) -> list:
         classment = []
         positionnement = 0
