@@ -195,7 +195,7 @@ class Mission():
                     width = 30
                     id = f"Island/{id}"
                     height = 10
-                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
+                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen, pig=True)
                     self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
                     
                     # Positions
@@ -249,7 +249,7 @@ class Mission():
                     width = 50
                     id = f"Island/{id}"
                     height = 10
-                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
+                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen, pig=True)
                     self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
                     
                     # Positions
@@ -291,7 +291,7 @@ class Mission():
                     width = 60
                     id = f"Island/{id}"
                     height = 10
-                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
+                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen, pig=True)
                     self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
                     
                     # Positions
@@ -348,7 +348,7 @@ class Mission():
                     width = 50
                     id = f"Forest/{id}"
                     height = 10
-                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
+                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen, pig=True)
                     self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
                     
                     # Positions
@@ -390,7 +390,7 @@ class Mission():
                     width = 60
                     id = f"Forest/{id}"
                     height = 10
-                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
+                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen, pig=True)
                     self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
                     
                     # Positions
@@ -444,7 +444,7 @@ class Mission():
                     width = 70
                     id = f"Forest/{id}"
                     height = 10
-                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
+                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen, pig=True)
                     self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
                     
                     # Positions
@@ -508,7 +508,7 @@ class Mission():
                     width = 80
                     id = f"Forest/{id}"
                     height = 10
-                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
+                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen, pig=True)
                     self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
                     
                     # Positions
@@ -599,7 +599,7 @@ class Mission():
                     width = 100
                     id = f"Desert/{id}"
                     height = 10
-                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
+                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen, pig=True)
                     self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
                     
                     # Positions
@@ -703,7 +703,7 @@ class Mission():
                     width = 120
                     id = f"Desert/{id}"
                     height = 10
-                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
+                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen, pig=True)
                     self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
                     
                     # Positions
@@ -837,7 +837,7 @@ class Mission():
                     width = 140
                     id = f"Desert/{id}"
                     height = 10
-                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
+                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen, pig=True)
                     self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
                     
                     # Positions
@@ -971,7 +971,7 @@ class Mission():
                     width = 160
                     id = f"Desert/{id}"
                     height = 10
-                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
+                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen, pig=True)
                     self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
                     
                     # Positions
@@ -1138,7 +1138,7 @@ class Mission():
                     width = 180
                     id = f"Mountain/{id}"
                     height = 10
-                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
+                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen, pig=True)
                     self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
                     
                     # Positions
@@ -1312,7 +1312,7 @@ class Mission():
                     width = 220
                     id = f"Mountain/{id}"
                     height = 10
-                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
+                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen, pig=True)
                     self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
                     
                     # Positions
@@ -1526,7 +1526,7 @@ class Mission():
                     width = 260
                     id = f"Mountain/{id}"
                     height = 10
-                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
+                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen, pig=True)
                     self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
                     
                     # Positions
@@ -1780,7 +1780,7 @@ class Mission():
                     width = 300
                     id = f"Mountain/{id}"
                     height = 10
-                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen)
+                    self.__map = map.Map(f"assets/tilesets/{id}.tmx", width, height, tile_size, self.__screen, pig=True)
                     self.__player = player.Player(self.__screen, (self.__screen.get_width() / 2 - 13 / 2, 0), self.__map.get_map_size()) # pas fini
                     
                     # Positions
